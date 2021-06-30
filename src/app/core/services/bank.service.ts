@@ -10,6 +10,6 @@ export class BankService {
   constructor(private http: HttpClient) {}
 
   public getBankList(): Observable<any> {
-    return this.http.get(`${environment.apiPrefix}/bank/list`);
+    return this.http.get(`${environment.endPoint}/bank/list`);
   }
 }

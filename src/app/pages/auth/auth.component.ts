@@ -27,7 +27,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   public subscriptions = new Subscription();
 
-  public error: TuiValidationError = null;
+  public error: TuiValidationError<{}> | null = null;
 
   public showLoader = false;
 
@@ -77,9 +77,9 @@ export class AuthComponent implements OnInit, OnDestroy {
         },
         ({ error }) => {
           this.showLoader = false;
-          this.error = {
-            message: error?.message ?? 'Неизвестная ошибка. Попробуйте позже',
-          };
+          this.error = new TuiValidationError(
+            error?.message ?? 'Неизвестная ошибка. Попробуйте позже'
+          );
         }
       )
     );

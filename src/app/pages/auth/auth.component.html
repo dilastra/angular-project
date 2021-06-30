@@ -54,7 +54,7 @@
           <button
             tuiButton
             class="login-form__submit-button"
-            [disabled]="loginForm.invalid || error"
+            [disabled]="loginForm.invalid || !!error"
             (click)="login()"
           >
             Войти

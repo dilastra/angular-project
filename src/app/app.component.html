@@ -1,4 +1,4 @@
-<tui-theme-night *ngIf="isDarkTheme"></tui-theme-night>
-<tui-root tuiMode="{{ isDarkTheme && 'onDark' }}">
+<tui-theme-night *ngIf="theme === 'onDark'"></tui-theme-night>
+<tui-root [tuiMode]="theme">
   <router-outlet (activate)="componentAdded($event)"></router-outlet>
 </tui-root>

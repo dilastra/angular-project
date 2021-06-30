@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IUser } from '@credex/api-interfaces';
 import { Subscription } from 'rxjs';
-import { UserService } from '../../core';
+import { User, UserService } from '../../core';
 
 @Component({
   selector: 'credex-main',
@@ -20,7 +19,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.subscriptions.add(
-      this.userService.fetchUser().subscribe((user: IUser) => {
+      this.userService.fetchUser().subscribe((user: User) => {
         this.userService.setUser(user);
         console.log(this.userService.getUser());
       })
