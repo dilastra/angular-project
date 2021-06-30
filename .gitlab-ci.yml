@@ -1,0 +1,17 @@
+stages:
+  - deploy
+deploy:
+  stage: deploy
+  image: ubuntu
+  tags:
+    - docker
+  only:
+    - master
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - ssh-add <(echo -e "$SSH_PRIVATE_KEY")
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - ssh $USER@$HOST -p $PORT "cd credex && git pull && docker-compose down && docker-compose up -d --build && docker system prune -a -f"
