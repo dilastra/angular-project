@@ -1,0 +1,19 @@
+.header {
+  align-items: center;
+  border-bottom: 1px solid var(--tui-base-03);
+  box-shadow: 0 0.125rem 1rem rgb(0 0 0 / 8%);
+  display: flex;
+  justify-content: space-between;
+  min-height: 50px;
+  padding: 0 16px;
+
+  &__right-block {
+    display: flex;
+    align-items: center;
+  }
+
+  &__theme-switcher-container,
+  &__name-user {
+    margin-right: 16px;
+  }
+}

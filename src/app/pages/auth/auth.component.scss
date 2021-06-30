@@ -1,0 +1,46 @@
+@import '~@taiga-ui/core/styles/taiga-ui-local';
+
+.container {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.login-form {
+  &__container {
+    border: 1px solid var(--tui-base-03);
+    border-radius: var(--tui-radius-m);
+
+    padding: 16px;
+    width: 300px;
+  }
+
+  &__title {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  &__subtitle {
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  &__form-control {
+    &-container {
+      margin-bottom: 16px;
+    }
+  }
+
+  &__error-container {
+    text-align: center;
+    margin: 6px 0;
+  }
+
+  &__submit-button {
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    width: 100%;
+  }
+}
