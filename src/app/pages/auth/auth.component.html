@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="login-form__container">
+    <h1 class="login-form__title tui-text_h2">Credex.ru</h1>
+    <h2 class="login-form__subtitle tui-text_h6">Одобряем заявки в банке</h2>
+    <div class="login-form__form">
+      <form [formGroup]="loginForm">
+        <div class="login-form__form-control-container">
+          <tui-input
+            formControlName="login"
+            class="login-form__form-control"
+            [tuiTextfieldCleaner]="true"
+          >
+            Логин
+          </tui-input>
+          <tui-field-error formControlName="login"></tui-field-error>
+        </div>
+        <div class="login-form__form-control-container">
+          <tui-input-password
+            formControlName="password"
+            class="login-form__form-control"
+            [tuiTextfieldCleaner]="true"
+          >
+            Пароль
+          </tui-input-password>
+          <tui-field-error formControlName="password"></tui-field-error>
+        </div>
+        <div
+          class="login-form__form-control-container"
+          [style.margin-bottom]="error ? '0' : '16px'"
+        >
+          <tui-select
+            formControlName="bankId"
+            [valueContent]="getNameBank()"
+            tuiTextfieldExampleText="Например, ЧелиадБанк"
+            [tuiTextfieldCleaner]="true"
+          >
+            Выберите банк
+            <tui-data-list *tuiDataList>
+              <button *ngFor="let bank of banks" tuiOption [value]="bank.id">
+                {{ bank.name }}
+              </button>
+            </tui-data-list>
+          </tui-select>
+          <tui-field-error formControlName="bankId"></tui-field-error>
+        </div>
+        <div class="login-form__error-container">
+          <tui-error [error]="error" class="login-form__error"></tui-error>
+        </div>
+        <tui-loader
+          [showLoader]="showLoader"
+          [overlay]="showLoader"
+          [inheritColor]="showLoader"
+        >
+          <button
+            tuiButton
+            class="login-form__submit-button"
+            [disabled]="loginForm.invalid || error"
+            (click)="login()"
+          >
+            Войти
+          </button>
+        </tui-loader>
+      </form>
+    </div>
+  </div>
+</div>
