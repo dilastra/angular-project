@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TuiValidationError } from '@taiga-ui/cdk';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
 import { Subscription } from 'rxjs';
-import { BankService, UserService } from '../../core';
+import { BankService } from '../../core';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -35,7 +35,6 @@ export class AuthComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private bankService: BankService,
     private builder: FormBuilder,
-    private userService: UserService,
     private router: Router
   ) {
     this.loginForm = this.builder.group({

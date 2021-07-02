@@ -5,7 +5,11 @@
 ></div>
 <div class="sidenav__container" [style.width]="isOpenedSidenav ? '200px' : '0'">
   <nav class="sidenav__nav">
-    <a tuiLink routerLink="auth" class="sidenav__link" (click)="closeSidenav()"
+    <a
+      tuiLink
+      routerLink="clients"
+      class="sidenav__link"
+      (click)="closeSidenav()"
       >Мои Клиенты</a
     >
   </nav>

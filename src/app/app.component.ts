@@ -7,9 +7,15 @@ import { TuiBrightness } from '@taiga-ui/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  public isDarkTheme = false;
-
   public theme: TuiBrightness | null = 'onLight';
+
+  constructor() {
+    if (localStorage.getItem('isDarkTheme')) {
+      this.theme = JSON.parse(localStorage.getItem('isDarkTheme')!)
+        ? 'onDark'
+        : 'onLight';
+    }
+  }
 
   public componentAdded(elementRef: any) {
     elementRef?.themeSwitcherControl?.valueChanges?.subscribe(

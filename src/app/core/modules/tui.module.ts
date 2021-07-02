@@ -5,6 +5,7 @@ import {
   TuiErrorModule,
   TuiLinkModule,
   TuiLoaderModule,
+  TuiScrollbarModule,
   TuiSvgModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
@@ -32,6 +33,7 @@ import {
     TuiSvgModule,
     TuiTextfieldControllerModule,
     TuiToggleModule,
+    TuiScrollbarModule,
   ],
 })
 export class TuiModule {}
