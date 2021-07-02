@@ -11,13 +11,6 @@ export class AppComponent {
 
   public theme: TuiBrightness | null = 'onLight';
 
-  constructor() {
-    if (localStorage.getItem('isDarkTheme')) {
-      this.isDarkTheme = JSON.parse(localStorage.getItem('isDarkTheme')!);
-      this.theme = JSON.parse(localStorage.getItem('isDarkTheme')!) && 'onDark';
-    }
-  }
-
   public componentAdded(elementRef: any) {
     elementRef?.themeSwitcherControl?.valueChanges?.subscribe(
       (isDarkTheme: boolean) => {

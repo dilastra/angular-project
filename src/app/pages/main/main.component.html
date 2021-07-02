@@ -1,25 +1,18 @@
 <div class="container">
-  <header class="header">
-    <div class="header__left-block">
-      <div class="header__logo-container tui-text_h3">Credex.ru</div>
+  <credex-header
+    [themeSwitcherControl]="themeSwitcherControl"
+    [isOpenedSidenav]="isOpenedSidenav"
+    (openSidenavEvent)="onOpenSidenavEvent($event)"
+  ></credex-header>
+  <main class="main">
+    <div class="main__sidenav-container">
+      <credex-sidenav
+        [isOpenedSidenav]="isOpenedSidenav"
+        (onCloseSidenav)="onCloseSidenavEvent($event)"
+      ></credex-sidenav>
     </div>
-    <div class="header__right-block">
-      <div class="header__theme-switcher-container">
-        Тёмная тема
-        <tui-toggle
-          class="header__theme-switcher"
-          [formControl]="themeSwitcherControl"
-          [showIcons]="true"
-        ></tui-toggle>
-      </div>
-      <div class="header__name-user">Иван Иванов</div>
-
-      <tui-marker-icon
-        src="tuiIconLogoutLarge"
-        mode="primary"
-        size="xs"
-        class="header__button-logout"
-      ></tui-marker-icon>
+    <div class="main__content-container">
+      <router-outlet></router-outlet>
     </div>
-  </header>
+  </main>
 </div>

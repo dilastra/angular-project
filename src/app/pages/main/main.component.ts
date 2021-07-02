@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { User, UserService } from '../../core';
@@ -13,6 +13,8 @@ export class MainComponent implements OnInit, OnDestroy {
 
   public subscriptions = new Subscription();
 
+  public isOpenedSidenav = false;
+
   constructor(private userService: UserService) {
     this.themeSwitcherControl = new FormControl(false);
   }
@@ -24,9 +26,24 @@ export class MainComponent implements OnInit, OnDestroy {
         console.log(this.userService.getUser());
       })
     );
+    setTimeout(() => {
+      if (localStorage.getItem('isDarkTheme')) {
+        this.themeSwitcherControl.setValue(
+          JSON.parse(localStorage.getItem('isDarkTheme')!)
+        );
+      }
+    }, 0);
   }
 
   public ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  public onOpenSidenavEvent(isOpenedSidenav: boolean) {
+    this.isOpenedSidenav = isOpenedSidenav;
+  }
+
+  public onCloseSidenavEvent(isClosedSidenav: boolean) {
+    this.isOpenedSidenav = isClosedSidenav;
   }
 }

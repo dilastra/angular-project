@@ -1,19 +1,23 @@
-.header {
-  align-items: center;
-  border-bottom: 1px solid var(--tui-base-03);
-  box-shadow: 0 0.125rem 1rem rgb(0 0 0 / 8%);
+.container {
+  height: 100vh;
+  width: 100vw;
   display: flex;
-  justify-content: space-between;
-  min-height: 50px;
-  padding: 0 16px;
+  flex-direction: column;
+}
 
-  &__right-block {
-    display: flex;
-    align-items: center;
+.main {
+  display: flex;
+  height: 100%;
+  position: relative;
+  z-index: 0;
+
+  &__sidenav-container {
+    width: auto;
+    height: 100%;
   }
 
-  &__theme-switcher-container,
-  &__name-user {
-    margin-right: 16px;
+  &__content-container {
+    width: 100%;
+    height: 100%;
   }
 }

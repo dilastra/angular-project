@@ -1,0 +1,12 @@
+<div
+  class="sidenav__container-bg"
+  *ngIf="isOpenedSidenav"
+  (click)="closeSidenav()"
+></div>
+<div class="sidenav__container" [style.width]="isOpenedSidenav ? '200px' : '0'">
+  <nav class="sidenav__nav">
+    <a tuiLink routerLink="auth" class="sidenav__link" (click)="closeSidenav()"
+      >Мои Клиенты</a
+    >
+  </nav>
+</div>

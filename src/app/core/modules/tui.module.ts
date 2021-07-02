@@ -3,7 +3,9 @@ import {
   TuiButtonModule,
   TuiDataListModule,
   TuiErrorModule,
+  TuiLinkModule,
   TuiLoaderModule,
+  TuiSvgModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import {
@@ -23,9 +25,11 @@ import {
     TuiFieldErrorModule,
     TuiInputModule,
     TuiInputPasswordModule,
+    TuiLinkModule,
     TuiLoaderModule,
     TuiMarkerIconModule,
     TuiSelectModule,
+    TuiSvgModule,
     TuiTextfieldControllerModule,
     TuiToggleModule,
   ],

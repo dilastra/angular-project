@@ -6,6 +6,17 @@ const routes: Routes = [
   {
     path: '',
     component: MainComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'clients',
+      },
+      {
+        path: 'clients',
+        loadChildren: () =>
+          import('../clients/clients.module').then((m) => m.ClientsModule),
+      },
+    ],
   },
 ];
 
