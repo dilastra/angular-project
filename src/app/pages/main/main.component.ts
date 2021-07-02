@@ -20,12 +20,12 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.subscriptions.add(
-      this.userService.fetchUser().subscribe((user: User) => {
-        this.userService.setUser(user);
-        console.log(this.userService.getUser());
-      })
-    );
+    // this.subscriptions.add(
+    //   this.userService.fetchUser().subscribe((user: User) => {
+    //     this.userService.setUser(user);
+    //     console.log(this.userService.getUser());
+    //   })
+    // );
     setTimeout(() => {
       if (localStorage.getItem('isDarkTheme')) {
         this.themeSwitcherControl.setValue(

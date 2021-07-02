@@ -68,7 +68,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     const { login, password, bankId: bank_id } = this.loginForm.value;
 
     this.subscriptions.add(
-      this.authService.login({ login, password, bank_id }).subscribe(
+      this.authService.fetchLogin({ login, password, bank_id }).subscribe(
         ({ token }: { token: string }) => {
           this.authService.setTokenToLocalStorage(token);
           this.router.navigate(['/']);

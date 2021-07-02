@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import {
+  TuiTableModule,
+  TuiTablePaginationModule,
+} from '@taiga-ui/addon-table';
+import {
   TuiButtonModule,
   TuiDataListModule,
   TuiErrorModule,
@@ -29,11 +33,14 @@ import {
     TuiLinkModule,
     TuiLoaderModule,
     TuiMarkerIconModule,
+    TuiScrollbarModule,
     TuiSelectModule,
     TuiSvgModule,
+    TuiSvgModule,
+    TuiTableModule,
+    TuiTablePaginationModule,
     TuiTextfieldControllerModule,
     TuiToggleModule,
-    TuiScrollbarModule,
   ],
 })
 export class TuiModule {}

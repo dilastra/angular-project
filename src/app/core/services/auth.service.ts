@@ -10,7 +10,7 @@ import { AuthData, AuthToken } from '../interfaces';
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  public login(data: AuthData): Observable<AuthToken> {
+  public fetchLogin(data: AuthData): Observable<AuthToken> {
     return this.http.post<AuthToken>(
       `${environment.endPoint}/auth/login/user`,
       data
@@ -28,5 +28,9 @@ export class AuthService {
   public isAuthenticated() {
     // return this.getTokenFromLocalStorage();
     return true;
+  }
+
+  public logout() {
+    localStorage.removeItem('token');
   }
 }
