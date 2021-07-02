@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AuthResponse } from '@credex/api-interfaces';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { AuthData } from '../interfaces';
+import { AuthData, AuthToken } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +10,9 @@ import { AuthData } from '../interfaces';
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  public login(data: AuthData): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(
-      `${environment.apiPrefix}/auth/login/user`,
+  public fetchLogin(data: AuthData): Observable<AuthToken> {
+    return this.http.post<AuthToken>(
+      `${environment.endPoint}/auth/login/user`,
       data
     );
   }
@@ -27,6 +26,11 @@ export class AuthService {
   }
 
   public isAuthenticated() {
-    return this.getTokenFromLocalStorage();
+    // return this.getTokenFromLocalStorage();
+    return true;
+  }
+
+  public logout() {
+    localStorage.removeItem('token');
   }
 }

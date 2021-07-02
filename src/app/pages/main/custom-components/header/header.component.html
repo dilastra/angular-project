@@ -1,0 +1,38 @@
+<header class="header">
+  <div class="header__left-block">
+    <div class="header__sidenav-button-container">
+      <button class="header__sidenav-button" (click)="openSidenav()">
+        <tui-svg
+          [src]="isOpenedSidenav ? 'tuiIconRemoveLarge' : 'tuiIconMenuLarge'"
+        ></tui-svg>
+      </button>
+    </div>
+    <div class="header__logo-container tui-text_h3">Credex.ru</div>
+  </div>
+  <div class="header__right-block">
+    <div class="header__theme-switcher-container">
+      <img
+        src="../../../../assets/custom-icons/sunny.svg"
+        class="header__theme-switcher-icon"
+      />
+      <tui-toggle
+        [formControl]="themeSwitcherControl"
+        size="m"
+        class="header__theme-switcher"
+      ></tui-toggle>
+      <img
+        src="../../../../assets/custom-icons/moon.svg"
+        class="header__theme-switcher-icon"
+      />
+    </div>
+    <div class="header__name-user">Иван Иванов</div>
+
+    <tui-marker-icon
+      class="header__button-logout"
+      mode="primary"
+      size="xs"
+      src="tuiIconLogoutLarge"
+      (click)="onLogout()"
+    ></tui-marker-icon>
+  </div>
+</header>

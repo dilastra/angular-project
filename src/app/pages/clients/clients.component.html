@@ -1,0 +1,58 @@
+<div class="clients__container">
+  <div class="clients__header">
+    <h1 class="clients__title tui-text_h2">Клиенты</h1>
+    <div class="clients__add-client-button-container">
+      <button tuiButton size="m">Добавить клиента</button>
+    </div>
+  </div>
+  <div class="clients__table-container">
+    <tui-scrollbar>
+      <table tuiTable class="clients__table" [columns]="columns">
+        <thead>
+          <tr tuiThGroup>
+            <th *tuiHead="'innClient'" [resizable]="true" tuiTh>ИНН клиента</th>
+            <th *tuiHead="'name'" [resizable]="true" tuiTh>
+              Наименование клиента
+            </th>
+            <th *tuiHead="'product'" [resizable]="true" tuiTh>Продукт</th>
+            <th *tuiHead="'bank'" [resizable]="true" tuiTh>Зенит</th>
+          </tr>
+        </thead>
+        <tbody tuiTbody [data]="clients">
+          <ng-container *ngIf="clients.length">
+            <tr *tuiRow="let client of clients" tuiTr>
+              <td *tuiCell="'innClient'" tuiTd>
+                {{ client.inn }}
+              </td>
+              <td *tuiCell="'name'" tuiTd>
+                {{ client.name }}
+              </td>
+              <td *tuiCell="'product'" tuiTd>
+                {{ productOnRus[client.product] }}
+              </td>
+              <ng-container *ngFor="let bank of client.client_company_banks">
+                <td *tuiCell="'bank'" tuiTd>
+                  {{ bank["is_сlient_attached"] ? "Занят" : "Свободен" }}
+                </td>
+              </ng-container>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="!clients.length">
+            <td [colSpan]="columns.length" tuiTd [style.textAlign]="'center'">
+              Данные о клиентах не найдены
+            </td>
+          </ng-container>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td [colSpan]="columns.length">
+              <tui-table-pagination
+                [total]="clients.length"
+              ></tui-table-pagination>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </tui-scrollbar>
+  </div>
+</div>

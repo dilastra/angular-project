@@ -1,0 +1,19 @@
+.confirm-dialog {
+  &__title,
+  &__desc {
+    text-align: center;
+  }
+
+  &__title {
+    margin-top: 0;
+  }
+
+  &__buttons-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__confirm-button {
+    margin-left: 16px;
+  }
+}
