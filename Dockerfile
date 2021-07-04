@@ -6,7 +6,7 @@ COPY . /home/app
 
 # Build
 RUN npm install
-RUN npm run build:frontend
+RUN npm run build
 
 FROM nginx:1.12-alpine
 
