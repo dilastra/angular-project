@@ -6,7 +6,7 @@ deploy:
   tags:
     - docker
   only:
-    - master
+    - docker
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
@@ -14,4 +14,4 @@ deploy:
     - ssh-add <(echo -e "$SSH_PRIVATE_KEY")
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh $USER@$HOST -p $PORT "cd credex && git pull && docker-compose down && docker-compose up -d --build && docker system prune -a -f"
+    - ssh $USER@$HOST -p $PORT "cd credex/frontend && git pull && docker-compose down && docker-compose up -d --build && docker system prune -a -f"
