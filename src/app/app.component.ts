@@ -8,6 +8,7 @@ import { TuiBrightness } from '@taiga-ui/core';
 })
 export class AppComponent {
   public theme: TuiBrightness | null = 'onLight';
+  public loading = true;
 
   constructor() {
     if (localStorage.getItem('isDarkTheme')) {

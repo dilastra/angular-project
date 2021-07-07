@@ -1,4 +1,9 @@
-import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
@@ -11,11 +16,11 @@ import { AuthService } from '../services';
 export class HttpInterceptor implements HttpInterceptor {
   constructor(private router: Router, private authService: AuthService) {}
 
-  public intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    if (req.url === '/api/bank/list' || req.url === '/api/auth/login/user') {
+  public intercept(req: HttpRequest<any>, next: HttpHandler) {
+    if (
+      req.url.indexOf('api/bank/list') !== -1 ||
+      req.url.indexOf('dadata') !== -1
+    ) {
       return next.handle(req);
     }
 
@@ -26,7 +31,10 @@ export class HttpInterceptor implements HttpInterceptor {
     });
 
     return next.handle(cloneReq).pipe(
-      catchError((error) => {
+      catchError((error: any) => {
+        if (error.status === 401) {
+          this.router.navigate(['auth']);
+        }
         return throwError(error);
       })
     );

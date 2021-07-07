@@ -1,12 +1,12 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ConfirmDialogComponent } from '../dialogs';
+import { AddClientDialogComponent, ConfirmDialogComponent } from '../dialogs';
 import { TuiModule } from './tui.module';
 
 @NgModule({
-  declarations: [ConfirmDialogComponent],
-  imports: [TuiModule],
+  declarations: [ConfirmDialogComponent, AddClientDialogComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, TuiModule],
   exports: [
     CommonModule,
     ConfirmDialogComponent,

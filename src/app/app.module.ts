@@ -21,9 +21,9 @@ import { HttpInterceptor } from './core';
     BrowserAnimationsModule,
     BrowserModule,
     HttpClientModule,
+    TuiRootModule,
     TuiDialogModule,
     TuiModeModule,
-    TuiRootModule,
     TuiThemeNightModule,
   ],
   providers: [

@@ -17,17 +17,30 @@ export class AuthService {
     );
   }
 
-  public setTokenToLocalStorage(token: string): void {
-    localStorage.setItem('token', token);
+  public setTokenToLocalStorage(token: AuthToken): void {
+    localStorage.setItem('token', JSON.stringify(token));
   }
 
   public getTokenFromLocalStorage(): string {
-    return localStorage.getItem('token') ?? '';
+    return localStorage.getItem('token')
+      ? JSON.parse(localStorage.getItem('token')!).token
+      : '';
+  }
+
+  private getExpiresInOfTokenFromLocalStorage(): string {
+    return localStorage.getItem('token')
+      ? JSON.parse(localStorage.getItem('token')!)?.expiresIn
+      : '';
   }
 
   public isAuthenticated() {
-    // return this.getTokenFromLocalStorage();
-    return true;
+    if (this.getExpiresInOfTokenFromLocalStorage()) {
+      const dateExpiresIn = new Date(
+        +this.getExpiresInOfTokenFromLocalStorage() * 1000
+      );
+      return dateExpiresIn > new Date();
+    }
+    return false;
   }
 
   public logout() {

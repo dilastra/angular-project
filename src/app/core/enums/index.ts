@@ -1,1 +1,2 @@
-export { ProductOnRus } from './product.enum';
+export { ProductsOnRus } from './products.enum';
+export { TaxSystems } from './tax-systems.enum';

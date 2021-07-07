@@ -3,7 +3,10 @@
   *ngIf="isOpenedSidenav"
   (click)="closeSidenav()"
 ></div>
-<div class="sidenav__container" [style.width]="isOpenedSidenav ? '200px' : '0'">
+<div
+  class="sidenav__container"
+  [class.sidenav__container-opened]="isOpenedSidenav"
+>
   <nav class="sidenav__nav">
     <a
       tuiLink

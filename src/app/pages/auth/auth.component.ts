@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TuiValidationError } from '@taiga-ui/cdk';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
 import { Subscription } from 'rxjs';
-import { BankService } from '../../core';
+import { AuthToken, BankService } from '../../core';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -69,7 +69,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(
       this.authService.fetchLogin({ login, password, bank_id }).subscribe(
-        ({ token }: { token: string }) => {
+        (token: AuthToken) => {
           this.authService.setTokenToLocalStorage(token);
           this.router.navigate(['/']);
           this.showLoader = false;
