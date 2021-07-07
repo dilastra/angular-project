@@ -5,14 +5,10 @@ services:
     container_name: frontend
     build:
       context: .
-      dockerfile: ./frontend.dockerfile
     restart: always
-    networks:
-      - app-network
-    depends_on:
-      - backend
     ports:
       - 80:80
 networks:
-  app-network:
-    driver: bridge
+  default:
+    external:
+      name: credex-network
