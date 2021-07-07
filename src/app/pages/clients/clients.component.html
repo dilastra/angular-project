@@ -1,8 +1,10 @@
 <div class="clients__container">
   <div class="clients__header">
-    <h1 class="clients__title tui-text_h2">Клиенты</h1>
+    <h1 class="clients__title tui-text_h2">Мои клиенты</h1>
     <div class="clients__add-client-button-container">
-      <button tuiButton size="m">Добавить клиента</button>
+      <button tuiButton size="m" (click)="onAddClient()">
+        Добавить клиента
+      </button>
     </div>
   </div>
   <div class="clients__table-container">
@@ -18,9 +20,9 @@
             <th *tuiHead="'bank'" [resizable]="true" tuiTh>Зенит</th>
           </tr>
         </thead>
-        <tbody tuiTbody [data]="clients">
-          <ng-container *ngIf="clients.length">
-            <tr *tuiRow="let client of clients" tuiTr>
+        <tbody tuiTbody [data]="clientCompanies">
+          <ng-container *ngIf="clientCompanies.length">
+            <tr *tuiRow="let client of clientCompanies" tuiTr>
               <td *tuiCell="'innClient'" tuiTd>
                 {{ client.inn }}
               </td>
@@ -28,7 +30,7 @@
                 {{ client.name }}
               </td>
               <td *tuiCell="'product'" tuiTd>
-                {{ productOnRus[client.product] }}
+                {{ productsOnRus[client.product] }}
               </td>
               <ng-container *ngFor="let bank of client.client_company_banks">
                 <td *tuiCell="'bank'" tuiTd>
@@ -37,9 +39,9 @@
               </ng-container>
             </tr>
           </ng-container>
-          <ng-container *ngIf="!clients.length">
+          <ng-container *ngIf="!clientCompanies.length">
             <td [colSpan]="columns.length" tuiTd [style.textAlign]="'center'">
-              Данные о клиентах не найдены
+              Данные о компаниях клиентов не найдены
             </td>
           </ng-container>
         </tbody>
@@ -47,7 +49,7 @@
           <tr>
             <td [colSpan]="columns.length">
               <tui-table-pagination
-                [total]="clients.length"
+                [total]="clientCompanies.length"
               ></tui-table-pagination>
             </td>
           </tr>

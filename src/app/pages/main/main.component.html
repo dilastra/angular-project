@@ -1,20 +1,28 @@
-<div class="container">
-  <credex-header
-    [themeSwitcherControl]="themeSwitcherControl"
-    [isOpenedSidenav]="isOpenedSidenav"
-    (openSidenavEvent)="onOpenSidenavEvent($event)"
-  ></credex-header>
-  <main class="main">
-    <div class="main__sidenav-container">
-      <credex-sidenav
-        [isOpenedSidenav]="isOpenedSidenav"
-        (onCloseSidenav)="onCloseSidenavEvent($event)"
-      ></credex-sidenav>
-    </div>
-    <tui-scrollbar class="main__content-container">
-      <div class="main__content">
-        <router-outlet></router-outlet>
+<tui-loader
+  [showLoader]="isShowLoader"
+  [overlay]="true"
+  [inheritColor]="true"
+  size="xl"
+  textContent="Загрузка..."
+>
+  <div class="container">
+    <credex-header
+      [themeSwitcherControl]="themeSwitcherControl"
+      [isOpenedSidenav]="isOpenedSidenav"
+      (openSidenavEvent)="onOpenSidenavEvent($event)"
+    ></credex-header>
+    <main class="main">
+      <div class="main__sidenav-container">
+        <credex-sidenav
+          [isOpenedSidenav]="isOpenedSidenav"
+          (onCloseSidenav)="onCloseSidenavEvent($event)"
+        ></credex-sidenav>
       </div>
-    </tui-scrollbar>
-  </main>
-</div>
+      <tui-scrollbar class="main__content-container">
+        <div class="main__content">
+          <router-outlet></router-outlet>
+        </div>
+      </tui-scrollbar>
+    </main>
+  </div>
+</tui-loader>

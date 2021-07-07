@@ -1,0 +1,28 @@
+.add-client-dialog {
+  &__title {
+    text-align: center;
+  }
+
+  &__form-control {
+    margin-bottom: 16px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+
+  &__autocomplete-value-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__readonly-form-controls {
+    margin-bottom: 16px;
+  }
+}

@@ -1,4 +1,4 @@
-export enum ProductOnRus {
+export enum ProductsOnRus {
   'Гарантия',
   'Кредит',
 }

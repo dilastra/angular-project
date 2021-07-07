@@ -3,6 +3,7 @@ import {
   TuiTableModule,
   TuiTablePaginationModule,
 } from '@taiga-ui/addon-table';
+import { TuiLetModule } from '@taiga-ui/cdk';
 import {
   TuiButtonModule,
   TuiDataListModule,
@@ -14,6 +15,7 @@ import {
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import {
+  TuiComboBoxModule,
   TuiFieldErrorModule,
   TuiInputModule,
   TuiInputPasswordModule,
@@ -25,17 +27,18 @@ import {
 @NgModule({
   exports: [
     TuiButtonModule,
+    TuiComboBoxModule,
     TuiDataListModule,
     TuiErrorModule,
     TuiFieldErrorModule,
     TuiInputModule,
     TuiInputPasswordModule,
+    TuiLetModule,
     TuiLinkModule,
     TuiLoaderModule,
     TuiMarkerIconModule,
     TuiScrollbarModule,
     TuiSelectModule,
-    TuiSvgModule,
     TuiSvgModule,
     TuiTableModule,
     TuiTablePaginationModule,

@@ -1,9 +1,9 @@
 .sidenav {
   &__container {
     background-color: var(--tui-base-01);
-    border-right: 1px solid var(--tui-base-03);
     bottom: 0;
     height: 100%;
+    width: 0px;
     max-width: 200px;
     overflow: hidden;
     position: absolute;
@@ -22,6 +22,10 @@
       transition: 0.6s;
       width: 100vw;
       z-index: 2;
+    }
+    &-opened {
+      width: 200px;
+      border-right: 1px solid var(--tui-base-03);
     }
   }
 
