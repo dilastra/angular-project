@@ -1,15 +1,10 @@
-<div class="clients__container">
-  <div class="clients__header">
-    <h1 class="clients__title tui-text_h2">Мои клиенты</h1>
-    <div class="clients__add-client-button-container">
-      <button tuiButton size="m" (click)="onAddClient()">
-        Добавить клиента
-      </button>
-    </div>
+<div class="dossier-clients__container">
+  <div class="dossier-clients__header">
+    <h1 class="dossier-clients__title tui-text_h2">Досье клиентов</h1>
   </div>
-  <div class="clients__table-container">
+  <div class="dossier-clients__table-container">
     <tui-scrollbar>
-      <table tuiTable class="clients__table" [columns]="columns">
+      <table tuiTable class="dossier-clients__table" [columns]="columns">
         <thead>
           <tr tuiThGroup>
             <th *tuiHead="'innClient'" [resizable]="true" tuiTh>ИНН клиента</th>
@@ -17,8 +12,7 @@
               Наименование клиента
             </th>
             <th *tuiHead="'address'" [resizable]="true" tuiTh>Адрес</th>
-            <th *tuiHead="'product'" [resizable]="true" tuiTh>Продукт</th>
-            <th *tuiHead="'bank'" [resizable]="true" tuiTh>Зенит</th>
+            <th *tuiHead="'actions'" [resizable]="true" tuiTh>Действия</th>
           </tr>
         </thead>
         <tbody tuiTbody [data]="clientCompanies">
@@ -33,14 +27,18 @@
               <td *tuiCell="'address'" tuiTd>
                 {{ client.address }}
               </td>
-              <td *tuiCell="'product'" tuiTd>
-                {{ productsOnRus[client.product] }}
+              <td *tuiCell="'actions'" tuiTd>
+                <div class="dossier-clients__action-button-container">
+                  <tui-marker-icon
+                    src="tuiIconFolderLarge"
+                    mode="primary"
+                    size="xs"
+                    title="Открыть досье"
+                    routerLink="dossier/{{ client.id }}"
+                    class="dossier-clients__action-button"
+                  ></tui-marker-icon>
+                </div>
               </td>
-              <ng-container *ngFor="let bank of client.client_company_banks">
-                <td *tuiCell="'bank'" tuiTd>
-                  {{ bank["is_сlient_attached"] ? "Занят" : "Свободен" }}
-                </td>
-              </ng-container>
             </tr>
           </ng-container>
           <ng-container *ngIf="!clientCompanies.length">

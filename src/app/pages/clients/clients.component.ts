@@ -25,7 +25,13 @@ import {
   ],
 })
 export class ClientsComponent implements OnInit, OnDestroy {
-  readonly columns: string[] = ['innClient', 'name', 'product', 'bank'];
+  readonly columns: string[] = [
+    'innClient',
+    'name',
+    'address',
+    'product',
+    'bank',
+  ];
 
   public loading = true;
 
@@ -47,6 +53,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
   }
 
   public getClientsCompany() {
+    this.loaderService.show();
     return this.clientsCompanyService
       .fetchClientsCompany()
       .subscribe((clientCompanies: any[]) => {
@@ -71,9 +78,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
         )
         .subscribe((result) => {
           if (result) {
-            if (result) {
-              this.subscription.add(this.getClientsCompany());
-            }
+            this.subscription.add(this.getClientsCompany());
           }
         })
     );

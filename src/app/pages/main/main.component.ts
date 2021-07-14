@@ -34,7 +34,6 @@ export class MainComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.userService.fetchUser().subscribe((user: User) => {
         this.userService.setUser(user);
-        console.log(this.userService.getUser());
       })
     );
     setTimeout(() => {

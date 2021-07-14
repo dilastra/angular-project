@@ -16,6 +16,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('../clients/clients.module').then((m) => m.ClientsModule),
       },
+      {
+        path: 'dossier-clients',
+        loadChildren: () =>
+          import('../dossier-clients/dossier-clients.module').then(
+            (m) => m.DossierClientsModule
+          ),
+      },
     ],
   },
 ];

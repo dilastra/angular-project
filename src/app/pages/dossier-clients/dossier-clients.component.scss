@@ -1,0 +1,42 @@
+.dossier-clients {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__title {
+    margin-top: 0px;
+  }
+
+  &__add-client-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+  }
+
+  &__table {
+    td,
+    th {
+      white-space: nowrap;
+    }
+    width: 100%;
+    &-container {
+      border-radius: var(--tui-radius-m);
+      border: 1px solid var(--tui-base-03);
+      padding: 16px;
+    }
+  }
+
+  &__action-button {
+    cursor: pointer;
+    &:hover {
+      background-color: var(--tui-primary-hover);
+    }
+    &-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+  }
+}

@@ -8,10 +8,14 @@ export class LoaderService {
   public isShowLoader = new BehaviorSubject(true);
 
   public show() {
-    return this.isShowLoader.next(true);
+    setTimeout(() => {
+      return this.isShowLoader.next(true);
+    }, 0);
   }
 
   public hide() {
-    return this.isShowLoader.next(false);
+    setTimeout(() => {
+      return this.isShowLoader.next(false);
+    }, 0);
   }
 }

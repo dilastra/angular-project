@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule, TuiModule } from '../../core';
-import { HeaderComponent, SidenavComponent } from './custom-components';
+import { HeaderComponent, SidenavComponent } from './components';
 import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './main.component';
 
