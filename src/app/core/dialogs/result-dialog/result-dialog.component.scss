@@ -1,0 +1,17 @@
+.result-dialog {
+  &__title {
+    text-align: center;
+  }
+
+  &__desc {
+    font-size: 19px;
+    &-container {
+      text-align: center;
+    }
+  }
+
+  &__button-container {
+    display: flex;
+    justify-content: center;
+  }
+}

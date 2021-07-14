@@ -31,7 +31,7 @@
         <div class="add-client-dialog__form-control">
           <tui-input
             [readOnly]="true"
-            [ngModel]="selectedCompany?.data?.name?.short_with_opf"
+            [ngModel]="selectedCompany?.name?.short_with_opf"
             (ngModelChange)="selectedCompany.data.name.short_with_opf = $event"
             [ngModelOptions]="{ standalone: true }"
           >
@@ -41,7 +41,7 @@
         <div class="add-client-dialog__form-control">
           <tui-input
             [readOnly]="true"
-            [ngModel]="selectedCompany?.data?.ogrn"
+            [ngModel]="selectedCompany?.ogrn"
             (ngModelChange)="selectedCompany.data.ogrn = $event"
             [ngModelOptions]="{ standalone: true }"
           >
@@ -51,7 +51,7 @@
         <div class="add-client-dialog__form-control">
           <tui-input
             [readOnly]="true"
-            [ngModel]="selectedCompany?.data?.address?.value"
+            [ngModel]="selectedCompany?.address?.value"
             (ngModelChange)="selectedCompany.data.address.value = $event"
             [ngModelOptions]="{ standalone: true }"
           >

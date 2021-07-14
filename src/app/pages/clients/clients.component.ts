@@ -8,6 +8,7 @@ import {
   ClientsCompanyService,
   LoaderService,
   ProductsOnRus,
+  ResultDialogComponent,
 } from 'src/app/core';
 
 @Component({
@@ -70,7 +71,9 @@ export class ClientsComponent implements OnInit, OnDestroy {
         )
         .subscribe((result) => {
           if (result) {
-            this.subscription.add(this.getClientsCompany());
+            if (result) {
+              this.subscription.add(this.getClientsCompany());
+            }
           }
         })
     );
