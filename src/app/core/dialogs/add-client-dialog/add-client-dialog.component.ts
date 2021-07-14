@@ -2,16 +2,21 @@ import {
   ChangeDetectionStrategy,
   Component,
   Inject,
+  Injector,
   OnDestroy,
   OnInit,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TuiDialogContext } from '@taiga-ui/core';
-import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
+import { TuiDialogContext, TuiDialogService } from '@taiga-ui/core';
+import {
+  PolymorpheusComponent,
+  POLYMORPHEUS_CONTEXT,
+} from '@tinkoff/ng-polymorpheus';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { ProductsOnRus, TaxSystems } from '../../enums';
+import { ClientCompanyType, ProductsOnRus, TaxSystems } from '../../enums';
 import { ClientsCompanyService, DadataService } from '../../services';
+import { ResultDialogComponent } from '../result-dialog';
 
 @Component({
   selector: 'credex-add-client-dialog',
@@ -26,6 +31,8 @@ export class AddClientDialogComponent implements OnInit, OnDestroy {
 
   public productsOnRus = ProductsOnRus;
 
+  public clientCompanyType = ClientCompanyType;
+
   public selectedCompany: any;
 
   public formAddClient: FormGroup;
@@ -37,11 +44,13 @@ export class AddClientDialogComponent implements OnInit, OnDestroy {
   public subscription = new Subscription();
 
   constructor(
+    @Inject(Injector) private readonly injector: Injector,
     @Inject(POLYMORPHEUS_CONTEXT)
     private readonly context: TuiDialogContext<any>,
     private build: FormBuilder,
     private clientsCompanyService: ClientsCompanyService,
-    public dadataService: DadataService
+    public dadataService: DadataService,
+    private dialogService: TuiDialogService
   ) {
     this.formAddClient = this.build.group({
       innClient: [null, Validators.required],
@@ -93,7 +102,7 @@ export class AddClientDialogComponent implements OnInit, OnDestroy {
   }
 
   public selectCompany(company: any) {
-    this.selectedCompany = company;
+    this.selectedCompany = company?.data;
   }
 
   public onCancel() {
@@ -102,14 +111,52 @@ export class AddClientDialogComponent implements OnInit, OnDestroy {
 
   public onAddNewClient() {
     const body = {
+      address: this.selectedCompany?.address?.value,
+      inn: this.selectedCompany?.inn,
+      kpp: this.selectedCompany?.kpp,
+      name: this.selectedCompany?.name?.short_with_opf,
+      ogrn: this.selectedCompany?.ogrn,
+      ogrn_date: this.selectedCompany?.ogrn_date,
       product: this.formAddClient.controls.product.value,
       tax_system: this.formAddClient.controls.taxSystem.value,
-      ...this.selectedCompany.data,
+      type: this.clientCompanyType[this.selectedCompany?.type],
     };
     this.subscription.add(
-      this.clientsCompanyService.addNewCompanyClient(body).subscribe(() => {
-        this.context.completeWith(true);
-      })
+      this.clientsCompanyService.addNewCompanyClient(body).subscribe(
+        () => {
+          const dataForDialog = {
+            title: 'Операция проведена успешно',
+            desc: 'Компания клиента была успешно добавлена',
+          };
+          this.subscription.add(
+            this.onResult(dataForDialog).subscribe(() => {
+              this.context.completeWith(true);
+            })
+          );
+        },
+        (error) => {
+          console.log(error);
+          const dataForDialog = {
+            title: 'Операция не была проведена',
+            desc: 'Компания клиента не была добавлена. Попробуйте позже.',
+          };
+          this.subscription.add(this.onResult(dataForDialog).subscribe());
+        }
+      )
+    );
+  }
+
+  public onResult({ title, desc }: { title: string; desc: string }) {
+    return this.dialogService.open(
+      new PolymorpheusComponent(ResultDialogComponent, this.injector),
+      {
+        dismissible: true,
+        closeable: false,
+        data: {
+          title,
+          desc,
+        },
+      }
     );
   }
 }
