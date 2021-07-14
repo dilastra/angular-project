@@ -1,0 +1,17 @@
+<div class="confirm-dialog__container">
+  <h1 class="confirm-dialog__title">{{ title }}</h1>
+  <p class="confirm-dialog__desc">{{ desc }}</p>
+  <div class="confirm-dialog__buttons-container">
+    <button tuiButton appearance="secondary" (click)="onCancel()" size="m">
+      Отмена
+    </button>
+    <button
+      tuiButton
+      (click)="onConfirm()"
+      size="m"
+      class="confirm-dialog__confirm-button"
+    >
+      {{ titleSubmitButton }}
+    </button>
+  </div>
+</div>

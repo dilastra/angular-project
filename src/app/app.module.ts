@@ -4,6 +4,7 @@ import {
   TuiRootModule,
   TuiThemeNightModule,
   TuiModeModule,
+  TuiDialogModule,
 } from '@taiga-ui/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
@@ -20,8 +21,9 @@ import { HttpInterceptor } from './core';
     BrowserAnimationsModule,
     BrowserModule,
     HttpClientModule,
-    TuiModeModule,
     TuiRootModule,
+    TuiDialogModule,
+    TuiModeModule,
     TuiThemeNightModule,
   ],
   providers: [

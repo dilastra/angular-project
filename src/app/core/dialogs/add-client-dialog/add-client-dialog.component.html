@@ -1,0 +1,118 @@
+<div class="add-client-dialog__container">
+  <h1 class="add-client-dialog__title">Добавление клиента</h1>
+  <form [formGroup]="formAddClient">
+    <div class="add-client-dialog__form-control">
+      <tui-input
+        *tuiLet="companies$ | async as companies"
+        formControlName="innClient"
+        [tuiTextfieldCleaner]="true"
+        tuiTextfieldExampleText="Например, 12345678901"
+      >
+        ИНН компании
+        <tui-data-list *tuiDataList>
+          <button
+            tuiOption
+            *ngFor="let company of companies"
+            (click)="selectCompany(company)"
+            [value]="company?.data?.inn"
+          >
+            <p>ИНН {{ company?.data?.inn }}</p>
+            <p>{{ company?.data?.name?.short_with_opf ?? "Нет названия" }}</p>
+          </button>
+        </tui-data-list>
+      </tui-input>
+      <tui-field-error formControlName="innClient"></tui-field-error>
+    </div>
+    <div
+      class="add-client-dialog__readonly-form-controls"
+      *ngIf="selectedCompany"
+    >
+      <div class="add-client-dialog__form-control">
+        <div class="add-client-dialog__form-control">
+          <tui-input
+            [readOnly]="true"
+            [ngModel]="selectedCompany?.name?.short_with_opf"
+            (ngModelChange)="selectedCompany.data.name.short_with_opf = $event"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            Название компанииs
+          </tui-input>
+        </div>
+        <div class="add-client-dialog__form-control">
+          <tui-input
+            [readOnly]="true"
+            [ngModel]="selectedCompany?.ogrn"
+            (ngModelChange)="selectedCompany.data.ogrn = $event"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            ОГРН компании
+          </tui-input>
+        </div>
+        <div class="add-client-dialog__form-control">
+          <tui-input
+            [readOnly]="true"
+            [ngModel]="selectedCompany?.address?.value"
+            (ngModelChange)="selectedCompany.data.address.value = $event"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            Адрес компании
+          </tui-input>
+        </div>
+      </div>
+    </div>
+    <div class="add-client-dialog__form-control" *ngIf="selectedCompany">
+      <tui-select
+        formControlName="taxSystem"
+        [tuiTextfieldCleaner]="true"
+        tuiTextfieldExampleText="Например, УСН"
+        [valueContent]="nameOfTaxSystem"
+        title="{{ nameOfTaxSystem }}"
+      >
+        Система налогооблажения
+        <tui-data-list *tuiDataList>
+          <button tuiOption [value]="0">{{ taxSystems[0] }}</button>
+          <button tuiOption [value]="1">{{ taxSystems[1] }}</button>
+          <button tuiOption [value]="2">{{ taxSystems[2] }}</button>
+          <button tuiOption [value]="3">{{ taxSystems[3] }}</button>
+          <button tuiOption [value]="4">{{ taxSystems[4] }}</button>
+          <button tuiOption [value]="5">{{ taxSystems[5] }}</button>
+        </tui-data-list>
+      </tui-select>
+      <tui-field-error formControlName="taxSystem"></tui-field-error>
+    </div>
+    <div class="add-client-dialog__form-control" *ngIf="selectedCompany">
+      <tui-select
+        formControlName="product"
+        [tuiTextfieldCleaner]="true"
+        tuiTextfieldExampleText="Например, Гарантия"
+        [valueContent]="nameOfBankProduct"
+      >
+        Банковский продукт
+        <tui-data-list *tuiDataList>
+          <button tuiOption [value]="0">{{ productsOnRus[0] }}</button>
+          <button tuiOption [value]="1">{{ productsOnRus[1] }}</button>
+        </tui-data-list>
+      </tui-select>
+      <tui-field-error formControlName="product"></tui-field-error>
+    </div>
+    <div class="add-client-dialog__buttons-container">
+      <button
+        tuiButton
+        type="button"
+        appearance="secondary"
+        size="m"
+        (click)="onCancel()"
+      >
+        Отмена
+      </button>
+      <button
+        tuiButton
+        (click)="onAddNewClient()"
+        size="m"
+        [disabled]="formAddClient.invalid"
+      >
+        Добавить
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AuthResponse } from '@credex/api-interfaces';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { AuthData } from '../interfaces';
+import { AuthData, AuthToken } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -11,22 +10,40 @@ import { AuthData } from '../interfaces';
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  public login(data: AuthData): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(
-      `${environment.apiPrefix}/auth/login/user`,
+  public fetchLogin(data: AuthData): Observable<AuthToken> {
+    return this.http.post<AuthToken>(
+      `${environment.endPoint}/auth/login/user`,
       data
     );
   }
 
-  public setTokenToLocalStorage(token: string): void {
-    localStorage.setItem('token', token);
+  public setTokenToLocalStorage(token: AuthToken): void {
+    localStorage.setItem('token', JSON.stringify(token));
   }
 
   public getTokenFromLocalStorage(): string {
-    return localStorage.getItem('token') ?? '';
+    return localStorage.getItem('token')
+      ? JSON.parse(localStorage.getItem('token')!).token
+      : '';
+  }
+
+  private getExpiresInOfTokenFromLocalStorage(): string {
+    return localStorage.getItem('token')
+      ? JSON.parse(localStorage.getItem('token')!)?.expiresIn
+      : '';
   }
 
   public isAuthenticated() {
-    return this.getTokenFromLocalStorage();
+    if (this.getExpiresInOfTokenFromLocalStorage()) {
+      const dateExpiresIn = new Date(
+        +this.getExpiresInOfTokenFromLocalStorage() * 1000
+      );
+      return dateExpiresIn > new Date();
+    }
+    return false;
+  }
+
+  public logout() {
+    localStorage.removeItem('token');
   }
 }
