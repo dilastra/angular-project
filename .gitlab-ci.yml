@@ -4,11 +4,11 @@ deploy:
   stage: deploy
   image: ubuntu
   tags:
-    - docker
+    - release
   only:
-    - docker
+    - release
   before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - ssh-add <(echo -e "$SSH_PRIVATE_KEY")
