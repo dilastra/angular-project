@@ -6,6 +6,20 @@ const routes: Routes = [
   {
     path: '',
     component: DossierClientComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'statutory-documents',
+        pathMatch: 'full',
+      },
+      {
+        path: 'statutory-documents',
+        loadChildren: () =>
+          import('./pages/statutory-documents').then(
+            (m) => m.StatutoryDocumentsModule
+          ),
+      },
+    ],
   },
 ];
 

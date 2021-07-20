@@ -1,4 +1,12 @@
-import { Component, Inject, Injector, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Injector,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { TuiDialogService } from '@taiga-ui/core';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
@@ -24,7 +32,7 @@ import {
     },
   ],
 })
-export class ClientsComponent implements OnInit, OnDestroy {
+export class ClientsComponent implements AfterViewInit, OnDestroy {
   readonly columns: string[] = [
     'innClient',
     'name',
@@ -45,10 +53,11 @@ export class ClientsComponent implements OnInit, OnDestroy {
     @Inject(Injector) private readonly injector: Injector,
     @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
     private loaderService: LoaderService,
-    private clientsCompanyService: ClientsCompanyService
+    private clientsCompanyService: ClientsCompanyService,
+    private cd: ChangeDetectorRef
   ) {}
 
-  public ngOnInit(): void {
+  public ngAfterViewInit(): void {
     this.subscription.add(this.getClientsCompany());
   }
 
@@ -58,6 +67,7 @@ export class ClientsComponent implements OnInit, OnDestroy {
       .fetchClientsCompany()
       .subscribe((clientCompanies: any[]) => {
         this.clientCompanies = clientCompanies;
+        this.cd.detectChanges();
         this.loaderService.hide();
       });
   }

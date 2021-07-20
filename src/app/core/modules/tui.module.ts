@@ -17,10 +17,13 @@ import {
 import {
   TuiComboBoxModule,
   TuiFieldErrorModule,
+  TuiInputDateModule,
+  TuiInputFileModule,
   TuiInputModule,
   TuiInputPasswordModule,
   TuiMarkerIconModule,
   TuiSelectModule,
+  TuiTabsModule,
   TuiToggleModule,
 } from '@taiga-ui/kit';
 
@@ -31,6 +34,8 @@ import {
     TuiDataListModule,
     TuiErrorModule,
     TuiFieldErrorModule,
+    TuiInputDateModule,
+    TuiInputFileModule,
     TuiInputModule,
     TuiInputPasswordModule,
     TuiLetModule,
@@ -42,6 +47,7 @@ import {
     TuiSvgModule,
     TuiTableModule,
     TuiTablePaginationModule,
+    TuiTabsModule,
     TuiTextfieldControllerModule,
     TuiToggleModule,
   ],

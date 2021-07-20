@@ -1,1 +1,26 @@
-<p>dossier-client works!</p>
+<div class="dossier-client__container">
+  <div class="dossier-client__header">
+    <h1
+      class="dossier-client__header-title tui-text_h2"
+      [class.tui-skeleton]="!companyName"
+    >
+      Досье компании {{ companyName }}
+    </h1>
+  </div>
+  <div class="dossier-client__content-container">
+    <tui-tabs>
+      <a tuiTab routerLink="./statutory-documents" routerLinkActive
+        >Уставные документы</a
+      >
+      <a tuiTab routerLink="/page-2" routerLinkActive>Бенефициары</a>
+      <button tuiTab disabled title="В разработке">Финансовые документы</button>
+      <button tuiTab disabled title="В разработке">
+        Дополнительные документы
+      </button>
+      <a tuiTab routerLink="/page-2" routerLinkActive>Анкета</a>
+    </tui-tabs>
+    <div class="dossier-client__content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

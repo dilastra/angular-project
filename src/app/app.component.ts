@@ -1,5 +1,6 @@
 import { Component, ElementRef } from '@angular/core';
 import { TuiBrightness } from '@taiga-ui/core';
+import { ThemeService } from './core';
 
 @Component({
   selector: 'credex-root',
@@ -8,22 +9,10 @@ import { TuiBrightness } from '@taiga-ui/core';
 })
 export class AppComponent {
   public theme: TuiBrightness | null = null;
-  public loading = true;
 
-  constructor() {
-    if (localStorage.getItem('isDarkTheme')) {
-      this.theme = JSON.parse(localStorage.getItem('isDarkTheme')!)
-        ? 'onDark'
-        : null;
-    }
-  }
-
-  public componentAdded(elementRef: any) {
-    elementRef?.themeSwitcherControl?.valueChanges?.subscribe(
-      (isDarkTheme: boolean) => {
-        this.theme = isDarkTheme ? 'onDark' : null;
-        localStorage.setItem('isDarkTheme', JSON.stringify(isDarkTheme));
-      }
-    );
+  constructor(private themeService: ThemeService) {
+    this.themeService.theme$.subscribe((currentTheme) => {
+      this.theme = currentTheme;
+    });
   }
 }

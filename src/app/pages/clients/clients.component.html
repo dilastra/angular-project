@@ -22,7 +22,7 @@
           </tr>
         </thead>
         <tbody tuiTbody [data]="clientCompanies">
-          <ng-container *ngIf="clientCompanies.length">
+          <ng-container *ngIf="clientCompanies?.length">
             <tr *tuiRow="let client of clientCompanies" tuiTr>
               <td *tuiCell="'innClient'" tuiTd>
                 {{ client.inn }}
@@ -36,22 +36,22 @@
               <td *tuiCell="'product'" tuiTd>
                 {{ productsOnRus[client.product] }}
               </td>
-              <ng-container *ngFor="let bank of client.client_company_banks">
+              <ng-container *ngFor="let bank of client?.client_company_banks">
                 <td *tuiCell="'bank'" tuiTd>
                   {{ bank["is_сlient_attached"] ? "Занят" : "Свободен" }}
                 </td>
               </ng-container>
             </tr>
           </ng-container>
-          <ng-container *ngIf="!clientCompanies.length">
-            <td [colSpan]="columns.length" tuiTd [style.textAlign]="'center'">
+          <ng-container *ngIf="!clientCompanies?.length">
+            <td [colSpan]="columns?.length" tuiTd [style.textAlign]="'center'">
               Данные о компаниях клиентов не найдены
             </td>
           </ng-container>
         </tbody>
         <tfoot>
           <tr>
-            <td [colSpan]="columns.length">
+            <td [colSpan]="columns?.length">
               <tui-table-pagination
                 [total]="clientCompanies.length"
               ></tui-table-pagination>

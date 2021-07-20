@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { LoaderService, User, UserService } from '../../core';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { LoaderService, ThemeService, User, UserService } from '../../core';
 
 @Component({
   selector: 'credex-main',
@@ -19,7 +20,8 @@ export class MainComponent implements OnInit, OnDestroy {
 
   constructor(
     private loaderService: LoaderService,
-    private userService: UserService
+    private userService: UserService,
+    private themeService: ThemeService
   ) {
     this.themeSwitcherControl = new FormControl(false);
 
@@ -36,13 +38,21 @@ export class MainComponent implements OnInit, OnDestroy {
         this.userService.setUser(user);
       })
     );
-    setTimeout(() => {
-      if (localStorage.getItem('isDarkTheme')) {
-        this.themeSwitcherControl.setValue(
-          JSON.parse(localStorage.getItem('isDarkTheme')!)
-        );
-      }
-    }, 0);
+
+    this.subscriptions.add(
+      this.themeSwitcherControl.valueChanges
+        .pipe(distinctUntilChanged())
+        .subscribe((isDarkTheme) => {
+          const currentTheme = isDarkTheme ? 'onDark' : null;
+          return this.themeService.onChangeCurrentTheme(currentTheme);
+        })
+    );
+
+    this.subscriptions.add(
+      this.themeService.theme$.subscribe((currentTheme) => {
+        this.themeSwitcherControl.setValue(currentTheme === 'onDark');
+      })
+    );
   }
 
   public ngOnDestroy() {

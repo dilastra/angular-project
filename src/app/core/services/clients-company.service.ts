@@ -16,4 +16,8 @@ export class ClientsCompanyService {
   public addNewCompanyClient(body: any) {
     return this.http.post(`${environment.endPoint}/client-company`, body);
   }
+
+  public getClientCompany(id: string) {
+    return this.http.get(`${environment.endPoint}/client-company/${id}`);
+  }
 }

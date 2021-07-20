@@ -1,0 +1,27 @@
+.company-charter {
+  &__form-controls {
+    &-container {
+      border-radius: var(--tui-radius-m);
+      border: 1px solid var(--tui-base-03);
+      padding: 16px;
+      margin-bottom: 24px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    &-title {
+      margin-top: 0;
+    }
+  }
+  &__file-input-control {
+    width: 100%;
+    &-container {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__file-button-download {
+    margin-left: 16px;
+  }
+}

@@ -1,0 +1,111 @@
+<form [formGroup]="appointmentSoleExecutiveBodyForm">
+  <div class="appointment-sole-executive-body__form-controls-container">
+    <h2
+      class="appointment-sole-executive-body__form-controls-title tui-text_h3"
+    >
+      Приказ/решение о назначении ЕИО
+    </h2>
+    <div class="appointment-sole-executive-body__file-input-control-container">
+      <tui-input-file
+        class="appointment-sole-executive-body__file-input-control"
+        formControlName="fileAppointmentSoleExecutiveBody"
+        link="Выберите"
+        label="или перетащите сюда файл приказа/решения о назначении ЕИО"
+        [loadingFiles]="loadingFiles"
+      ></tui-input-file>
+      <button
+        tuiButton
+        type="button"
+        class="appointment-sole-executive-body__file-button-download"
+        size="m"
+        [showLoader]="isDownloadFile"
+        [disabled]="isDownloadFile"
+        (click)="
+          downloadFile(
+            getControlAppointmentSoleExecutiveBodyForm(
+              'fileAppointmentSoleExecutiveBody'
+            )
+          )
+        "
+        *ngIf="
+          getControlAppointmentSoleExecutiveBodyForm(
+            'fileAppointmentSoleExecutiveBody'
+          )?.value && !loadingFiles.length
+        "
+      >
+        Скачать файл
+      </button>
+    </div>
+    <div
+      class="appointment-sole-executive-body__input-controls-container"
+      *ngIf="
+        getControlAppointmentSoleExecutiveBodyForm(
+          'fileAppointmentSoleExecutiveBody'
+        ).value
+      "
+    >
+      <div
+        class="
+          appointment-sole-executive-body__input-control
+          appointment-sole-executive-body__input-control_mb16
+        "
+      >
+        <tui-input
+          formControlName="numberOfAppointmentSoleExecutiveBody"
+          [tuiTextfieldCleaner]="true"
+          tuiTextfieldExampleText="Например, 254331234"
+        >
+          Введите номер документа
+        </tui-input>
+      </div>
+      <div class="appointment-sole-executive-body__date-controls-container">
+        <div
+          class="
+            appointment-sole-executive-body__input-control
+            appointment-sole-executive-body__input-control_mr16
+          "
+        >
+          <tui-input-date
+            formControlName="dateFrom"
+            [tuiTextfieldCleaner]="true"
+            tuiTextfieldExampleText="Например, 23.02.2019"
+            [max]="
+              getControlAppointmentSoleExecutiveBodyForm('dateTo')?.value ||
+              maxDate
+            "
+          >
+            Выбирете дату назначение
+          </tui-input-date>
+        </div>
+        <div class="appointment-sole-executive-body__input-control">
+          <tui-input-date
+            formControlName="dateTo"
+            [tuiTextfieldCleaner]="true"
+            tuiTextfieldExampleText="Например, 23.02.2020"
+            [min]="
+              getControlAppointmentSoleExecutiveBodyForm('dateFrom')?.value ||
+              minDate
+            "
+          >
+            Выбирете дату окончания полномочий
+          </tui-input-date>
+        </div>
+      </div>
+      <div class="appointment-sole-executive-body__button-container">
+        <button
+          class="appointment-sole-executive-body__button"
+          tuiButton
+          type="button"
+          size="m"
+          (click)="onSave()"
+          [disabled]="
+            appointmentSoleExecutiveBodyForm.untouched ||
+            appointmentSoleExecutiveBodyForm.invalid
+          "
+        >
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
