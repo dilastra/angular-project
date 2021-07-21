@@ -34,4 +34,14 @@ export class DossierService {
       updatedDossier
     );
   }
+
+  public updateleaseAgreementPremises(
+    companyClientId: string,
+    leaseAgreementPremises: any
+  ) {
+    return this.http.put(
+      `${environment.endPoint}/dossier/${companyClientId}/constituent-documents/lease-contract`,
+      leaseAgreementPremises
+    );
+  }
 }

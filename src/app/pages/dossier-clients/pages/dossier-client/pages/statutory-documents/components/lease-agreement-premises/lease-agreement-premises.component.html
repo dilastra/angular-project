@@ -1,0 +1,118 @@
+<form [formGroup]="leaseAgreementPremisesForm">
+  <div class="lease-agreement-premises__form-controls-container">
+    <h2 class="lease-agreement-premises__form-controls-title tui-text_h3">
+      Договор аренды помещения
+    </h2>
+    <div class="lease-agreement-premises__file-input-control-container">
+      <tui-input-file
+        class="lease-agreement-premises__file-input-control"
+        formControlName="file"
+        link="Выберите"
+        label="или перетащите сюда файл Договора аренды помещения"
+        [loadingFiles]="loadingFiles"
+      ></tui-input-file>
+      <button
+        tuiButton
+        type="button"
+        class="lease-agreement-premises__file-button-download"
+        size="m"
+        [showLoader]="isDownloadFile"
+        [disabled]="isDownloadFile"
+        (click)="downloadFile(getControlLeaseAgreementPremises('file'))"
+        *ngIf="
+          getControlLeaseAgreementPremises('file')?.value &&
+          !loadingFiles.length
+        "
+      >
+        Скачать файл
+      </button>
+    </div>
+    <div
+      class="lease-agreement-premises__input-controls-container"
+      *ngIf="getControlLeaseAgreementPremises('file').value"
+    >
+      <div
+        class="
+          lease-agreement-premises__input-control
+          lease-agreement-premises__input-control_mb16
+        "
+      >
+        <tui-input
+          formControlName="docNumber"
+          [tuiTextfieldCleaner]="true"
+          tuiTextfieldExampleText="Например, 254331234"
+        >
+          Введите номер документа
+        </tui-input>
+        <tui-field-error formControlName="docNumber"></tui-field-error>
+      </div>
+      <div
+        class="
+          lease-agreement-premises__input-control
+          lease-agreement-premises__input-control_mb16
+        "
+      >
+        <tui-input-date
+          formControlName="dateSigning"
+          [tuiTextfieldCleaner]="true"
+          tuiTextfieldExampleText="Например, 23.02.2019"
+        >
+          Выбeрите дату подписания
+        </tui-input-date>
+        <tui-field-error formControlName="dateSigning"></tui-field-error>
+      </div>
+      <div
+        class="lease-agreement-premises__date-controls-container"
+        *ngIf="getControlLeaseAgreementPremises('dateSigning')?.value"
+      >
+        <div
+          class="
+            lease-agreement-premises__input-control
+            lease-agreement-premises__input-control_mr16
+          "
+        >
+          <tui-input-date
+            formControlName="dateFrom"
+            [tuiTextfieldCleaner]="true"
+            tuiTextfieldExampleText="Например, 23.02.2019"
+            [max]="getControlLeaseAgreementPremises('dateTo')?.value || maxDate"
+            [min]="
+              getControlLeaseAgreementPremises('dateSigning')?.value || minDate
+            "
+          >
+            Выберите дату начала действия договора
+          </tui-input-date>
+          <tui-field-error formControlName="dateFrom"></tui-field-error>
+        </div>
+        <div class="lease-agreement-premises__input-control">
+          <tui-input-date
+            formControlName="dateTo"
+            [tuiTextfieldCleaner]="true"
+            tuiTextfieldExampleText="Например, 23.02.2020"
+            [min]="
+              getControlLeaseAgreementPremises('dateFrom')?.value || minDate
+            "
+          >
+            Выбирете дату окончания действия договора
+          </tui-input-date>
+          <tui-field-error formControlName="dateTo"></tui-field-error>
+        </div>
+      </div>
+      <div class="lease-agreement-premises__button-container">
+        <button
+          class="lease-agreement-premises__button"
+          tuiButton
+          type="button"
+          size="m"
+          (click)="onSave()"
+          [disabled]="
+            leaseAgreementPremisesForm.untouched ||
+            leaseAgreementPremisesForm.invalid
+          "
+        >
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

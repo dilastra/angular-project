@@ -28,8 +28,8 @@ export class AppointmentSoleExecutiveBodyComponent
       this.appointmentSoleExecutiveBodyForm.patchValue({
         numberOfAppointmentSoleExecutiveBody: doc_number,
         fileAppointmentSoleExecutiveBody: file,
-        dateFrom: this.getTuiDayDate(date_from),
-        dateTo: this.getTuiDayDate(date_to),
+        dateFrom: date_from ? this.getTuiDayDate(date_from) : null,
+        dateTo: date_from ? this.getTuiDayDate(date_to) : null,
       });
     }
   }

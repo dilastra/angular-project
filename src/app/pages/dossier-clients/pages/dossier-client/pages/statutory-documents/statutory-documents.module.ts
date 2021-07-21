@@ -6,6 +6,7 @@ import { StatutoryDocumentsRoutingModule } from './statutory-documents-routing.m
 import {
   AppointmentSoleExecutiveBodyComponent,
   CompanyСharterComponent,
+  LeaseAgreementPremisesComponent,
 } from './components';
 
 @NgModule({
@@ -13,6 +14,7 @@ import {
     AppointmentSoleExecutiveBodyComponent,
     StatutoryDocumentsComponent,
     CompanyСharterComponent,
+    LeaseAgreementPremisesComponent,
   ],
   imports: [CommonModule, SharedModule, StatutoryDocumentsRoutingModule],
 })
