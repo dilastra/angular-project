@@ -4,7 +4,7 @@
     <div class="company-charter__file-input-control-container">
       <tui-input-file
         class="company-charter__file-input-control"
-        formControlName="companyCharter"
+        formControlName="file"
         link="Выберите"
         label="или перетащите сюда файл Устава ООО"
         [loadingFiles]="loadingFiles"
@@ -16,10 +16,9 @@
         size="m"
         [showLoader]="isDownloadFile"
         [disabled]="isDownloadFile"
-        (click)="downloadFile(getControlStaturyDocumentsForm('companyCharter'))"
+        (click)="downloadFile(getControlStaturyDocumentsForm('file'))"
         *ngIf="
-          getControlStaturyDocumentsForm('companyCharter')?.value &&
-          !loadingFiles.length
+          getControlStaturyDocumentsForm('file')?.value && !loadingFiles.length
         "
       >
         Скачать файл

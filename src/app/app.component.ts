@@ -12,7 +12,9 @@ export class AppComponent {
 
   constructor(private themeService: ThemeService) {
     this.themeService.theme$.subscribe((currentTheme) => {
-      this.theme = currentTheme;
+      setTimeout(() => {
+        this.theme = currentTheme;
+      }, 0);
     });
   }
 }

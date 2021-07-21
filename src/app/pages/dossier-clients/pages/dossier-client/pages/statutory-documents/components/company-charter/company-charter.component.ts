@@ -12,9 +12,9 @@ export class CompanyСharterComponent implements OnInit, OnDestroy {
   @Input()
   public companyClientId: string = '';
 
-  @Input() set companyCharter(companyCharter: object) {
-    if (companyCharter)
-      this.staturyDocumentsForm.patchValue({ companyCharter });
+  @Input() set companyCharter(companyCharter: any) {
+    if (companyCharter?.id)
+      this.staturyDocumentsForm.patchValue({ file: companyCharter });
   }
 
   public isDownloadFile = false;
@@ -32,52 +32,50 @@ export class CompanyСharterComponent implements OnInit, OnDestroy {
     private loader: LoaderService
   ) {
     this.staturyDocumentsForm = this.builder.group({
-      companyCharter: [null],
+      file: [null],
     });
   }
 
   public ngOnInit(): void {
     this.subscriptions.add(
-      this.getControlStaturyDocumentsForm(
-        'companyCharter'
-      ).valueChanges.subscribe((file) => {
-        if (file && !file?.id) {
-          this.loader.show();
-          this.subscriptions.add(
-            this.filesService
-              .uploadFile(file)
-              .subscribe(({ id, name, size, type }: any) => {
-                this.getControlStaturyDocumentsForm(
-                  'companyCharter'
-                ).patchValue({
-                  id,
-                  name,
-                  size,
-                  type,
-                });
-                this.subscriptions.add(
-                  this.sendFileId(this.companyClientId, id).subscribe(() => {
-                    this.loadingFiles = [];
-                    this.loader.hide();
-                  })
-                );
-              })
-          );
-        } else if (!file) {
-          this.loader.show();
-          this.subscriptions.add(
-            this.sendFileId(this.companyClientId).subscribe(
-              () => {
-                this.loadingFiles = [];
-                this.loader.hide();
-              },
-              () => {
-                this.loader.hide();
-              }
-            )
-          );
+      this.getControlStaturyDocumentsForm('file').valueChanges.subscribe(
+        (file) => {
+          if (file && !file?.id) {
+            this.loader.show();
+            this.subscriptions.add(
+              this.filesService
+                .uploadFile(file)
+                .subscribe(({ id, name, size, type }: any) => {
+                  this.getControlStaturyDocumentsForm('file').patchValue({
+                    id,
+                    name,
+                    size,
+                    type,
+                  });
+                  this.subscriptions.add(
+                    this.sendFileId(this.companyClientId, id).subscribe(() => {
+                      this.loadingFiles = [];
+                      this.loader.hide();
+                    })
+                  );
+                })
+            );
+          } else if (!file) {
+            this.loader.show();
+            this.subscriptions.add(
+              this.sendFileId(this.companyClientId).subscribe(
+                () => {
+                  this.loadingFiles = [];
+                  this.loader.hide();
+                },
+                () => {
+                  this.loader.hide();
+                }
+              )
+            );
+          }
         }
-      })
+      )
     );
   }
 

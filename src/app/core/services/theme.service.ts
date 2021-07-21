@@ -13,7 +13,9 @@ export class ThemeService {
   constructor() {}
 
   public onChangeCurrentTheme(theme: TuiBrightness | null) {
-    localStorage.setItem('theme', theme ?? '');
+    if (theme) {
+      localStorage.setItem('theme', theme);
+    }
     this.theme$.next(theme);
   }
 }

@@ -1,4 +1,4 @@
-.lease-agreement-premises {
+.organization-registration-certificate {
   &__form-controls {
     &-container {
       border-radius: var(--tui-radius-m);
@@ -30,8 +30,7 @@
     margin-top: 16px;
   }
 
-  &__input-control,
-  &__select-control {
+  &__input-control {
     width: 100%;
 
     &_mb16 {

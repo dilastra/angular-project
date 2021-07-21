@@ -35,13 +35,23 @@ export class DossierService {
     );
   }
 
-  public updateleaseAgreementPremises(
+  public updateLeaseAgreementPremises(
     companyClientId: string,
     leaseAgreementPremises: any
   ) {
     return this.http.put(
       `${environment.endPoint}/dossier/${companyClientId}/constituent-documents/lease-contract`,
       leaseAgreementPremises
+    );
+  }
+
+  public updateOrgRedCertificate(
+    companyClientId: string,
+    orgRegCertificate: any
+  ) {
+    return this.http.put(
+      `${environment.endPoint}/dossier/${companyClientId}/constituent-documents/org-reg-certificate`,
+      orgRegCertificate
     );
   }
 }

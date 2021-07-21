@@ -1,14 +1,45 @@
-<form [formGroup]="leaseAgreementPremisesForm">
-  <div class="lease-agreement-premises__form-controls-container">
-    <h2 class="lease-agreement-premises__form-controls-title tui-text_h3">
-      Договор аренды помещения
-    </h2>
-    <div class="lease-agreement-premises__file-input-control-container">
+<div class="lease-agreement-premises__form-controls-container">
+  <h2 class="lease-agreement-premises__form-controls-title tui-text_h3">
+    Документы, связанные с помещением
+  </h2>
+  <form [formGroup]="leaseAgreementPremisesForm">
+    <div
+      class="lease-agreement-premises__select-control"
+      [class.lease-agreement-premises__select-control_mb16]="
+        getControlLeaseAgreementPremises('ownershipType').value !== null
+      "
+    >
+      <tui-select
+        formControlName="ownershipType"
+        [valueContent]="getNameOwnershipType()"
+        [tuiTextfieldCleaner]="true"
+        tuiTextfieldExampleText="Например, Аренда"
+      >
+        Выбирете форму собственности
+        <tui-data-list *tuiDataList>
+          <button tuiOption [value]="0">
+            {{ ownershipTypes[0] }}
+          </button>
+          <button tuiOption [value]="1">
+            {{ ownershipTypes[1] }}
+          </button>
+        </tui-data-list>
+      </tui-select>
+      <tui-field-error formControlName="ownershipType"></tui-field-error>
+    </div>
+    <div
+      class="lease-agreement-premises__file-input-control-container"
+      *ngIf="getControlLeaseAgreementPremises('ownershipType').value !== null"
+    >
       <tui-input-file
         class="lease-agreement-premises__file-input-control"
         formControlName="file"
         link="Выберите"
-        label="или перетащите сюда файл Договора аренды помещения"
+        label="или перетащите сюда файл {{
+          isSelectLeaseHold()
+            ? 'договора аренды помещения'
+            : 'свидетельства о собственности на помещение'
+        }}"
         [loadingFiles]="loadingFiles"
       ></tui-input-file>
       <button
@@ -42,7 +73,8 @@
           [tuiTextfieldCleaner]="true"
           tuiTextfieldExampleText="Например, 254331234"
         >
-          Введите номер документа
+          Введите номер
+          {{ isSelectLeaseHold() ? "документа" : "cв-ва о собсвенности" }}
         </tui-input>
         <tui-field-error formControlName="docNumber"></tui-field-error>
       </div>
@@ -51,6 +83,7 @@
           lease-agreement-premises__input-control
           lease-agreement-premises__input-control_mb16
         "
+        *ngIf="isSelectLeaseHold()"
       >
         <tui-input-date
           formControlName="dateSigning"
@@ -63,12 +96,18 @@
       </div>
       <div
         class="lease-agreement-premises__date-controls-container"
-        *ngIf="getControlLeaseAgreementPremises('dateSigning')?.value"
+        *ngIf="
+          getControlLeaseAgreementPremises('dateSigning')?.value ||
+          getControlLeaseAgreementPremises('ownershipType').value === 1
+        "
       >
         <div
           class="
             lease-agreement-premises__input-control
             lease-agreement-premises__input-control_mr16
+          "
+          [class.lease-agreement-premises__input-control_mr16]="
+            isSelectLeaseHold()
           "
         >
           <tui-input-date
@@ -80,11 +119,15 @@
               getControlLeaseAgreementPremises('dateSigning')?.value || minDate
             "
           >
-            Выберите дату начала действия договора
+            Выберите дату
+            {{ isSelectLeaseHold() ? "начала действия договора" : "выдачи" }}
           </tui-input-date>
           <tui-field-error formControlName="dateFrom"></tui-field-error>
         </div>
-        <div class="lease-agreement-premises__input-control">
+        <div
+          class="lease-agreement-premises__input-control"
+          *ngIf="isSelectLeaseHold()"
+        >
           <tui-input-date
             formControlName="dateTo"
             [tuiTextfieldCleaner]="true"
@@ -114,5 +157,5 @@
         </button>
       </div>
     </div>
-  </div>
-</form>
+  </form>
+</div>

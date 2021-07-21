@@ -2,13 +2,18 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 import { TuiDay } from '@taiga-ui/cdk';
 import { Subscription } from 'rxjs';
-import { DossierService, FilesService, LoaderService } from 'src/app/core';
+import { distinctUntilChanged } from 'rxjs/operators';
+import {
+  DossierService,
+  FilesService,
+  LoaderService,
+  OwnershipType,
+} from 'src/app/core';
 
 @Component({
   selector: 'credex-lease-agreement-premises',
@@ -19,13 +24,20 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
   @Input()
   public companyClientId: string = '';
 
-  @Input() set leaseAgreementPremises(leaseAgreementPremises: object) {
-    if (leaseAgreementPremises) {
-      const { date_from, date_signing, date_to, doc_number, file }: any =
-        leaseAgreementPremises;
+  @Input() set leaseAgreementPremises(leaseAgreementPremises: any) {
+    if (leaseAgreementPremises?.file) {
+      const {
+        date_from,
+        date_signing,
+        date_to,
+        doc_number,
+        file,
+        ownersipt_type,
+      }: any = leaseAgreementPremises;
       this.leaseAgreementPremisesForm.patchValue({
         file: file,
         docNumber: doc_number,
+        ownershipType: ownersipt_type,
         dateSigning: date_signing ? this.getTuiDayDate(date_signing) : null,
         dateFrom: date_from ? this.getTuiDayDate(date_from) : null,
         dateTo: date_to ? this.getTuiDayDate(date_to) : null,
@@ -38,6 +50,10 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
   public leaseAgreementPremisesForm: FormGroup;
 
   public isDownloadFile = false;
+
+  public ownershipTypes = OwnershipType;
+
+  public nameOwnershipType = '';
 
   public minDate = new TuiDay(0, 0, 1);
 
@@ -54,16 +70,18 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
     this.leaseAgreementPremisesForm = this.builder.group({
       file: [null],
       docNumber: [null, Validators.required],
-      dateSigning: [null, Validators.required],
+      dateSigning: [null],
+      ownershipType: [null, Validators.required],
       dateFrom: [null, Validators.required],
-      dateTo: [null, Validators.required],
+      dateTo: [null],
     });
   }
 
   public ngOnInit(): void {
     this.subscriptions.add(
-      this.getControlLeaseAgreementPremises('file').valueChanges.subscribe(
-        (file) => {
+      this.getControlLeaseAgreementPremises('file')
+        .valueChanges.pipe(distinctUntilChanged())
+        .subscribe((file) => {
           if (file && !file?.id) {
             this.loader.show();
             this.loadingFiles = [file];
@@ -95,9 +113,49 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
               )
             );
           }
-        }
-      )
+        })
     );
+
+    this.subscriptions.add(
+      this.getControlLeaseAgreementPremises('ownershipType')
+        .valueChanges.pipe(distinctUntilChanged())
+        .subscribe((selectedValue) => {
+          const fileControl = this.getControlLeaseAgreementPremises('file');
+          switch (selectedValue) {
+            case 0:
+              if (fileControl.value) {
+                this.leaseAgreementPremisesForm.reset({ ownershipType: 0 });
+              }
+              this.leaseAgreementPremisesForm.controls[
+                'dateSigning'
+              ].setValidators(Validators.required);
+              this.leaseAgreementPremisesForm.controls['dateTo'].setValidators(
+                Validators.required
+              );
+              this.leaseAgreementPremisesForm.setErrors(null);
+              this.leaseAgreementPremisesForm.updateValueAndValidity();
+              break;
+            case 1:
+              if (fileControl.value) {
+                this.leaseAgreementPremisesForm.reset({ ownershipType: 1 });
+              }
+              this.leaseAgreementPremisesForm.clearValidators();
+              this.leaseAgreementPremisesForm.updateValueAndValidity();
+              break;
+            default:
+              if (fileControl.value) {
+                this.leaseAgreementPremisesForm.reset();
+                this.leaseAgreementPremisesForm.clearValidators();
+                this.leaseAgreementPremisesForm.updateValueAndValidity();
+              }
+              break;
+          }
+        })
+    );
+  }
+
+  public isSelectLeaseHold() {
+    return this.getControlLeaseAgreementPremises('ownershipType').value === 0;
   }
 
   public getTuiDayDate(date: string): TuiDay {
@@ -116,16 +174,14 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
     return this.leaseAgreementPremisesForm.controls[nameControl];
   }
 
-  public sendFileId(
-    companyClientId: string,
-    file: any | null = {
-      file_id: null,
-      doc_number: '',
-      date_from: '',
-      date_to: '',
-    }
-  ) {
-    return this.dossierService.updateleaseAgreementPremises(
+  public getNameOwnershipType(): string {
+    const selectedValue =
+      this.getControlLeaseAgreementPremises('ownershipType').value;
+    return selectedValue !== null ? this.ownershipTypes[selectedValue] : '';
+  }
+
+  public sendFileId(companyClientId: string, file: any | object = {}) {
+    return this.dossierService.updateLeaseAgreementPremises(
       companyClientId,
       file
     );
@@ -145,16 +201,18 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
 
   public onSave() {
     this.loader.show();
-    const { file, docNumber, dateSigning, dateFrom, dateTo } =
+    const { file, docNumber, dateSigning, dateFrom, dateTo, ownershipType } =
       this.leaseAgreementPremisesForm.value;
 
-    const model = {
+    const model: any = {
       file_id: file.id,
       doc_number: docNumber,
-      date_signing: dateSigning.toJSON(),
+      ownership_type: ownershipType,
       date_from: dateFrom.toJSON(),
-      date_to: dateTo.toJSON(),
     };
+
+    if (dateSigning) model.date_signing = dateSigning.toJSON();
+    if (dateTo) model.date_to = dateTo.toJSON();
     this.sendFileId(this.companyClientId, model).subscribe(() => {
       this.loader.hide();
     });

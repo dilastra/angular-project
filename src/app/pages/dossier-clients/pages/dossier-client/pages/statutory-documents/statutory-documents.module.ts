@@ -7,14 +7,16 @@ import {
   AppointmentSoleExecutiveBodyComponent,
   CompanyСharterComponent,
   LeaseAgreementPremisesComponent,
+  OrganizationRegistrationCertificateComponent,
 } from './components';
 
 @NgModule({
   declarations: [
     AppointmentSoleExecutiveBodyComponent,
-    StatutoryDocumentsComponent,
     CompanyСharterComponent,
     LeaseAgreementPremisesComponent,
+    OrganizationRegistrationCertificateComponent,
+    StatutoryDocumentsComponent,
   ],
   imports: [CommonModule, SharedModule, StatutoryDocumentsRoutingModule],
 })

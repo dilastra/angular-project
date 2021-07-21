@@ -1,0 +1,94 @@
+<form [formGroup]="organizationRegistrationCertificateForm">
+  <div class="organization-registration-certificate__form-controls-container">
+    <h2
+      class="
+        organization-registration-certificate__form-controls-title
+        tui-text_h3
+      "
+    >
+      Свидетельство о регистрации организации
+    </h2>
+    <div
+      class="
+        organization-registration-certificate__file-input-control-container
+      "
+    >
+      <tui-input-file
+        class="organization-registration-certificate__file-input-control"
+        formControlName="file"
+        link="Выберите"
+        label="или перетащите сюда файл приказа/решения о назначении ЕИО"
+        [loadingFiles]="loadingFiles"
+      ></tui-input-file>
+      <button
+        tuiButton
+        type="button"
+        class="organization-registration-certificate__file-button-download"
+        size="m"
+        [showLoader]="isDownloadFile"
+        [disabled]="isDownloadFile"
+        (click)="
+          downloadFile(
+            getControlOrganizationRegistrationCertificateForm('file')
+          )
+        "
+        *ngIf="
+          getControlOrganizationRegistrationCertificateForm('file')?.value &&
+          !loadingFiles.length
+        "
+      >
+        Скачать файл
+      </button>
+    </div>
+    <div
+      class="organization-registration-certificate__input-controls-container"
+      *ngIf="getControlOrganizationRegistrationCertificateForm('file').value"
+    >
+      <div
+        class="
+          organization-registration-certificate__input-control
+          organization-registration-certificate__input-control_mb16
+        "
+      >
+        <tui-input
+          formControlName="docNumber"
+          [tuiTextfieldCleaner]="true"
+          tuiTextfieldExampleText="Например, 254331234"
+        >
+          Введите номер документа
+        </tui-input>
+        <tui-field-error formControlName="docNumber"></tui-field-error>
+      </div>
+      <div
+        class="
+          organization-registration-certificate__input-control
+          organization-registration-certificate__input-control_mb16
+        "
+      >
+        <tui-input-date
+          formControlName="dateRegistration"
+          [tuiTextfieldCleaner]="true"
+          tuiTextfieldExampleText="Например, 23.02.2019"
+        >
+          Дата создания организации
+        </tui-input-date>
+        <tui-field-error formControlName="dateRegistration"></tui-field-error>
+      </div>
+      <div class="organization-registration-certificate__button-container">
+        <button
+          class="organization-registration-certificate__button"
+          tuiButton
+          type="button"
+          size="m"
+          (click)="onSave()"
+          [disabled]="
+            organizationRegistrationCertificateForm.untouched ||
+            organizationRegistrationCertificateForm.invalid
+          "
+        >
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

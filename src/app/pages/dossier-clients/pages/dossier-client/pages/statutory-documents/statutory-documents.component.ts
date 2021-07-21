@@ -19,6 +19,8 @@ export class StatutoryDocumentsComponent implements OnInit, OnDestroy {
 
   public appointmentSoleExecutiveBody: any = undefined;
 
+  public organizationRegistrationCertficate: any = undefined;
+
   constructor(
     private route: ActivatedRoute,
     private dossierService: DossierService
@@ -29,10 +31,11 @@ export class StatutoryDocumentsComponent implements OnInit, OnDestroy {
 
     this.dossierService
       .getDossierCompanyClient(this.companyClientId)
-      .subscribe(({ file, command, lease_contract }) => {
-        this.companyCharter = { ...file };
+      .subscribe(({ file, command, lease_contract, org_reg_certificate }) => {
+        this.companyCharter = file;
         this.appointmentSoleExecutiveBody = { ...command };
         this.leaseAgreementPremises = { ...lease_contract };
+        this.organizationRegistrationCertficate = { ...org_reg_certificate };
       });
   }
 
