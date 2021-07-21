@@ -57,6 +57,9 @@
         >
           Введите номер документа
         </tui-input>
+        <tui-field-error
+          formControlName="numberOfAppointmentSoleExecutiveBody"
+        ></tui-field-error>
       </div>
       <div class="appointment-sole-executive-body__date-controls-container">
         <div
@@ -76,6 +79,7 @@
           >
             Выбирете дату назначение
           </tui-input-date>
+          <tui-field-error formControlName="dateFrom"></tui-field-error>
         </div>
         <div class="appointment-sole-executive-body__input-control">
           <tui-input-date
@@ -89,6 +93,7 @@
           >
             Выбирете дату окончания полномочий
           </tui-input-date>
+          <tui-field-error formControlName="dateTo"></tui-field-error>
         </div>
       </div>
       <div class="appointment-sole-executive-body__button-container">

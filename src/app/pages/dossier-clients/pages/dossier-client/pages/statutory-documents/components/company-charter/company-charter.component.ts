@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { DossierService, FilesService } from 'src/app/core';
+import { DossierService, FilesService, LoaderService } from 'src/app/core';
 
 @Component({
   selector: 'credex-company-charter',
@@ -28,7 +28,8 @@ export class CompanyСharterComponent implements OnInit, OnDestroy {
   constructor(
     private builder: FormBuilder,
     private dossierService: DossierService,
-    private filesService: FilesService
+    private filesService: FilesService,
+    private loader: LoaderService
   ) {
     this.staturyDocumentsForm = this.builder.group({
       companyCharter: [null],
@@ -41,6 +42,7 @@ export class CompanyСharterComponent implements OnInit, OnDestroy {
         'companyCharter'
       ).valueChanges.subscribe((file) => {
         if (file && !file?.id) {
+          this.loader.show();
           this.subscriptions.add(
             this.filesService
               .uploadFile(file)
@@ -56,15 +58,23 @@ export class CompanyСharterComponent implements OnInit, OnDestroy {
                 this.subscriptions.add(
                   this.sendFileId(this.companyClientId, id).subscribe(() => {
                     this.loadingFiles = [];
+                    this.loader.hide();
                   })
                 );
               })
           );
         } else if (!file) {
+          this.loader.show();
           this.subscriptions.add(
-            this.sendFileId(this.companyClientId).subscribe(() => {
-              this.loadingFiles = [];
-            })
+            this.sendFileId(this.companyClientId).subscribe(
+              () => {
+                this.loadingFiles = [];
+                this.loader.hide();
+              },
+              () => {
+                this.loader.hide();
+              }
+            )
           );
         }
       })

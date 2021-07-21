@@ -13,6 +13,7 @@ import { TUI_LANGUAGE, TUI_RUSSIAN_LANGUAGE } from '@taiga-ui/i18n';
 import { of } from 'rxjs';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptor } from './core';
+import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,12 @@ import { HttpInterceptor } from './core';
       useValue: of(TUI_RUSSIAN_LANGUAGE),
     },
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true },
+    {
+      provide: TUI_VALIDATION_ERRORS,
+      useValue: {
+        required: 'Поле обязательно должно быть заполнено',
+      },
+    },
   ],
   bootstrap: [AppComponent],
 })

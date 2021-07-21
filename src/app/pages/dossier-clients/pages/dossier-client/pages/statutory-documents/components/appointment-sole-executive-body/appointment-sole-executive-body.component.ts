@@ -6,8 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { TuiDay } from '@taiga-ui/cdk';
+import { TuiFileLike } from '@taiga-ui/kit';
 import { Subscription } from 'rxjs';
-import { DossierService, FilesService } from 'src/app/core';
+import { DossierService, FilesService, LoaderService } from 'src/app/core';
 
 @Component({
   selector: 'credex-appointment-sole-executive-body',
@@ -39,7 +40,7 @@ export class AppointmentSoleExecutiveBodyComponent
 
   public maxDate = new TuiDay(9999, 11, 31);
 
-  public loadingFiles = [];
+  public loadingFiles: any = [];
 
   public appointmentSoleExecutiveBodyForm: FormGroup;
 
@@ -48,7 +49,8 @@ export class AppointmentSoleExecutiveBodyComponent
   constructor(
     private builder: FormBuilder,
     private dossierService: DossierService,
-    private filesService: FilesService
+    private filesService: FilesService,
+    private loader: LoaderService
   ) {
     this.appointmentSoleExecutiveBodyForm = this.builder.group({
       numberOfAppointmentSoleExecutiveBody: [null, [Validators.required]],
@@ -64,6 +66,8 @@ export class AppointmentSoleExecutiveBodyComponent
         'fileAppointmentSoleExecutiveBody'
       ).valueChanges.subscribe((file) => {
         if (file && !file?.id) {
+          this.loader.show();
+          this.loadingFiles = [file];
           this.subscriptions.add(
             this.filesService
               .uploadFile(file)
@@ -76,20 +80,22 @@ export class AppointmentSoleExecutiveBodyComponent
                   size,
                   type,
                 });
-                this.subscriptions.add(
-                  this.sendFileId(this.companyClientId, {
-                    file_id: id,
-                  }).subscribe(() => {
-                    this.loadingFiles = [];
-                  })
-                );
+                this.loader.hide();
+                this.loadingFiles = [];
               })
           );
         } else if (!file) {
+          this.loader.show();
           this.subscriptions.add(
-            this.sendFileId(this.companyClientId).subscribe(() => {
-              this.loadingFiles = [];
-            })
+            this.sendFileId(this.companyClientId).subscribe(
+              () => {
+                this.loader.hide();
+                this.appointmentSoleExecutiveBodyForm.reset();
+              },
+              (error) => {
+                this.loader.hide();
+              }
+            )
           );
         }
       })
@@ -128,9 +134,9 @@ export class AppointmentSoleExecutiveBodyComponent
     companyClientId: string,
     file: any | null = {
       file_id: null,
-      doc_number: null,
-      date_from: null,
-      date_to: null,
+      doc_number: '',
+      date_from: '',
+      date_to: '',
     }
   ) {
     return this.dossierService.updateAppointmentSoleExecutiveBodyCompanyClient(
@@ -140,6 +146,7 @@ export class AppointmentSoleExecutiveBodyComponent
   }
 
   public onSave() {
+    this.loader.show();
     const {
       dateFrom,
       dateTo,
@@ -160,8 +167,8 @@ export class AppointmentSoleExecutiveBodyComponent
       date_to,
     };
 
-    this.sendFileId(this.companyClientId, model).subscribe((value) => {
-      console.log(value);
+    this.sendFileId(this.companyClientId, model).subscribe(() => {
+      this.loader.hide();
     });
   }
 }
