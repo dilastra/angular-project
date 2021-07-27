@@ -82,7 +82,7 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.subscriptions.add(
-      this.getControlLeaseAgreementPremises('file')
+      this.getFormControl('file')
         .valueChanges.pipe(distinctUntilChanged())
         .subscribe((file) => {
           if (file && !file?.id) {
@@ -92,7 +92,7 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
               this.filesService
                 .uploadFile(file)
                 .subscribe(({ id, name, size, type }: any) => {
-                  this.getControlLeaseAgreementPremises('file').patchValue({
+                  this.getFormControl('file').patchValue({
                     id,
                     name,
                     size,
@@ -101,9 +101,7 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
                   const model: any = {
                     file_id: id,
                     doc_number: null,
-                    ownership_type:
-                      this.getControlLeaseAgreementPremises('ownershipType')
-                        .value,
+                    ownership_type: this.getFormControl('ownershipType').value,
                     date_from: null,
                     dateSigning: null,
                     dateTo: null,
@@ -141,10 +139,10 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
     );
 
     this.subscriptions.add(
-      this.getControlLeaseAgreementPremises('ownershipType')
+      this.getFormControl('ownershipType')
         .valueChanges.pipe(distinctUntilChanged())
         .subscribe((selectedValue) => {
-          const fileControl = this.getControlLeaseAgreementPremises('file');
+          const fileControl = this.getFormControl('file');
           switch (selectedValue) {
             case 0:
               if (fileControl.value) {
@@ -193,7 +191,7 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
   }
 
   public isSelectLeaseHold() {
-    return this.getControlLeaseAgreementPremises('ownershipType').value === 0;
+    return this.getFormControl('ownershipType').value === 0;
   }
 
   public getTuiDayDate(date: string): TuiDay {
@@ -208,13 +206,12 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  public getControlLeaseAgreementPremises(nameControl: string) {
+  public getFormControl(nameControl: string) {
     return this.leaseAgreementPremisesForm.controls[nameControl];
   }
 
   public getNameOwnershipType(): string {
-    const selectedValue =
-      this.getControlLeaseAgreementPremises('ownershipType').value;
+    const selectedValue = this.getFormControl('ownershipType').value;
     return selectedValue !== null ? this.ownershipTypes[selectedValue] : '';
   }
 
