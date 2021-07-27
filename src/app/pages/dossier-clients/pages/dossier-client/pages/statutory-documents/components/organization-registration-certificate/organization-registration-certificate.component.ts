@@ -26,11 +26,14 @@ export class OrganizationRegistrationCertificateComponent
   ) {
     if (organizationRegistrationCertficate?.file) {
       const { file, doc_number, date } = organizationRegistrationCertficate;
-      this.organizationRegistrationCertificateForm.patchValue({
-        file: file,
-        docNumber: doc_number,
-        dateRegistration: date ? this.getTuiDayDate(date) : null,
-      });
+      this.organizationRegistrationCertificateForm.patchValue(
+        {
+          file: file,
+          docNumber: doc_number,
+          dateRegistration: date ? this.getTuiDayDate(date) : null,
+        },
+        { emitEvent: false }
+      );
     }
   }
 

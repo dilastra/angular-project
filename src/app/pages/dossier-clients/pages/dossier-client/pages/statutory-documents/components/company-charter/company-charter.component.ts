@@ -14,7 +14,10 @@ export class CompanyСharterComponent implements OnInit, OnDestroy {
 
   @Input() set companyCharter(companyCharter: any) {
     if (companyCharter?.id)
-      this.staturyDocumentsForm.patchValue({ file: companyCharter });
+      this.staturyDocumentsForm.patchValue(
+        { file: companyCharter },
+        { emitEvent: false }
+      );
   }
 
   public isDownloadFile = false;

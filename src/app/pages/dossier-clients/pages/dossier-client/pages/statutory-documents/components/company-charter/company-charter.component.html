@@ -1,28 +1,33 @@
-<form [formGroup]="staturyDocumentsForm">
-  <div class="company-charter__form-controls-container">
+<tui-accordion>
+  <tui-accordion-item>
     <h2 class="company-charter__form-controls-title tui-text_h3">Устав ООО</h2>
-    <div class="company-charter__file-input-control-container">
-      <tui-input-file
-        class="company-charter__file-input-control"
-        formControlName="file"
-        link="Выберите"
-        label="или перетащите сюда файл Устава ООО"
-        [loadingFiles]="loadingFiles"
-      ></tui-input-file>
-      <button
-        tuiButton
-        type="button"
-        class="company-charter__file-button-download"
-        size="m"
-        [showLoader]="isDownloadFile"
-        [disabled]="isDownloadFile"
-        (click)="downloadFile(getControlStaturyDocumentsForm('file'))"
-        *ngIf="
-          getControlStaturyDocumentsForm('file')?.value && !loadingFiles.length
-        "
-      >
-        Скачать файл
-      </button>
-    </div>
-  </div>
-</form>
+    <ng-template tuiAccordionItemContent>
+      <form [formGroup]="staturyDocumentsForm">
+        <div class="company-charter__file-input-control-container">
+          <tui-input-file
+            class="company-charter__file-input-control"
+            formControlName="file"
+            link="Выберите"
+            label="или перетащите сюда файл Устава ООО"
+            [loadingFiles]="loadingFiles"
+          ></tui-input-file>
+          <button
+            tuiButton
+            type="button"
+            class="company-charter__file-button-download"
+            size="m"
+            [showLoader]="isDownloadFile"
+            [disabled]="isDownloadFile"
+            (click)="downloadFile(getControlStaturyDocumentsForm('file'))"
+            *ngIf="
+              getControlStaturyDocumentsForm('file')?.value &&
+              !loadingFiles.length
+            "
+          >
+            Скачать файл
+          </button>
+        </div>
+      </form>
+    </ng-template>
+  </tui-accordion-item>
+</tui-accordion>

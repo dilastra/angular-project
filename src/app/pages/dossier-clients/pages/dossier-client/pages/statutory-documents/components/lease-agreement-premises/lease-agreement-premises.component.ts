@@ -32,16 +32,19 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
         date_to,
         doc_number,
         file,
-        ownersipt_type,
+        ownership_type,
       }: any = leaseAgreementPremises;
-      this.leaseAgreementPremisesForm.patchValue({
-        file: file,
-        docNumber: doc_number,
-        ownershipType: ownersipt_type,
-        dateSigning: date_signing ? this.getTuiDayDate(date_signing) : null,
-        dateFrom: date_from ? this.getTuiDayDate(date_from) : null,
-        dateTo: date_to ? this.getTuiDayDate(date_to) : null,
-      });
+      this.leaseAgreementPremisesForm.patchValue(
+        {
+          file: file,
+          docNumber: doc_number,
+          ownershipType: ownership_type,
+          dateSigning: date_signing ? this.getTuiDayDate(date_signing) : null,
+          dateFrom: date_from ? this.getTuiDayDate(date_from) : null,
+          dateTo: date_to ? this.getTuiDayDate(date_to) : null,
+        },
+        { emitEvent: false }
+      );
     }
   }
 
@@ -95,8 +98,30 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
                     size,
                     type,
                   });
-                  this.loader.hide();
-                  this.loadingFiles = [];
+                  const model: any = {
+                    file_id: id,
+                    doc_number: null,
+                    ownership_type:
+                      this.getControlLeaseAgreementPremises('ownershipType')
+                        .value,
+                    date_from: null,
+                    dateSigning: null,
+                    dateTo: null,
+                  };
+
+                  console.log(model);
+
+                  this.subscriptions.add(
+                    this.sendFileId(this.companyClientId, model).subscribe(
+                      () => {
+                        this.loadingFiles = [];
+                        this.loader.hide();
+                      },
+                      () => {
+                        this.loader.hide();
+                      }
+                    )
+                  );
                 })
             );
           } else if (!file) {
@@ -105,7 +130,6 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
               this.sendFileId(this.companyClientId).subscribe(
                 () => {
                   this.loader.hide();
-                  this.leaseAgreementPremisesForm.reset();
                 },
                 () => {
                   this.loader.hide();
@@ -132,15 +156,29 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
               this.leaseAgreementPremisesForm.controls['dateTo'].setValidators(
                 Validators.required
               );
-              this.leaseAgreementPremisesForm.setErrors(null);
-              this.leaseAgreementPremisesForm.updateValueAndValidity();
+              this.leaseAgreementPremisesForm.controls['dateSigning'].setErrors(
+                null
+              );
+              this.leaseAgreementPremisesForm.controls[
+                'dateTo'
+              ].updateValueAndValidity();
               break;
             case 1:
               if (fileControl.value) {
                 this.leaseAgreementPremisesForm.reset({ ownershipType: 1 });
               }
-              this.leaseAgreementPremisesForm.clearValidators();
-              this.leaseAgreementPremisesForm.updateValueAndValidity();
+              this.leaseAgreementPremisesForm.controls[
+                'dateSigning'
+              ].clearValidators();
+              this.leaseAgreementPremisesForm.controls[
+                'dateSigning'
+              ].updateValueAndValidity();
+              this.leaseAgreementPremisesForm.controls[
+                'dateTo'
+              ].clearValidators();
+              this.leaseAgreementPremisesForm.controls[
+                'dateTo'
+              ].updateValueAndValidity();
               break;
             default:
               if (fileControl.value) {

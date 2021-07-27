@@ -15,6 +15,7 @@ import {
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import {
+  TuiAccordionModule,
   TuiComboBoxModule,
   TuiFieldErrorModule,
   TuiInputDateModule,
@@ -33,6 +34,7 @@ import {
     TuiComboBoxModule,
     TuiDataListModule,
     TuiErrorModule,
+    TuiAccordionModule,
     TuiFieldErrorModule,
     TuiInputDateModule,
     TuiInputFileModule,

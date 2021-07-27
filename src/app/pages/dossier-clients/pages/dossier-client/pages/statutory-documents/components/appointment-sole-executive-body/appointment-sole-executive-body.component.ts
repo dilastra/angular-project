@@ -25,12 +25,15 @@ export class AppointmentSoleExecutiveBodyComponent
     if (appointmentSoleExecutiveBody?.file) {
       const { date_from, date_to, doc_number, file } =
         appointmentSoleExecutiveBody;
-      this.appointmentSoleExecutiveBodyForm.patchValue({
-        numberOfAppointmentSoleExecutiveBody: doc_number,
-        fileAppointmentSoleExecutiveBody: file,
-        dateFrom: date_from ? this.getTuiDayDate(date_from) : null,
-        dateTo: date_from ? this.getTuiDayDate(date_to) : null,
-      });
+      this.appointmentSoleExecutiveBodyForm.patchValue(
+        {
+          numberOfAppointmentSoleExecutiveBody: doc_number,
+          fileAppointmentSoleExecutiveBody: file,
+          dateFrom: date_from ? this.getTuiDayDate(date_from) : null,
+          dateTo: date_from ? this.getTuiDayDate(date_to) : null,
+        },
+        { emitEvent: false }
+      );
     }
   }
 
@@ -68,6 +71,7 @@ export class AppointmentSoleExecutiveBodyComponent
         .valueChanges.pipe(distinctUntilChanged())
         .subscribe((file) => {
           if (file && !file?.id) {
+            console.log(file);
             this.loader.show();
             this.loadingFiles = [file];
             this.subscriptions.add(
