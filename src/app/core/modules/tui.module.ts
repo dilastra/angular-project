@@ -21,6 +21,7 @@ import {
   TuiInputDateModule,
   TuiInputFileModule,
   TuiInputModule,
+  TuiInputNumberModule,
   TuiInputPasswordModule,
   TuiMarkerIconModule,
   TuiSelectModule,
@@ -30,15 +31,16 @@ import {
 
 @NgModule({
   exports: [
+    TuiAccordionModule,
     TuiButtonModule,
     TuiComboBoxModule,
     TuiDataListModule,
     TuiErrorModule,
-    TuiAccordionModule,
     TuiFieldErrorModule,
     TuiInputDateModule,
     TuiInputFileModule,
     TuiInputModule,
+    TuiInputNumberModule,
     TuiInputPasswordModule,
     TuiLetModule,
     TuiLinkModule,

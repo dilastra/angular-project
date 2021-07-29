@@ -71,7 +71,6 @@ export class AppointmentSoleExecutiveBodyComponent
         .valueChanges.pipe(distinctUntilChanged())
         .subscribe((file) => {
           if (file && !file?.id) {
-            console.log(file);
             this.loader.show();
             this.loadingFiles = [file];
             this.subscriptions.add(

@@ -1,0 +1,32 @@
+<div class="beneficiaries__container">
+  <form [formGroup]="beneficiaresForm">
+    <div
+      class="beneficiary__list-container"
+      formArrayName="beneficiaresFormArray"
+    >
+      <div
+        class="beneficiary__container"
+        *ngFor="
+          let beneficiaryFormGroup of getControlsBeneficiaresFormArray();
+          let i = index
+        "
+      >
+        <credex-beneficiary
+          [beneficiaryFormGroup]="beneficiaryFormGroup"
+          [companyClientId]="companyClientId"
+          (remove)="onRemovebeneficiary(i)"
+        ></credex-beneficiary>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="beneficiaries__button-container">
+  <button
+    tuiButton
+    size="m"
+    class="beneficiaries__button"
+    (click)="addNewBeneficiary()"
+  >
+    Добавить бенефициара
+  </button>
+</div>

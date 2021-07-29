@@ -8,3 +8,4 @@ export { LoaderService } from './loader.service';
 export { UserService } from './user.service';
 export { FilesService } from './files.service';
 export { ThemeService } from './theme.service';
+export { BeneficiaryService } from './beneficiary.service';

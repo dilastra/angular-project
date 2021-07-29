@@ -107,8 +107,6 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
                     dateTo: null,
                   };
 
-                  console.log(model);
-
                   this.subscriptions.add(
                     this.sendFileId(this.companyClientId, model).subscribe(
                       () => {

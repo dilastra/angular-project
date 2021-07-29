@@ -1,0 +1,97 @@
+<tui-accordion>
+  <tui-accordion-item class="passport_mb16">
+    <h2 class="passport__title tui-text_h3">Паспорт</h2>
+    <ng-template tuiAccordionItemContent>
+      <form [formGroup]="passportForm">
+        <div class="passport__form-container">
+          <div class="passport__file-input-control-container">
+            <tui-input-file
+              class="passport__file-input-control"
+              formControlName="file"
+              link="Выберите"
+              label="или перетащите сюда файл скана первой страницы паспорта"
+              [loadingFiles]="loadingFiles"
+            ></tui-input-file>
+            <button
+              tuiButton
+              type="button"
+              class="passport__file-button-download"
+              size="m"
+              [showLoader]="isDownloadFile"
+              [disabled]="isDownloadFile"
+              (click)="downloadFile(getControl('file'))"
+              *ngIf="getControl('file')?.value"
+            >
+              Скачать файл
+            </button>
+          </div>
+          <div
+            class="passport__form-controls"
+            *ngIf="getControl('file')?.value"
+          >
+            <div class="passport__form-controls_flexbox">
+              <div class="passport__form-control">
+                <tui-input formControlName="last_name">Фамилия</tui-input>
+                <tui-field-error formControlName="last_name"></tui-field-error>
+              </div>
+              <div class="passport__form-control">
+                <tui-input formControlName="first_name">Имя</tui-input>
+                <tui-field-error formControlName="first_name"></tui-field-error>
+              </div>
+              <div class="passport__form-control">
+                <tui-input formControlName="middle_name">Отчество</tui-input>
+                <tui-field-error
+                  formControlName="middle_name"
+                ></tui-field-error>
+              </div>
+            </div>
+            <div class="passport__form-controls_flexbox">
+              <div class="passport__form-control">
+                <tui-input formControlName="series">Серия документа</tui-input>
+                <tui-field-error formControlName="series"></tui-field-error>
+              </div>
+              <div class="passport__form-control">
+                <tui-input formControlName="number">Номер документа</tui-input>
+                <tui-field-error formControlName="number"></tui-field-error>
+              </div>
+              <div class="passport__form-control">
+                <tui-input-date formControlName="date_from">
+                  Дата выдачи документов
+                </tui-input-date>
+                <tui-field-error formControlName="date_from"></tui-field-error>
+              </div>
+            </div>
+            <div class="passport__form-controls_flexbox">
+              <div class="passport__form-control">
+                <tui-input formControlName="issuer">Кем выдан</tui-input>
+                <tui-field-error formControlName="issuer"></tui-field-error>
+              </div>
+              <div class="passport__form-control">
+                <tui-input formControlName="issuer_code">
+                  Код подразделения
+                </tui-input>
+                <tui-field-error
+                  formControlName="issuer_code"
+                ></tui-field-error>
+              </div>
+            </div>
+          </div>
+          <div
+            class="passport__form-button-container"
+            *ngIf="getControl('file')?.value"
+          >
+            <button
+              tuiButton
+              type="button"
+              size="m"
+              (click)="onSave()"
+              [disabled]="passportForm.invalid || passportForm.untouched"
+            >
+              Сохранить
+            </button>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+  </tui-accordion-item>
+</tui-accordion>
