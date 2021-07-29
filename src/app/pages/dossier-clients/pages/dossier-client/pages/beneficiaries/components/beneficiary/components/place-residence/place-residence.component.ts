@@ -25,6 +25,11 @@ export class PlaceResidenceComponent implements OnInit {
 
   public subscriptions: Subscription = new Subscription();
 
+  public zipCodeMask = {
+    mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
+    guide: true,
+  };
+
   constructor(
     private loader: LoaderService,
     private beneficiaryService: BeneficiaryService,
@@ -54,11 +59,7 @@ export class PlaceResidenceComponent implements OnInit {
                   );
                   const model: any = {
                     file_id: id,
-                    city: null,
-                    street: null,
-                    house: null,
-                    flat: null,
-                    zip_code: null,
+                    ...this.placeResidenceForm.value,
                   };
 
                   this.subscriptions.add(

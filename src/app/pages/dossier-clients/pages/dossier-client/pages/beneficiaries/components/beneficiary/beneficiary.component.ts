@@ -67,6 +67,7 @@ export class BeneficiaryComponent implements OnInit {
       .updateShare(this.companyClientId, this.beneficiaryId, share)
       .subscribe(
         () => {
+          this.getFormControl('share').markAsUntouched;
           this.loader.hide();
         },
         () => {

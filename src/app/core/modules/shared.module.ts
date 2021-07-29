@@ -7,6 +7,7 @@ import {
   ResultDialogComponent,
 } from '../dialogs';
 import { TuiModule } from './tui.module';
+import { TextMaskModule } from 'angular2-text-mask';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,19 @@ import { TuiModule } from './tui.module';
     ConfirmDialogComponent,
     ResultDialogComponent,
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, TuiModule],
-  exports: [CommonModule, FormsModule, ReactiveFormsModule, TuiModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TuiModule,
+    TextMaskModule,
+  ],
+  exports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TuiModule,
+    TextMaskModule,
+  ],
 })
 export class SharedModule {}

@@ -33,7 +33,12 @@
                 place-residence__form-control place-residence__form-control_mb16
               "
             >
-              <tui-input formControlName="city">Город</tui-input>
+              <tui-input
+                formControlName="city"
+                [tuiTextfieldCleaner]="true"
+                tuiTextfieldExampleText="Например, Москва"
+                >Город</tui-input
+              >
               <tui-field-error formControlName="city"></tui-field-error>
             </div>
             <div
@@ -41,7 +46,12 @@
                 place-residence__form-control place-residence__form-control_mb16
               "
             >
-              <tui-input formControlName="street">Улица</tui-input>
+              <tui-input
+                formControlName="street"
+                [tuiTextfieldCleaner]="true"
+                tuiTextfieldExampleText="Например, ул. Мира"
+                >Улица</tui-input
+              >
               <tui-field-error formControlName="street"></tui-field-error>
             </div>
             <div
@@ -49,7 +59,12 @@
                 place-residence__form-control place-residence__form-control_mb16
               "
             >
-              <tui-input formControlName="house">Дом</tui-input>
+              <tui-input
+                formControlName="house"
+                [tuiTextfieldCleaner]="true"
+                tuiTextfieldExampleText="Например, 12"
+                >Дом</tui-input
+              >
               <tui-field-error formControlName="house"></tui-field-error>
             </div>
             <div
@@ -57,11 +72,22 @@
                 place-residence__form-control place-residence__form-control_mb16
               "
             >
-              <tui-input formControlName="flat">Квартира</tui-input>
+              <tui-input
+                formControlName="flat"
+                [tuiTextfieldCleaner]="true"
+                tuiTextfieldExampleText="Например, 34"
+                >Квартира</tui-input
+              >
               <tui-field-error formControlName="flat"></tui-field-error>
             </div>
             <div class="place-residence__form-control">
-              <tui-input formControlName="zip_code">Индекс</tui-input>
+              <tui-input
+                formControlName="zip_code"
+                [tuiTextfieldCleaner]="true"
+                tuiTextfieldExampleText="Например, 123456"
+                [textMask]="zipCodeMask"
+                >Индекс</tui-input
+              >
               <tui-field-error formControlName="zip_code"></tui-field-error>
             </div>
           </div>

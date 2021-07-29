@@ -54,8 +54,7 @@ export class SnilsComponent implements OnInit {
                   );
                   const model: any = {
                     file_id: id,
-                    number: null,
-                    date: null,
+                    ...this.snilsForm.value,
                   };
 
                   this.subscriptions.add(

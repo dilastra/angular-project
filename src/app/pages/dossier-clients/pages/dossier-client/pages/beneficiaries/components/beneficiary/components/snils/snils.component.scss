@@ -11,7 +11,6 @@
     &-container {
       display: flex;
       align-items: center;
-      margin-bottom: 16px;
     }
   }
 
@@ -31,7 +30,7 @@
       }
     }
     &-controls {
-      margin-bottom: 16px;
+      margin: 16px 0;
       &_flexbox {
         display: flex;
         margin-bottom: 16px;

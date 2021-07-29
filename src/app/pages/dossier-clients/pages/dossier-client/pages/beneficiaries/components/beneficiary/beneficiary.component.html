@@ -38,9 +38,18 @@
             postfix=" %"
             [max]="100"
             [min]="0"
-            >Доля</tui-input-number
           >
-          <button tuiButton type="button" (click)="onSaveShare()">
+            Доля
+          </tui-input-number>
+          <button
+            tuiButton
+            type="button"
+            (click)="onSaveShare()"
+            [disabled]="
+              getFormControl('share').untouched ||
+              getFormControl('share').invalid
+            "
+          >
             Сохранить
           </button>
         </div>

@@ -14,6 +14,7 @@ import { of } from 'rxjs';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptor } from './core';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
+import { TextMaskModule } from 'angular2-text-mask';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
     TuiDialogModule,
     TuiModeModule,
     TuiThemeNightModule,
+    TextMaskModule,
   ],
   providers: [
     {

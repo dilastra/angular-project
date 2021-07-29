@@ -26,6 +26,18 @@ export class PassportComponent implements OnInit {
 
   public isDownloadFile = false;
 
+  public seriesMask = { mask: [/\d/, /\d/, '-', /\d/, /\d/], guide: true };
+
+  public numberMask = {
+    mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
+    guide: true,
+  };
+
+  public issuerIdMask = {
+    mask: [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
+    guide: true,
+  };
+
   constructor(
     private filesService: FilesService,
     private loader: LoaderService,
@@ -54,14 +66,7 @@ export class PassportComponent implements OnInit {
                 );
                 const model: any = {
                   file_id: id,
-                  first_name: null,
-                  last_name: null,
-                  middle_name: null,
-                  series: null,
-                  number: null,
-                  date_from: null,
-                  issuer: null,
-                  issuer_code: null,
+                  ...this.passportForm.value,
                 };
 
                 this.subscriptions.add(
