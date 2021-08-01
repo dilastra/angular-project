@@ -38,7 +38,7 @@ export class BeneficiaryComponent implements OnInit {
     this.fullName = `${last_name ?? ''} ${first_name ?? ''} ${
       middle_name ?? ''
     }`;
-    this.share = share ? ` | Доля: ${share} %` : '';
+    this.share = share ? ` | Доля: ${(+share).toFixed(2)} %` : '';
 
     this.beneficiaryId = this.getFormControl('id').value as string;
 
@@ -48,7 +48,7 @@ export class BeneficiaryComponent implements OnInit {
       this.fullName = `${last_name ?? ''} ${first_name ?? ''} ${
         middle_name ?? ''
       }`;
-      this.share = share ? ` | Доля: ${share} %` : '';
+      this.share = share ? ` | Доля: ${(+share).toFixed(2)} %` : '';
     });
   }
 

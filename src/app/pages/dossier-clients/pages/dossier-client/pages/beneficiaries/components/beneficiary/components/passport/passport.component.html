@@ -25,118 +25,139 @@
               Скачать файл
             </button>
           </div>
-          <div
-            class="passport__form-controls"
-            *ngIf="getControl('file')?.value"
-          >
-            <div class="passport__form-controls_flexbox">
-              <div class="passport__form-control">
-                <tui-input
-                  formControlName="last_name"
-                  [tuiTextfieldCleaner]="true"
-                  tuiTextfieldExampleText="Например, Иванов"
+          <tui-accordion *ngIf="getControl('file')?.value">
+            <tui-accordion-item class="passport_mb16 passport_mt16">
+              <h2 class="passport__title tui-text_h3">Первая страница</h2>
+              <ng-template tuiAccordionItemContent>
+                <div
+                  class="passport__form-controls"
+                  *ngIf="getControl('file')?.value"
                 >
-                  Фамилия
-                </tui-input>
-                <tui-field-error formControlName="last_name"></tui-field-error>
-              </div>
-              <div class="passport__form-control">
-                <tui-input
-                  formControlName="first_name"
-                  [tuiTextfieldCleaner]="true"
-                  tuiTextfieldExampleText="Например, Иван"
-                >
-                  Имя
-                </tui-input>
-                <tui-field-error formControlName="first_name"></tui-field-error>
-              </div>
-              <div class="passport__form-control">
-                <tui-input
-                  formControlName="middle_name"
-                  [tuiTextfieldCleaner]="true"
-                  tuiTextfieldExampleText="Например, Иванович"
-                >
-                  Отчество
-                </tui-input>
-                <tui-field-error
-                  formControlName="middle_name"
-                ></tui-field-error>
-              </div>
-            </div>
-            <div class="passport__form-controls_flexbox">
-              <div class="passport__form-control">
-                <tui-input
-                  formControlName="series"
-                  [textMask]="seriesMask"
-                  [tuiTextfieldCleaner]="true"
-                  tuiTextfieldExampleText="Например, 12-34"
-                >
-                  Серия документа
-                </tui-input>
-                <tui-field-error formControlName="series"></tui-field-error>
-              </div>
-              <div class="passport__form-control">
-                <tui-input
-                  formControlName="number"
-                  [textMask]="numberMask"
-                  [tuiTextfieldCleaner]="true"
-                  tuiTextfieldExampleText="Например, 123-456"
-                >
-                  Номер документа
-                </tui-input>
-                <tui-field-error formControlName="number"></tui-field-error>
-              </div>
-              <div class="passport__form-control">
-                <tui-input-date
-                  formControlName="date_from"
-                  [tuiTextfieldCleaner]="true"
-                  tuiTextfieldExampleText="Например, 01.01.2001"
-                >
-                  Дата выдачи документов
-                </tui-input-date>
-                <tui-field-error formControlName="date_from"></tui-field-error>
-              </div>
-            </div>
-            <div class="passport__form-controls_flexbox">
-              <div class="passport__form-control">
-                <tui-input
-                  formControlName="issuer"
-                  [tuiTextfieldCleaner]="true"
-                  tuiTextfieldExampleText="Например, ГУ МВД РОССИИ"
-                >
-                  Кем выдан
-                </tui-input>
-                <tui-field-error formControlName="issuer"></tui-field-error>
-              </div>
-              <div class="passport__form-control">
-                <tui-input
-                  formControlName="issuer_code"
-                  [textMask]="issuerIdMask"
-                  [tuiTextfieldCleaner]="true"
-                  tuiTextfieldExampleText="Например, 123-456"
-                >
-                  Код подразделения
-                </tui-input>
-                <tui-field-error
-                  formControlName="issuer_code"
-                ></tui-field-error>
-              </div>
-            </div>
-          </div>
-          <div
-            class="passport__form-button-container"
-            *ngIf="getControl('file')?.value"
-          >
-            <button
-              tuiButton
-              type="button"
-              size="m"
-              (click)="onSave()"
-              [disabled]="passportForm.invalid || passportForm.untouched"
-            >
-              Сохранить
-            </button>
-          </div>
+                  <div class="passport__form-controls_flexbox">
+                    <div class="passport__form-control">
+                      <tui-input
+                        formControlName="last_name"
+                        [tuiTextfieldCleaner]="true"
+                        tuiTextfieldExampleText="Например, Иванов"
+                      >
+                        Фамилия
+                      </tui-input>
+                      <tui-field-error
+                        formControlName="last_name"
+                      ></tui-field-error>
+                    </div>
+                    <div class="passport__form-control">
+                      <tui-input
+                        formControlName="first_name"
+                        [tuiTextfieldCleaner]="true"
+                        tuiTextfieldExampleText="Например, Иван"
+                      >
+                        Имя
+                      </tui-input>
+                      <tui-field-error
+                        formControlName="first_name"
+                      ></tui-field-error>
+                    </div>
+                    <div class="passport__form-control">
+                      <tui-input
+                        formControlName="middle_name"
+                        [tuiTextfieldCleaner]="true"
+                        tuiTextfieldExampleText="Например, Иванович"
+                      >
+                        Отчество
+                      </tui-input>
+                      <tui-field-error
+                        formControlName="middle_name"
+                      ></tui-field-error>
+                    </div>
+                  </div>
+                  <div class="passport__form-controls_flexbox">
+                    <div class="passport__form-control">
+                      <tui-input
+                        formControlName="series"
+                        [textMask]="seriesMask"
+                        [tuiTextfieldCleaner]="true"
+                        tuiTextfieldExampleText="Например, 12-34"
+                      >
+                        Серия документа
+                      </tui-input>
+                      <tui-field-error
+                        formControlName="series"
+                      ></tui-field-error>
+                    </div>
+                    <div class="passport__form-control">
+                      <tui-input
+                        formControlName="number"
+                        [textMask]="numberMask"
+                        [tuiTextfieldCleaner]="true"
+                        tuiTextfieldExampleText="Например, 123-456"
+                      >
+                        Номер документа
+                      </tui-input>
+                      <tui-field-error
+                        formControlName="number"
+                      ></tui-field-error>
+                    </div>
+                    <div class="passport__form-control">
+                      <tui-input-date
+                        formControlName="date_from"
+                        [tuiTextfieldCleaner]="true"
+                        tuiTextfieldExampleText="Например, 01.01.2001"
+                      >
+                        Дата выдачи документов
+                      </tui-input-date>
+                      <tui-field-error
+                        formControlName="date_from"
+                      ></tui-field-error>
+                    </div>
+                  </div>
+                  <div class="passport__form-controls_flexbox">
+                    <div class="passport__form-control">
+                      <tui-input
+                        formControlName="issuer"
+                        [tuiTextfieldCleaner]="true"
+                        tuiTextfieldExampleText="Например, ГУ МВД РОССИИ"
+                      >
+                        Кем выдан
+                      </tui-input>
+                      <tui-field-error
+                        formControlName="issuer"
+                      ></tui-field-error>
+                    </div>
+                    <div class="passport__form-control">
+                      <tui-input
+                        formControlName="issuer_code"
+                        [textMask]="issuerIdMask"
+                        [tuiTextfieldCleaner]="true"
+                        tuiTextfieldExampleText="Например, 123-456"
+                      >
+                        Код подразделения
+                      </tui-input>
+                      <tui-field-error
+                        formControlName="issuer_code"
+                      ></tui-field-error>
+                    </div>
+                  </div>
+                </div>
+                <div class="passport__form-button-container">
+                  <button
+                    tuiButton
+                    type="button"
+                    size="m"
+                    (click)="onSave()"
+                    [disabled]="passportForm.invalid || passportForm.untouched"
+                  >
+                    Сохранить
+                  </button>
+                </div>
+              </ng-template>
+            </tui-accordion-item>
+          </tui-accordion>
+          <credex-place-residence
+            [placeResidenceForm]="placeResidenceForm"
+            [beneficiaryId]="beneficiaryId"
+            [companyClientId]="companyClientId"
+          ></credex-place-residence>
         </div>
       </form>
     </ng-template>

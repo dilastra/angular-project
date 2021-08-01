@@ -1,33 +1,10 @@
 <tui-accordion>
-  <tui-accordion-item class="place-residence_mb16">
+  <tui-accordion-item>
     <h2 class="place-residence__title tui-text_h3">Место регистрации</h2>
     <ng-template tuiAccordionItemContent>
       <form [formGroup]="placeResidenceForm">
         <div class="place-residence__form-container">
-          <div class="place-residence__file-input-control-container">
-            <tui-input-file
-              class="place-residence__file-input-control"
-              formControlName="file"
-              link="Выберите"
-              label="или перетащите сюда файл скана паспорта и прописки"
-              [loadingFiles]="loadingFiles"
-            ></tui-input-file>
-            <button
-              tuiButton
-              type="button"
-              class="place-residence__file-button-download"
-              size="m"
-              [showLoader]="isDownloadFile"
-              [disabled]="isDownloadFile"
-              *ngIf="getControl('file')?.value"
-            >
-              Скачать файл
-            </button>
-          </div>
-          <div
-            class="place-residence__form-controls"
-            *ngIf="getControl('file')?.value"
-          >
+          <div class="place-residence__form-controls">
             <div
               class="
                 place-residence__form-control place-residence__form-control_mb16
@@ -91,10 +68,7 @@
               <tui-field-error formControlName="zip_code"></tui-field-error>
             </div>
           </div>
-          <div
-            class="place-residence__form-button-container"
-            *ngIf="getControl('file')?.value"
-          >
+          <div class="place-residence__form-button-container">
             <button
               tuiButton
               type="button"

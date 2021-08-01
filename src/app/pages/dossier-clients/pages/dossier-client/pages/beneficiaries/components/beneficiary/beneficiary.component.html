@@ -16,14 +16,10 @@
       <form [formGroup]="beneficiaryFormGroup">
         <credex-passport
           [passportForm]="getFormControl('passport')"
-          [beneficiaryId]="beneficiaryId"
-          [companyClientId]="companyClientId"
-        ></credex-passport>
-        <credex-place-residence
           [placeResidenceForm]="getFormControl('place_residence')"
           [beneficiaryId]="beneficiaryId"
           [companyClientId]="companyClientId"
-        ></credex-place-residence>
+        ></credex-passport>
         <credex-snils
           [snilsForm]="getFormControl('snils')"
           [beneficiaryId]="beneficiaryId"

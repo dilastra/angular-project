@@ -15,6 +15,9 @@ export class PassportComponent implements OnInit {
   public passportForm!: FormGroup;
 
   @Input()
+  public placeResidenceForm!: FormGroup;
+
+  @Input()
   public beneficiaryId!: string;
 
   @Input()
