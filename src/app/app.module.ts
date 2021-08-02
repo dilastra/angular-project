@@ -39,6 +39,7 @@ import { TextMaskModule } from 'angular2-text-mask';
       provide: TUI_VALIDATION_ERRORS,
       useValue: {
         required: 'Поле обязательно должно быть заполнено',
+        email: 'Формат email неверный',
       },
     },
   ],

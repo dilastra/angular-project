@@ -29,18 +29,6 @@ export class PassportComponent implements OnInit {
 
   public isDownloadFile = false;
 
-  public seriesMask = { mask: [/\d/, /\d/, '-', /\d/, /\d/], guide: true };
-
-  public numberMask = {
-    mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
-    guide: true,
-  };
-
-  public issuerIdMask = {
-    mask: [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
-    guide: true,
-  };
-
   constructor(
     private filesService: FilesService,
     private loader: LoaderService,
@@ -133,28 +121,6 @@ export class PassportComponent implements OnInit {
       () => {
         this.isDownloadFile = false;
       }
-    );
-  }
-
-  public onSave() {
-    this.loader.show();
-    const { file, date_from, ...otherValue } = this.passportForm.value;
-
-    console.log(date_from);
-
-    const model = {
-      file_id: file.id,
-      date_from: typeof date_from === 'string' ? date_from : date_from.toJSON(),
-      ...otherValue,
-    };
-
-    this.subscriptions.add(
-      this.beneficiaryService
-        .updatePassport(this.companyClientId, this.beneficiaryId, model)
-        .subscribe(() => {
-          this.passportForm.markAsUntouched();
-          this.loader.hide();
-        })
     );
   }
 }

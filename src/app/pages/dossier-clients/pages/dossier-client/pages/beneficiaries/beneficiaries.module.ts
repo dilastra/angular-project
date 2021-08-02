@@ -6,14 +6,18 @@ import { BeneficiariesRoutingModule } from './beneficiaries-routing.module';
 import { BeneficiaryComponent } from './components';
 import {
   PassportComponent,
-  PlaceResidenceComponent,
   SnilsComponent,
 } from './components/beneficiary/components';
+import {
+  FirstPagePassportComponent,
+  PlaceResidenceComponent,
+} from './components/beneficiary/components/passport/components';
 
 @NgModule({
   declarations: [
     BeneficiariesComponent,
     BeneficiaryComponent,
+    FirstPagePassportComponent,
     PassportComponent,
     PlaceResidenceComponent,
     SnilsComponent,

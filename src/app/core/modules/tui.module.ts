@@ -16,6 +16,7 @@ import {
 } from '@taiga-ui/core';
 import {
   TuiAccordionModule,
+  TuiCheckboxLabeledModule,
   TuiComboBoxModule,
   TuiFieldErrorModule,
   TuiInputDateModule,
@@ -23,9 +24,11 @@ import {
   TuiInputModule,
   TuiInputNumberModule,
   TuiInputPasswordModule,
+  TuiInputPhoneModule,
   TuiMarkerIconModule,
   TuiSelectModule,
   TuiTabsModule,
+  TuiTextAreaModule,
   TuiToggleModule,
 } from '@taiga-ui/kit';
 
@@ -33,6 +36,7 @@ import {
   exports: [
     TuiAccordionModule,
     TuiButtonModule,
+    TuiCheckboxLabeledModule,
     TuiComboBoxModule,
     TuiDataListModule,
     TuiErrorModule,
@@ -42,6 +46,7 @@ import {
     TuiInputModule,
     TuiInputNumberModule,
     TuiInputPasswordModule,
+    TuiInputPhoneModule,
     TuiLetModule,
     TuiLinkModule,
     TuiLoaderModule,
@@ -52,6 +57,7 @@ import {
     TuiTableModule,
     TuiTablePaginationModule,
     TuiTabsModule,
+    TuiTextAreaModule,
     TuiTextfieldControllerModule,
     TuiToggleModule,
   ],
