@@ -9,6 +9,7 @@ import { BeneficiaryService, DadataService, LoaderService } from 'src/app/core';
   selector: 'credex-place-residence',
   templateUrl: './place-residence.component.html',
   styleUrls: ['./place-residence.component.scss'],
+  providers: [TuiDestroyService],
 })
 export class PlaceResidenceComponent implements OnInit {
   @Input()
@@ -166,7 +167,6 @@ export class PlaceResidenceComponent implements OnInit {
 
   public setFiasCode(fiasCode: any) {
     this.fiasCodes = { ...this.fiasCodes, ...fiasCode };
-    console.log(this.fiasCodes);
   }
 
   public setZipCode(zipCode: string) {

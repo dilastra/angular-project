@@ -7,13 +7,14 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TuiDestroyService } from '@taiga-ui/cdk';
 import { TuiDialogContext, TuiDialogService } from '@taiga-ui/core';
 import {
   PolymorpheusComponent,
   POLYMORPHEUS_CONTEXT,
 } from '@tinkoff/ng-polymorpheus';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ClientCompanyType, ProductsOnRus, TaxSystems } from '../../enums';
 import { ClientsCompanyService, DadataService } from '../../services';
 import { ResultDialogComponent } from '../result-dialog';
@@ -23,6 +24,7 @@ import { ResultDialogComponent } from '../result-dialog';
   templateUrl: './add-client-dialog.component.html',
   styleUrls: ['./add-client-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [TuiDestroyService],
 })
 export class AddClientDialogComponent implements OnInit, OnDestroy {
   public companies$ = new BehaviorSubject<any>([]);
@@ -50,7 +52,8 @@ export class AddClientDialogComponent implements OnInit, OnDestroy {
     private build: FormBuilder,
     private clientsCompanyService: ClientsCompanyService,
     public dadataService: DadataService,
-    private dialogService: TuiDialogService
+    private dialogService: TuiDialogService,
+    private destroy$: TuiDestroyService
   ) {
     this.formAddClient = this.build.group({
       innClient: [null, Validators.required],
@@ -62,41 +65,41 @@ export class AddClientDialogComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.subscription.add(
       this.formAddClient.controls.innClient.valueChanges
-        .pipe(debounceTime(300))
+        .pipe(debounceTime(300), takeUntil(this.destroy$))
         .subscribe((inn: string) => {
-          if (inn && this.selectedCompany?.data?.inn !== inn) {
+          if (inn) {
             this.dadataService
               .getInnCompanies(inn, 10)
               .subscribe(({ suggestions: companies }: any) => {
                 const filteredCompanies = companies.filter((company: any) => {
                   return (
-                    company?.data?.inn.includes(inn) &&
                     company?.data?.name?.short_with_opf.slice(0, 3) === 'ООО'
                   );
                 });
                 this.companies$.next(filteredCompanies);
               });
             return;
-          } else if (!inn) {
-            this.selectedCompany = undefined;
           }
+          this.selectedCompany = undefined;
 
           return this.companies$.next([]);
         })
     );
 
     this.subscription.add(
-      this.formAddClient.controls.taxSystem.valueChanges.subscribe(
-        (taxSystem: number) => {
+      this.formAddClient.controls.taxSystem.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((taxSystem: number) => {
           this.nameOfTaxSystem = this.taxSystems[taxSystem];
-        }
-      )
+        })
     );
 
     this.subscription.add(
-      this.formAddClient.controls.product.valueChanges.subscribe((product) => {
-        this.nameOfBankProduct = this.productsOnRus[product];
-      })
+      this.formAddClient.controls.product.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((product) => {
+          this.nameOfBankProduct = this.productsOnRus[product];
+        })
     );
   }
 
