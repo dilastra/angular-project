@@ -63,6 +63,18 @@
           </div>
           <div class="first-page-passport__form-control">
             <tui-input-date
+              formControlName="date_born"
+              [tuiTextfieldCleaner]="true"
+              tuiTextfieldExampleText="Например, 01.01.2001"
+            >
+              Дата рождения
+            </tui-input-date>
+            <tui-field-error formControlName="date_born"></tui-field-error>
+          </div>
+        </div>
+        <div class="first-page-passport__form-controls_flexbox">
+          <div class="first-page-passport__form-control">
+            <tui-input-date
               formControlName="date_from"
               [tuiTextfieldCleaner]="true"
               tuiTextfieldExampleText="Например, 01.01.2001"
@@ -71,8 +83,6 @@
             </tui-input-date>
             <tui-field-error formControlName="date_from"></tui-field-error>
           </div>
-        </div>
-        <div class="first-page-passport__form-controls_flexbox">
           <div class="first-page-passport__form-control">
             <tui-input
               formControlName="issuer"

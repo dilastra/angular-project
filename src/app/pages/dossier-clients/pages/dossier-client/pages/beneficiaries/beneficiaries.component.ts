@@ -81,6 +81,10 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
         middle_name: [passport?.middle_name, [Validators.required]],
         number: [passport?.number, [Validators.required]],
         series: [passport?.series, [Validators.required]],
+        date_born: [
+          this.getTuiDate(passport?.date_born),
+          [Validators.required],
+        ],
       }),
       place_residence: this.builder.group({
         city: [place_residence?.city, [Validators.required]],
