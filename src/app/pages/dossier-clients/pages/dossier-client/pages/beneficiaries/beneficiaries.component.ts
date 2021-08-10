@@ -84,7 +84,6 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
       }),
       place_residence: this.builder.group({
         city: [place_residence?.city, [Validators.required]],
-        file: [place_residence?.file, [Validators.required]],
         flat: [place_residence?.flat, [Validators.required]],
         house: [place_residence?.house, [Validators.required]],
         id: place_residence?.id,

@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
-import { BeneficiaryService, FilesService, LoaderService } from 'src/app/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { TuiDestroyService } from '@taiga-ui/cdk';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { BeneficiaryService, DadataService, LoaderService } from 'src/app/core';
 
 @Component({
   selector: 'credex-place-residence',
@@ -25,6 +26,10 @@ export class PlaceResidenceComponent implements OnInit {
 
   public subscriptions: Subscription = new Subscription();
 
+  public searchAddresses$ = new BehaviorSubject<any[]>([]);
+
+  public fiasCodes: any = {};
+
   public zipCodeMask = {
     mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
     guide: true,
@@ -33,95 +38,113 @@ export class PlaceResidenceComponent implements OnInit {
   constructor(
     private loader: LoaderService,
     private beneficiaryService: BeneficiaryService,
-    private filesService: FilesService
+    private dadataService: DadataService,
+    private destroy$: TuiDestroyService
   ) {}
 
   public ngOnInit(): void {
-    this.subscriptions.add(
-      this.getControl('file')
-        .valueChanges.pipe(distinctUntilChanged())
-        .subscribe((file: any) => {
-          if (file && !file?.id) {
-            this.loader.show();
-            this.loadingFiles = [file];
-            this.subscriptions.add(
-              this.filesService
-                .uploadFile(file)
-                .subscribe(({ id, name, size, type }: any) => {
-                  this.getControl('file').patchValue(
-                    {
-                      id,
-                      name,
-                      size,
-                      type,
-                    },
-                    { emitEvent: false }
-                  );
-                  const model: any = {
-                    file_id: id,
-                    ...this.placeResidenceForm.value,
-                  };
+    this.getControl('city')
+      .valueChanges.pipe(
+        takeUntil(this.destroy$),
+        debounceTime(50),
+        distinctUntilChanged()
+      )
+      .subscribe((city) => {
+        if (city) {
+          const model = {
+            query: city,
+            from_bound: { value: 'city' },
+            to_bound: { value: 'settlement' },
+            locations: [{ country: 'Россия' }],
+            count: 10,
+            restrict_value: true,
+          };
+          this.dadataService
+            .getAddresses(model)
+            .subscribe(({ suggestions }: { suggestions: any[] }) => {
+              this.searchAddresses$.next(suggestions);
+            });
+        } else {
+          this.placeResidenceForm.patchValue({
+            street: null,
+            flat: null,
+            house: null,
+            zip_code: null,
+          });
+        }
+      });
+    this.getControl('street')
+      .valueChanges.pipe(
+        takeUntil(this.destroy$),
+        debounceTime(50),
+        distinctUntilChanged()
+      )
+      .subscribe((street) => {
+        if (street) {
+          const model: any = {
+            query: street,
+            from_bound: { value: 'street' },
+            to_bound: { value: 'street' },
+            locations: [{ country: 'Россия' }],
+            count: 10,
+            restrict_value: true,
+          };
 
-                  this.subscriptions.add(
-                    this.beneficiaryService
-                      .updatePlaceResidence(
-                        this.companyClientId,
-                        this.beneficiaryId,
-                        model
-                      )
-                      .subscribe(
-                        () => {
-                          this.loadingFiles = [];
-                          this.loader.hide();
-                        },
-                        () => {
-                          this.loader.hide();
-                        }
-                      )
-                  );
-                })
-            );
-          } else if (!file) {
-            this.loader.show();
-            const model: any = {
-              file_id: null,
-              city: null,
-              street: null,
-              house: null,
-              flat: null,
-              zip_code: null,
-            };
-            this.subscriptions.add(
-              this.beneficiaryService
-                .updatePassport(this.companyClientId, this.beneficiaryId, model)
-                .subscribe(
-                  () => {
-                    this.loader.hide();
-                  },
-                  () => {
-                    this.loader.hide();
-                  }
-                )
-            );
+          if (this.fiasCodes.settlement_fias_id) {
+            model.locations[0].settlement_fias_id =
+              this.fiasCodes.settlement_fias_id;
+          } else if (this.fiasCodes.city_fias_id) {
+            model.locations[0].city_fias_id = this.fiasCodes.city_fias_id;
           }
-        })
-    );
+          this.dadataService
+            .getAddresses(model)
+            .subscribe(({ suggestions }: { suggestions: any[] }) => {
+              this.searchAddresses$.next(suggestions);
+            });
+        } else {
+          this.placeResidenceForm.patchValue({
+            flat: null,
+            house: null,
+            zip_code: null,
+          });
+        }
+      });
+    this.getControl('house')
+      .valueChanges.pipe(
+        takeUntil(this.destroy$),
+        debounceTime(50),
+        distinctUntilChanged()
+      )
+      .subscribe((house) => {
+        if (house) {
+          const model: any = {
+            query: house,
+            from_bound: { value: 'house' },
+            to_bound: { value: 'house' },
+            locations: [
+              {
+                country: 'Россия',
+                street_fias_id: this.fiasCodes.street_fias_id,
+              },
+            ],
+            count: 10,
+            restrict_value: true,
+          };
+          this.dadataService
+            .getAddresses(model)
+            .subscribe(({ suggestions }: { suggestions: any[] }) => {
+              this.searchAddresses$.next(suggestions);
+            });
+        }
+
+        this.placeResidenceForm.patchValue({
+          flat: null,
+        });
+      });
   }
 
   public getControl(nameControl: string) {
     return this.placeResidenceForm.get(nameControl) as FormControl;
-  }
-
-  public downloadFile(formControl: AbstractControl) {
-    this.isDownloadFile = true;
-    this.filesService.downloadFile(formControl).subscribe(
-      ({ isDownloaded }) => {
-        if (isDownloaded) this.isDownloadFile = false;
-      },
-      () => {
-        this.isDownloadFile = false;
-      }
-    );
   }
 
   public onSave() {
@@ -135,5 +158,29 @@ export class PlaceResidenceComponent implements OnInit {
           this.loader.hide();
         })
     );
+  }
+
+  public findInDadata(model: any) {
+    return this.dadataService.getAddresses(model);
+  }
+
+  public setFiasCode(fiasCode: any) {
+    this.fiasCodes = { ...this.fiasCodes, ...fiasCode };
+    console.log(this.fiasCodes);
+  }
+
+  public setZipCode(zipCode: string) {
+    this.placeResidenceForm.patchValue(
+      {
+        zip_code: zipCode,
+      },
+      { emitEvent: false }
+    );
+  }
+
+  public setFiasCodeForSettlement({ data }: any) {
+    return data?.settlement
+      ? { settlement_fias_id: data?.fias_id, city_fias_id: null }
+      : { city_fias_id: data?.fias_id, settlement_fias_id: null };
   }
 }

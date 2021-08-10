@@ -11,11 +11,30 @@
               "
             >
               <tui-input
+                *tuiLet="searchAddresses$ | async as searchAddresses"
                 formControlName="city"
                 [tuiTextfieldCleaner]="true"
                 tuiTextfieldExampleText="Например, Москва"
-                >Город</tui-input
               >
+                Насёленный пункт
+                <ng-container *ngIf="searchAddresses?.length">
+                  <tui-data-list *tuiDataList>
+                    <button
+                      tuiOption
+                      *ngFor="let searchAddresse of searchAddresses"
+                      (click)="
+                        setFiasCode(setFiasCodeForSettlement(searchAddresse))
+                      "
+                      [value]="
+                        searchAddresse?.data?.city_with_type ??
+                        searchAddresse?.data?.settlement_with_type
+                      "
+                    >
+                      {{ searchAddresse?.value }}
+                    </button>
+                  </tui-data-list>
+                </ng-container>
+              </tui-input>
               <tui-field-error formControlName="city"></tui-field-error>
             </div>
             <div
@@ -24,11 +43,30 @@
               "
             >
               <tui-input
+                *tuiLet="searchAddresses$ | async as searchAddresses"
                 formControlName="street"
                 [tuiTextfieldCleaner]="true"
                 tuiTextfieldExampleText="Например, ул. Мира"
-                >Улица</tui-input
               >
+                Улица
+                <ng-container *ngIf="searchAddresses?.length">
+                  <tui-data-list *tuiDataList>
+                    <button
+                      tuiOption
+                      *ngFor="let searchAddresse of searchAddresses"
+                      (click)="
+                        setFiasCode({
+                          street_fias_id: searchAddresse?.data?.street_fias_id
+                        });
+                        setZipCode(searchAddresse?.data?.postal_code)
+                      "
+                      [value]="searchAddresse?.data?.street_with_type"
+                    >
+                      {{ searchAddresse?.value }}
+                    </button>
+                  </tui-data-list>
+                </ng-container>
+              </tui-input>
               <tui-field-error formControlName="street"></tui-field-error>
             </div>
             <div
@@ -37,11 +75,24 @@
               "
             >
               <tui-input
+                *tuiLet="searchAddresses$ | async as searchAddresses"
                 formControlName="house"
                 [tuiTextfieldCleaner]="true"
                 tuiTextfieldExampleText="Например, 12"
-                >Дом</tui-input
               >
+                Дом
+                <ng-container *ngIf="searchAddresses?.length">
+                  <tui-data-list *tuiDataList>
+                    <button
+                      tuiOption
+                      *ngFor="let searchAddresse of searchAddresses"
+                      [value]="searchAddresse?.value"
+                    >
+                      {{ searchAddresse?.value }}
+                    </button>
+                  </tui-data-list>
+                </ng-container>
+              </tui-input>
               <tui-field-error formControlName="house"></tui-field-error>
             </div>
             <div
@@ -53,8 +104,9 @@
                 formControlName="flat"
                 [tuiTextfieldCleaner]="true"
                 tuiTextfieldExampleText="Например, 34"
-                >Квартира</tui-input
               >
+                Квартира
+              </tui-input>
               <tui-field-error formControlName="flat"></tui-field-error>
             </div>
             <div class="place-residence__form-control">

@@ -66,7 +66,7 @@ export class AddClientDialogComponent implements OnInit, OnDestroy {
         .subscribe((inn: string) => {
           if (inn && this.selectedCompany?.data?.inn !== inn) {
             this.dadataService
-              .getInnCompaniesFromDadata(inn, 10)
+              .getInnCompanies(inn, 10)
               .subscribe(({ suggestions: companies }: any) => {
                 const filteredCompanies = companies.filter((company: any) => {
                   return (
