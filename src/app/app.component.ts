@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { TuiBrightness } from '@taiga-ui/core';
 import { ThemeService } from './core';
 
@@ -8,7 +8,7 @@ import { ThemeService } from './core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  public theme: TuiBrightness | null = null;
+  public theme: TuiBrightness | any = '';
 
   constructor(private themeService: ThemeService) {
     this.themeService.theme$.subscribe((currentTheme) => {

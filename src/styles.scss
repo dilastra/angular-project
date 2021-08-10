@@ -1,3 +1,10 @@
+html:root {
+  --tui-primary: hsl(166, 100%, 30%);
+  --tui-primary-hover: hsl(166, 100%, 35%);
+  --tui-primary-active: hsl(166, 100%, 20%);
+  --tui-link-hover: var(--tui-primary);
+}
+
 body {
   background-color: var(--tui-base-01);
 }

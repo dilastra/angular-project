@@ -8,7 +8,7 @@
         <div
           class="lease-agreement-premises__select-control"
           [class.lease-agreement-premises__select-control_mb16]="
-            getControlLeaseAgreementPremises('ownershipType').value !== null
+            getFormControl('ownershipType').value !== null
           "
         >
           <tui-select
@@ -31,9 +31,7 @@
         </div>
         <div
           class="lease-agreement-premises__file-input-control-container"
-          *ngIf="
-            getControlLeaseAgreementPremises('ownershipType').value !== null
-          "
+          *ngIf="getFormControl('ownershipType').value !== null"
         >
           <tui-input-file
             class="lease-agreement-premises__file-input-control"
@@ -53,18 +51,15 @@
             size="m"
             [showLoader]="isDownloadFile"
             [disabled]="isDownloadFile"
-            (click)="downloadFile(getControlLeaseAgreementPremises('file'))"
-            *ngIf="
-              getControlLeaseAgreementPremises('file')?.value &&
-              !loadingFiles.length
-            "
+            (click)="downloadFile(getFormControl('file'))"
+            *ngIf="getFormControl('file')?.value && !loadingFiles.length"
           >
             Скачать файл
           </button>
         </div>
         <div
           class="lease-agreement-premises__input-controls-container"
-          *ngIf="getControlLeaseAgreementPremises('file').value"
+          *ngIf="getFormControl('file').value"
         >
           <div
             class="
@@ -101,15 +96,12 @@
           <div
             class="lease-agreement-premises__date-controls-container"
             *ngIf="
-              getControlLeaseAgreementPremises('dateSigning')?.value ||
-              getControlLeaseAgreementPremises('ownershipType').value === 1
+              getFormControl('dateSigning')?.value ||
+              getFormControl('ownershipType').value === 1
             "
           >
             <div
-              class="
-                lease-agreement-premises__input-control
-                lease-agreement-premises__input-control_mr16
-              "
+              class="lease-agreement-premises__input-control"
               [class.lease-agreement-premises__input-control_mr16]="
                 isSelectLeaseHold()
               "
@@ -118,13 +110,8 @@
                 formControlName="dateFrom"
                 [tuiTextfieldCleaner]="true"
                 tuiTextfieldExampleText="Например, 23.02.2019"
-                [max]="
-                  getControlLeaseAgreementPremises('dateTo')?.value || maxDate
-                "
-                [min]="
-                  getControlLeaseAgreementPremises('dateSigning')?.value ||
-                  minDate
-                "
+                [max]="getFormControl('dateTo')?.value || maxDate"
+                [min]="getFormControl('dateSigning')?.value || minDate"
               >
                 Выберите дату
                 {{
@@ -141,15 +128,33 @@
                 formControlName="dateTo"
                 [tuiTextfieldCleaner]="true"
                 tuiTextfieldExampleText="Например, 23.02.2020"
-                [min]="
-                  getControlLeaseAgreementPremises('dateFrom')?.value || minDate
-                "
+                [min]="getFormControl('dateFrom')?.value || minDate"
               >
                 Выбирете дату окончания действия договора
               </tui-input-date>
               <tui-field-error formControlName="dateTo"></tui-field-error>
             </div>
           </div>
+          <tui-accordion
+            *ngIf="isSelectLeaseHold() && getFormControl('dateSigning')?.value"
+            class="lease-agreement-premises__accordion-container_mb16"
+          >
+            <tui-accordion-item>
+              <h2
+                class="
+                  lease-agreement-premises__form-controls-title
+                  tui-text_h3
+                "
+              >
+                Акт приемки передачи помещения в аренду
+              </h2>
+              <ng-template tuiAccordionItemContent>
+                <credex-transfer-act-rent-permise
+                  [dateSigningContract]="getFormControl('dateSigning').value"
+                ></credex-transfer-act-rent-permise>
+              </ng-template>
+            </tui-accordion-item>
+          </tui-accordion>
           <div class="lease-agreement-premises__button-container">
             <button
               class="lease-agreement-premises__button"

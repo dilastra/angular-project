@@ -23,6 +23,8 @@ import { AuthService } from '../../core/services/auth.service';
 export class AuthComponent implements OnInit, OnDestroy {
   public loginForm: FormGroup;
 
+  public darkTheme = localStorage.getItem('darkTheme');
+
   public banks: { id: number; name: string }[] = [];
 
   public subscriptions = new Subscription();

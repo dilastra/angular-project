@@ -1,0 +1,20 @@
+.passport {
+  &__title {
+    margin: 0;
+  }
+  &_mb16 {
+    margin-bottom: 16px;
+  }
+
+  &__file-input-control {
+    width: 100%;
+    &-container {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__file-button-download {
+    margin-left: 16px;
+  }
+}

@@ -1,0 +1,49 @@
+.snils {
+  &__title {
+    margin: 0;
+  }
+  &_mb16 {
+    margin-bottom: 16px;
+  }
+
+  &__file-input-control {
+    width: 100%;
+    &-container {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__file-button-download {
+    margin-left: 16px;
+  }
+  &__form {
+    &-control {
+      width: 100%;
+      margin-right: 16px;
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &_mb16 {
+        margin-bottom: 16px;
+      }
+    }
+    &-controls {
+      margin: 16px 0;
+      &_flexbox {
+        display: flex;
+        margin-bottom: 16px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    &-button-container {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}

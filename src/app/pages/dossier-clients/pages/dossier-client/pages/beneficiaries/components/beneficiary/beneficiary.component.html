@@ -1,0 +1,55 @@
+<tui-accordion>
+  <tui-accordion-item>
+    <div class="beneficiary__header">
+      <h2 class="beneficiary__header-title tui-text_h3">
+        {{ fullName.trim() ? fullName : "Новый бенефициар" }} {{ share }}
+      </h2>
+      <div class="beneficiary__header-delete-button-container">
+        <tui-svg
+          (click)="onRemove(); $event.stopPropagation()"
+          src="tuiIconCloseLarge"
+          class="icon beneficiary__header-delete-button"
+        ></tui-svg>
+      </div>
+    </div>
+    <ng-template tuiAccordionItemContent>
+      <form [formGroup]="beneficiaryFormGroup">
+        <credex-passport
+          [passportForm]="getFormControl('passport')"
+          [placeResidenceForm]="getFormControl('place_residence')"
+          [beneficiaryId]="beneficiaryId"
+          [companyClientId]="companyClientId"
+        ></credex-passport>
+        <credex-snils
+          [snilsForm]="getFormControl('snils')"
+          [beneficiaryId]="beneficiaryId"
+          [companyClientId]="companyClientId"
+        ></credex-snils>
+        <div
+          class="beneficiary__share-input-control-container beneficiary_mb16"
+        >
+          <tui-input-number
+            formControlName="share"
+            class="beneficiary__share-input-control"
+            postfix=" %"
+            [max]="100"
+            [min]="0"
+          >
+            Доля
+          </tui-input-number>
+          <button
+            tuiButton
+            type="button"
+            (click)="onSaveShare()"
+            [disabled]="
+              getFormControl('share').untouched ||
+              getFormControl('share').invalid
+            "
+          >
+            Сохранить
+          </button>
+        </div>
+      </form>
+    </ng-template>
+  </tui-accordion-item>
+</tui-accordion>

@@ -6,16 +6,14 @@ import { BehaviorSubject, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class ThemeService {
-  public theme$: Subject<TuiBrightness | null> = new BehaviorSubject<any>(
-    localStorage.getItem('theme') ?? null
+  public theme$: Subject<TuiBrightness | ''> = new BehaviorSubject<any>(
+    localStorage.getItem('darkTheme') ?? ''
   );
 
   constructor() {}
 
-  public onChangeCurrentTheme(theme: TuiBrightness | null) {
-    if (theme) {
-      localStorage.setItem('theme', theme);
-    }
+  public onChangeCurrentTheme(theme: TuiBrightness | '') {
+    localStorage.setItem('darkTheme', theme ?? '');
     this.theme$.next(theme);
   }
 }

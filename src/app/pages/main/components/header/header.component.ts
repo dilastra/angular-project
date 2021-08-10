@@ -4,20 +4,25 @@ import {
   Inject,
   Injector,
   Input,
+  OnInit,
   Output,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TuiDialogService } from '@taiga-ui/core';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { AuthService, ConfirmDialogComponent } from 'src/app/core';
+import {
+  AuthService,
+  ConfirmDialogComponent,
+  ThemeService,
+} from 'src/app/core';
 
 @Component({
   selector: 'credex-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   @Input()
   public themeSwitcherControl!: FormControl;
 
@@ -27,12 +32,23 @@ export class HeaderComponent {
   @Output()
   public openSidenavEvent = new EventEmitter<boolean>();
 
+  public darkTheme: string = '';
+
   constructor(
     @Inject(Injector) private readonly injector: Injector,
     @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private themeService: ThemeService
   ) {}
+
+  public ngOnInit() {
+    this.themeService.theme$.subscribe((currentTheme) => {
+      setTimeout(() => {
+        this.darkTheme = currentTheme;
+      }, 0);
+    });
+  }
 
   public openSidenav() {
     this.isOpenedSidenav = !this.isOpenedSidenav;

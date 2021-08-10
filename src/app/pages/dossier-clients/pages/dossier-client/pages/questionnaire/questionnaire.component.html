@@ -1,0 +1,265 @@
+<div class="questionnaire__container">
+  <form [formGroup]="questionnaireForm" class="questionnaire__form-container">
+    <tui-accordion class="questionnaire__section-container">
+      <tui-accordion-item>
+        <h2 class="questionnaire__title">Основная информация</h2>
+        <ng-template tuiAccordionItemContent>
+          <div class="questionnaire__form-controls">
+            <div class="questionnaire__form-control">
+              <tui-input-number
+                formControlName="number_employees"
+                [tuiTextfieldCleaner]="true"
+              >
+                Количество сотрудников
+              </tui-input-number>
+              <tui-field-error
+                formControlName="number_employees"
+              ></tui-field-error>
+            </div>
+            <div class="questionnaire__form-control">
+              <tui-input-number
+                formControlName="average_number_employees"
+                [tuiTextfieldCleaner]="true"
+              >
+                Среднесписочная численность
+              </tui-input-number>
+              <tui-field-error
+                formControlName="average_number_employees"
+              ></tui-field-error>
+            </div>
+          </div>
+          <div class="questionnaire__form-controls">
+            <div class="questionnaire__form-control">
+              <tui-input-number
+                formControlName="flow_money_per_month"
+                [tuiTextfieldCleaner]="true"
+              >
+                Среднемесячный обороты
+              </tui-input-number>
+              <tui-field-error
+                formControlName="flow_money_per_month"
+              ></tui-field-error>
+            </div>
+            <div class="questionnaire__form-control">
+              <tui-input-number
+                formControlName="wage_arrears"
+                [tuiTextfieldCleaner]="true"
+              >
+                Просроченная задолжность перед работниками по заработной плате
+              </tui-input-number>
+            </div>
+          </div>
+          <div class="questionnaire__form-controls">
+            <div class="questionnaire__form-control">
+              <tui-select
+                formControlName="account_type"
+                [valueContent]="getNameAccountType()"
+                [tuiTextfieldCleaner]="true"
+              >
+                Ведение бухгалтерского учёта осуществляет
+                <tui-data-list *tuiDataList>
+                  <button tuiOption [value]="0">{{ accountTypes[0] }}</button>
+                  <button tuiOption [value]="1">{{ accountTypes[1] }}</button>
+                  <button tuiOption [value]="2">{{ accountTypes[2] }}</button>
+                </tui-data-list>
+              </tui-select>
+              <tui-field-error formControlName="account_type"></tui-field-error>
+            </div>
+          </div>
+          <div class="questionnaire__checkboxes-controls">
+            <div class="questionnaire__checkbox-control">
+              <tui-checkbox-labeled formControlName="registered_usa">
+                <div class="questionnaire__checkbox-label">
+                  Юридическое лицо зарегистрировано на территории США(Корпорация
+                  закрытого типа, траст, партнер)
+                </div>
+              </tui-checkbox-labeled>
+            </div>
+            <div class="questionnaire__checkbox-control">
+              <tui-checkbox-labeled formControlName="taxpayer_status">
+                <div class="questionnaire__checkbox-label">
+                  Статус налогоплатильщика США(при заполненных положительных
+                  ответах в п 1.16 и 1.17) варианты: Определённый
+                  налогоплатильщик США(Specified US person) / Исключенный
+                  налогоплатильщик США(Non-specified US Person)
+                </div>
+              </tui-checkbox-labeled>
+            </div>
+            <div class="questionnaire__checkbox-control">
+              <tui-checkbox-labeled formControlName="passive_fin_org">
+                <div class="questionnaire__checkbox-label">
+                  Организация является пассивной нефинансовой организацией
+                </div>
+              </tui-checkbox-labeled>
+            </div>
+            <div class="questionnaire__checkbox-control">
+              <tui-checkbox-labeled formControlName="legal_rus">
+                <div class="questionnaire__checkbox-label">
+                  Организация является юридическим лицом, созданным в
+                  соответствии с законодательством Российсикой Федерации, более
+                  90 процентов акций (долей) уставного капитала которых прямо
+                  или косвенно контролируются Российсикой Федерацией и (или)
+                  гражданами Российсикой Федерации, в том числе имеющими
+                  одновременно с гражданством Российской Федерации гражданство
+                  государства - члена Таможенного союза( за исключением
+                  физических лиц, имеющих одновременно с гражданством Российской
+                  федерации гражданство иностранного государства (за исключением
+                  гражданства государства - члена Таможенного союза), и
+                  физических лиц, имеющих вид на жительство в иностранном
+                  государстве)
+                </div>
+              </tui-checkbox-labeled>
+            </div>
+            <div class="questionnaire__checkbox-control">
+              <tui-checkbox-labeled formControlName="limited_suppliers">
+                <div class="questionnaire__checkbox-label">
+                  Компания имеет ограниченное количество поставщиков (оценочная
+                  доля каждого - не более 30% поставок)
+                </div>
+              </tui-checkbox-labeled>
+            </div>
+            <div class="questionnaire__checkbox-control">
+              <tui-checkbox-labeled formControlName="limited_buyers">
+                <div class="questionnaire__checkbox-label">
+                  Компания имеет ограниченное количество покупателей (оценочная
+                  доля каждого - не более 30%)
+                </div>
+              </tui-checkbox-labeled>
+            </div>
+          </div>
+        </ng-template>
+      </tui-accordion-item>
+    </tui-accordion>
+    <tui-accordion class="questionnaire__section-container">
+      <tui-accordion-item>
+        <h2 class="questionnaire__title">Банковские реквизиты</h2>
+        <ng-template tuiAccordionItemContent>
+          <div class="questionnaire__form-controls">
+            <div class="questionnaire__form-control">
+              <tui-input-number
+                formControlName="bank_bic"
+                [tuiTextfieldCleaner]="true"
+              >
+                Бик банка
+              </tui-input-number>
+              <tui-field-error formControlName="bank_bic"></tui-field-error>
+            </div>
+            <div class="questionnaire__form-control">
+              <tui-input-number
+                formControlName="bank_account"
+                [tuiTextfieldCleaner]="true"
+              >
+                Номер основного расчётного счёта
+              </tui-input-number>
+              <tui-field-error formControlName="bank_account"></tui-field-error>
+            </div>
+          </div>
+          <div class="questionnaire__checkboxes-controls">
+            <div class="questionnaire__checkbox-control">
+              <tui-checkbox-labeled formControlName="check_bic">
+                <div class="questionnaire__checkbox-label">
+                  Отключить проверку соответсвие БИК и расчётного счета
+                </div>
+              </tui-checkbox-labeled>
+            </div>
+          </div>
+        </ng-template>
+      </tui-accordion-item>
+    </tui-accordion>
+    <tui-accordion class="questionnaire__section-container">
+      <tui-accordion-item>
+        <h2 class="questionnaire__title">Структура органов управления</h2>
+        <ng-template tuiAccordionItemContent>
+          <div class="questionnaire__form-controls">
+            <div class="questionnaire__form-control">
+              <tui-select
+                formControlName="manager_structure"
+                [tuiTextfieldCleaner]="true"
+                [valueContent]="getNameManagerStructure()"
+              >
+                Орган управления
+                <tui-data-list *tuiDataList>
+                  <button tuiOption [value]="0">
+                    {{ managersStructure[0] }}
+                  </button>
+                  <button tuiOption [value]="1">
+                    {{ managersStructure[1] }}
+                  </button>
+                  <button tuiOption [value]="2">
+                    {{ managersStructure[2] }}
+                  </button>
+                </tui-data-list>
+              </tui-select>
+              <tui-field-error
+                formControlName="manager_structure"
+              ></tui-field-error>
+            </div>
+          </div>
+          <div class="questionnaire__form-controls">
+            <div class="questionnaire__form-control">
+              <tui-text-area formControlName="staff"
+                >Персональный состав органов управления, ФИО полностью через
+                запятую</tui-text-area
+              >
+            </div>
+          </div>
+        </ng-template>
+      </tui-accordion-item>
+    </tui-accordion>
+    <tui-accordion class="questionnaire__section-container">
+      <tui-accordion-item>
+        <h2 class="questionnaire__title">Контактная информация</h2>
+        <ng-template tuiAccordionItemContent>
+          <div class="questionnaire__form-controls">
+            <div class="questionnaire__form-control">
+              <tui-input
+                formControlName="contact_fullname"
+                [tuiTextfieldCleaner]="true"
+              >
+                ФИО контактного лица
+              </tui-input>
+              <tui-field-error
+                formControlName="contact_fullname"
+              ></tui-field-error>
+            </div>
+            <div class="questionnaire__form-control">
+              <tui-input
+                formControlName="contact_email"
+                [tuiTextfieldCleaner]="true"
+              >
+                Email контактного лица
+              </tui-input>
+              <tui-field-error
+                formControlName="contact_email"
+              ></tui-field-error>
+            </div>
+          </div>
+          <div class="questionnaire__form-controls">
+            <div class="questionnaire__form-control">
+              <tui-input-phone
+                formControlName="contact_phone"
+                [tuiTextfieldCleaner]="true"
+              >
+                Телефон контактного лица
+              </tui-input-phone>
+              <tui-field-error
+                formControlName="contact_phone"
+              ></tui-field-error>
+            </div>
+            <div class="questionnaire__form-control">
+              <tui-input formControlName="site" [tuiTextfieldCleaner]="true">
+                Web-сайт организации
+              </tui-input>
+              <tui-field-error formControlName="site"></tui-field-error>
+            </div>
+          </div>
+        </ng-template>
+      </tui-accordion-item>
+    </tui-accordion>
+    <div class="questionnaire__button-container">
+      <button tuiButton type="button" size="m" (click)="onSave()">
+        Сохранить анкету
+      </button>
+    </div>
+  </form>
+</div>

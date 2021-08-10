@@ -1,4 +1,8 @@
 .dossier-client {
+  &__header-title {
+    margin-top: 0;
+  }
+
   &__content {
     padding-top: 24px;
     &-container {

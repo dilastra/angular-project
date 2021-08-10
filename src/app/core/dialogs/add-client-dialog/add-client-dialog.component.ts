@@ -62,15 +62,18 @@ export class AddClientDialogComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.subscription.add(
       this.formAddClient.controls.innClient.valueChanges
-        .pipe(debounceTime(500))
+        .pipe(debounceTime(300))
         .subscribe((inn: string) => {
           if (inn && this.selectedCompany?.data?.inn !== inn) {
             this.dadataService
-              .getInnCompaniesFromDadata(inn, 10)
+              .getInnCompanies(inn, 10)
               .subscribe(({ suggestions: companies }: any) => {
-                const filteredCompanies = companies.filter((company: any) =>
-                  company?.data?.inn.includes(inn)
-                );
+                const filteredCompanies = companies.filter((company: any) => {
+                  return (
+                    company?.data?.inn.includes(inn) &&
+                    company?.data?.name?.short_with_opf.slice(0, 3) === 'ООО'
+                  );
+                });
                 this.companies$.next(filteredCompanies);
               });
             return;

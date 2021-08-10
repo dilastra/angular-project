@@ -1,0 +1,53 @@
+.questionnaire {
+  &__container {
+    border-radius: var(--tui-radius-m);
+    border: 1px solid var(--tui-base-03);
+    padding: 16px;
+  }
+
+  &__section-container {
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    margin: 0;
+    line-height: 32px;
+  }
+
+  &__form {
+    &-controls {
+      display: flex;
+      margin-bottom: 16px;
+    }
+
+    &-control {
+      width: 100%;
+      margin-right: 16px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  &__checkbox {
+    &-control {
+      margin-bottom: 16px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    &-label {
+      color: var(--tui-text-01);
+    }
+  }
+
+  &__button-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__checkbox-label {
+    color: var(--tui-text-01);
+  }
+}

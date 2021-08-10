@@ -19,6 +19,16 @@ const routes: Routes = [
             (m) => m.StatutoryDocumentsModule
           ),
       },
+      {
+        path: 'beneficiaries',
+        loadChildren: () =>
+          import('./pages/beneficiaries').then((m) => m.BeneficiariesModule),
+      },
+      {
+        path: 'questionnaire',
+        loadChildren: () =>
+          import('./pages/questionnaire').then((m) => m.QuestionnaireModule),
+      },
     ],
   },
 ];

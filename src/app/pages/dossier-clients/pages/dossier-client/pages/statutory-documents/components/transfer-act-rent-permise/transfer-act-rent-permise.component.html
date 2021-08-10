@@ -1,0 +1,74 @@
+<form [formGroup]="transferActRentPermiseForm">
+  <div class="transfer-act-rent-permise__file-input-control-container">
+    <tui-input-file
+      class="transfer-act-rent-permise__file-input-control"
+      formControlName="file"
+      link="Выберите"
+      label="или перетащите сюда файл Акта приемки/передачи помещения в аренду"
+      [loadingFiles]="loadingFiles"
+    ></tui-input-file>
+    <button
+      tuiButton
+      type="button"
+      class="transfer-act-rent-permise__file-button-download"
+      size="m"
+      [showLoader]="isDownloadFile"
+      [disabled]="isDownloadFile"
+      (click)="downloadFile(getFormControl('file'))"
+      *ngIf="getFormControl('file')?.value && !loadingFiles.length"
+    >
+      Скачать файл
+    </button>
+  </div>
+  <div
+    class="transfer-act-rent-permise__input-controls-container"
+    *ngIf="getFormControl('file').value"
+  >
+    <div
+      class="
+        transfer-act-rent-permise__input-control
+        transfer-act-rent-permise__input-control_mb16
+      "
+    >
+      <tui-input
+        formControlName="docNumber"
+        [tuiTextfieldCleaner]="true"
+        tuiTextfieldExampleText="Например, 254331234"
+      >
+        Введите номер документа
+      </tui-input>
+      <tui-field-error formControlName="docNumber"></tui-field-error>
+    </div>
+    <div
+      class="
+        transfer-act-rent-permise__input-control
+        transfer-act-rent-permise__input-control_mb16
+      "
+    >
+      <tui-input-date
+        formControlName="dateSigning"
+        [tuiTextfieldCleaner]="true"
+        [min]="dateSigningContract"
+        tuiTextfieldExampleText="Например, 23.02.2019"
+      >
+        Дата подписания акта
+      </tui-input-date>
+      <tui-field-error formControlName="dateSigning"></tui-field-error>
+    </div>
+    <div class="transfer-act-rent-permise__button-container">
+      <button
+        class="transfer-act-rent-permise__button"
+        tuiButton
+        type="button"
+        size="m"
+        (click)="onSave()"
+        [disabled]="
+          transferActRentPermiseForm.untouched ||
+          transferActRentPermiseForm.invalid
+        "
+      >
+        Сохранить
+      </button>
+    </div>
+  </div>
+</form>

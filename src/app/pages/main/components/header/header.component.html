@@ -9,7 +9,11 @@
     </div>
     <div class="header__logo-container tui-text_h3">
       <img
-        src="../../../../../assets/logo/credex-logo.png"
+        src="{{
+          darkTheme
+            ? '/assets/logo/white-logo-for-header.png'
+            : '/assets/logo/base-logo-for-header.png'
+        }}"
         alt="logo"
         class="header__logo"
       />

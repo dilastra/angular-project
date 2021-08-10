@@ -1,0 +1,45 @@
+<tui-accordion>
+  <tui-accordion-item class="passport_mb16">
+    <h2 class="passport__title tui-text_h3">Паспорт</h2>
+    <ng-template tuiAccordionItemContent>
+      <form [formGroup]="passportForm">
+        <div class="passport__form-container">
+          <div class="passport__file-input-control-container">
+            <tui-input-file
+              class="passport__file-input-control"
+              formControlName="file"
+              link="Выберите"
+              label="или перетащите сюда файл скана первой страницы паспорта"
+              [loadingFiles]="loadingFiles"
+            ></tui-input-file>
+            <button
+              tuiButton
+              type="button"
+              class="passport__file-button-download"
+              size="m"
+              [showLoader]="isDownloadFile"
+              [disabled]="isDownloadFile"
+              (click)="downloadFile(getControl('file'))"
+              *ngIf="getControl('file')?.value"
+            >
+              Скачать файл
+            </button>
+          </div>
+          <credex-first-page-passport
+            *ngIf="getControl('file')?.value"
+            [passportForm]="passportForm"
+            [beneficiaryId]="beneficiaryId"
+            [companyClientId]="companyClientId"
+          >
+          </credex-first-page-passport>
+          <credex-place-residence
+            *ngIf="getControl('file')?.value"
+            [placeResidenceForm]="placeResidenceForm"
+            [beneficiaryId]="beneficiaryId"
+            [companyClientId]="companyClientId"
+          ></credex-place-residence>
+        </div>
+      </form>
+    </ng-template>
+  </tui-accordion-item>
+</tui-accordion>

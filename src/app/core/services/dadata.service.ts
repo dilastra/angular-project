@@ -9,13 +9,22 @@ import { environment } from 'src/environments/environment';
 export class DadataService {
   constructor(private http: HttpClient) {}
 
-  public getInnCompaniesFromDadata(
-    inn: string | null,
-    count: number
-  ): Observable<any> {
+  public getInnCompanies(inn: string | null, count: number): Observable<any> {
     return this.http.post(
       `${environment.dadataUrl}/4_1/rs/suggest/party`,
       { query: inn, count, status: ['ACTIVE'] },
+      {
+        headers: {
+          authorization: `Token ${environment.dadataApiKey}`,
+        },
+      }
+    );
+  }
+
+  public getAddresses(dadataSerachParams: any): Observable<any> {
+    return this.http.post(
+      `${environment.dadataUrl}/4_1/rs/suggest/address`,
+      dadataSerachParams,
       {
         headers: {
           authorization: `Token ${environment.dadataApiKey}`,

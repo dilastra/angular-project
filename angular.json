@@ -61,6 +61,7 @@
                   "maximumWarning": "5mb",
                   "maximumError": "5mb"
                 }
+                
               ],
               "fileReplacements": [
                 {

@@ -8,6 +8,7 @@ import {
   CompanyСharterComponent,
   LeaseAgreementPremisesComponent,
   OrganizationRegistrationCertificateComponent,
+  TransferActRentPermiseComponent,
 } from './components';
 
 @NgModule({
@@ -17,6 +18,7 @@ import {
     LeaseAgreementPremisesComponent,
     OrganizationRegistrationCertificateComponent,
     StatutoryDocumentsComponent,
+    TransferActRentPermiseComponent,
   ],
   imports: [CommonModule, SharedModule, StatutoryDocumentsRoutingModule],
 })

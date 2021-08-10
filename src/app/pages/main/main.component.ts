@@ -43,7 +43,7 @@ export class MainComponent implements OnInit, OnDestroy {
       this.themeSwitcherControl.valueChanges
         .pipe(distinctUntilChanged())
         .subscribe((isDarkTheme) => {
-          const currentTheme = isDarkTheme ? 'onDark' : null;
+          const currentTheme = isDarkTheme ? 'onDark' : '';
           return this.themeService.onChangeCurrentTheme(currentTheme);
         })
     );

@@ -1,0 +1,140 @@
+<tui-accordion>
+  <tui-accordion-item>
+    <h2 class="place-residence__title tui-text_h3">Место регистрации</h2>
+    <ng-template tuiAccordionItemContent>
+      <form [formGroup]="placeResidenceForm">
+        <div class="place-residence__form-container">
+          <div class="place-residence__form-controls">
+            <div
+              class="
+                place-residence__form-control place-residence__form-control_mb16
+              "
+            >
+              <tui-input
+                *tuiLet="searchAddresses$ | async as searchAddresses"
+                formControlName="city"
+                [tuiTextfieldCleaner]="true"
+                tuiTextfieldExampleText="Например, Москва"
+              >
+                Насёленный пункт
+                <ng-container *ngIf="searchAddresses?.length">
+                  <tui-data-list *tuiDataList>
+                    <button
+                      tuiOption
+                      *ngFor="let searchAddresse of searchAddresses"
+                      (click)="
+                        setFiasCode(setFiasCodeForSettlement(searchAddresse))
+                      "
+                      [value]="
+                        searchAddresse?.data?.city_with_type ??
+                        searchAddresse?.data?.settlement_with_type
+                      "
+                    >
+                      {{ searchAddresse?.value }}
+                    </button>
+                  </tui-data-list>
+                </ng-container>
+              </tui-input>
+              <tui-field-error formControlName="city"></tui-field-error>
+            </div>
+            <div
+              class="
+                place-residence__form-control place-residence__form-control_mb16
+              "
+            >
+              <tui-input
+                *tuiLet="searchAddresses$ | async as searchAddresses"
+                formControlName="street"
+                [tuiTextfieldCleaner]="true"
+                tuiTextfieldExampleText="Например, ул. Мира"
+              >
+                Улица
+                <ng-container *ngIf="searchAddresses?.length">
+                  <tui-data-list *tuiDataList>
+                    <button
+                      tuiOption
+                      *ngFor="let searchAddresse of searchAddresses"
+                      (click)="
+                        setFiasCode({
+                          street_fias_id: searchAddresse?.data?.street_fias_id
+                        });
+                        setZipCode(searchAddresse?.data?.postal_code)
+                      "
+                      [value]="searchAddresse?.data?.street_with_type"
+                    >
+                      {{ searchAddresse?.value }}
+                    </button>
+                  </tui-data-list>
+                </ng-container>
+              </tui-input>
+              <tui-field-error formControlName="street"></tui-field-error>
+            </div>
+            <div
+              class="
+                place-residence__form-control place-residence__form-control_mb16
+              "
+            >
+              <tui-input
+                *tuiLet="searchAddresses$ | async as searchAddresses"
+                formControlName="house"
+                [tuiTextfieldCleaner]="true"
+                tuiTextfieldExampleText="Например, 12"
+              >
+                Дом
+                <ng-container *ngIf="searchAddresses?.length">
+                  <tui-data-list *tuiDataList>
+                    <button
+                      tuiOption
+                      *ngFor="let searchAddresse of searchAddresses"
+                      [value]="searchAddresse?.value"
+                    >
+                      {{ searchAddresse?.value }}
+                    </button>
+                  </tui-data-list>
+                </ng-container>
+              </tui-input>
+              <tui-field-error formControlName="house"></tui-field-error>
+            </div>
+            <div
+              class="
+                place-residence__form-control place-residence__form-control_mb16
+              "
+            >
+              <tui-input
+                formControlName="flat"
+                [tuiTextfieldCleaner]="true"
+                tuiTextfieldExampleText="Например, 34"
+              >
+                Квартира
+              </tui-input>
+              <tui-field-error formControlName="flat"></tui-field-error>
+            </div>
+            <div class="place-residence__form-control">
+              <tui-input
+                formControlName="zip_code"
+                [tuiTextfieldCleaner]="true"
+                tuiTextfieldExampleText="Например, 123456"
+                [textMask]="zipCodeMask"
+                >Индекс</tui-input
+              >
+              <tui-field-error formControlName="zip_code"></tui-field-error>
+            </div>
+          </div>
+          <div class="place-residence__form-button-container">
+            <button
+              tuiButton
+              type="button"
+              size="m"
+              (click)="onSave()"
+              [disabled]="
+                placeResidenceForm.invalid || placeResidenceForm.untouched
+              "
+            >
+              Сохранить
+            </button>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+  </tui-accordion-item>
+</tui-accordion>
