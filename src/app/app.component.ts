@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TuiBrightness } from '@taiga-ui/core';
-import { ThemeService } from './core';
+import { LoaderService, ThemeService } from './core';
 
 @Component({
   selector: 'credex-root',
@@ -8,13 +8,21 @@ import { ThemeService } from './core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  public isShowLoader = false;
+
   public theme: TuiBrightness | any = '';
 
-  constructor(private themeService: ThemeService) {
+  constructor(
+    private themeService: ThemeService,
+    private loaderService: LoaderService
+  ) {
     this.themeService.theme$.subscribe((currentTheme) => {
       setTimeout(() => {
         this.theme = currentTheme;
       }, 0);
+    });
+    this.loaderService.isShowLoader.subscribe((isShowLoader) => {
+      this.isShowLoader = isShowLoader;
     });
   }
 }

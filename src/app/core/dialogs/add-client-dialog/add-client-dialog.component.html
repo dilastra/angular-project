@@ -1,14 +1,14 @@
 <div class="add-client-dialog__container">
   <h1 class="add-client-dialog__title">Добавление клиента</h1>
   <form [formGroup]="formAddClient">
-    <div class="add-client-dialog__form-control">
+    <div class="add-client-dialog__form-control" *ngIf="!selectedCompany">
       <tui-input
         *tuiLet="companies$ | async as companies"
         formControlName="innClient"
         [tuiTextfieldCleaner]="true"
-        tuiTextfieldExampleText="Например, Пример или 12345678901"
+        tuiTextfieldExampleText="Например, 12345678901"
       >
-        ИНН или Название компании
+        ИНН, ОГРН, название компании
         <tui-data-list *tuiDataList>
           <button
             tuiOption
@@ -41,6 +41,16 @@
         <div class="add-client-dialog__form-control">
           <tui-input
             [readOnly]="true"
+            [ngModel]="selectedCompany?.inn"
+            (ngModelChange)="selectedCompany.data.inn = $event"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            ИНН компании
+          </tui-input>
+        </div>
+        <div class="add-client-dialog__form-control">
+          <tui-input
+            [readOnly]="true"
             [ngModel]="selectedCompany?.ogrn"
             (ngModelChange)="selectedCompany.data.ogrn = $event"
             [ngModelOptions]="{ standalone: true }"
@@ -66,16 +76,15 @@
         [tuiTextfieldCleaner]="true"
         tuiTextfieldExampleText="Например, УСН"
         [valueContent]="nameOfTaxSystem"
-        title="{{ nameOfTaxSystem }}"
       >
         Система налогооблажения
         <tui-data-list *tuiDataList>
-          <button tuiOption [value]="0">{{ taxSystems[0] }}</button>
-          <button tuiOption [value]="1">{{ taxSystems[1] }}</button>
-          <button tuiOption [value]="2">{{ taxSystems[2] }}</button>
-          <button tuiOption [value]="3">{{ taxSystems[3] }}</button>
-          <button tuiOption [value]="4">{{ taxSystems[4] }}</button>
-          <button tuiOption [value]="5">{{ taxSystems[5] }}</button>
+          <button tuiOption [value]="0">{{ taxSystemsRus[0] }}</button>
+          <button tuiOption [value]="1">{{ taxSystemsRus[1] }}</button>
+          <button tuiOption [value]="2">{{ taxSystemsRus[2] }}</button>
+          <button tuiOption [value]="3">{{ taxSystemsRus[3] }}</button>
+          <button tuiOption [value]="4">{{ taxSystemsRus[4] }}</button>
+          <button tuiOption [value]="5">{{ taxSystemsRus[5] }}</button>
         </tui-data-list>
       </tui-select>
       <tui-field-error formControlName="taxSystem"></tui-field-error>
@@ -104,6 +113,16 @@
         (click)="onCancel()"
       >
         Отмена
+      </button>
+      <button
+        tuiButton
+        type="button"
+        appearance="flat"
+        *ngIf="selectedCompany"
+        (click)="clearSelectedCompany()"
+        size="m"
+      >
+        Очистить
       </button>
       <button
         tuiButton

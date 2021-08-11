@@ -17,13 +17,14 @@ export class DadataService {
 
   public getAddresses(dadataSerachParams: any): Observable<any> {
     return this.http.post(
-      `${environment.dadataUrl}/4_1/rs/suggest/address`,
-      dadataSerachParams,
-      {
-        headers: {
-          authorization: `Token ${environment.dadataApiKey}`,
-        },
-      }
+      `${environment.endPoint}/dadata/address`,
+      dadataSerachParams
+    );
+  }
+
+  public getTaxSystemCompany(inn: string): Observable<any> {
+    return this.http.get(
+      `${environment.endPoint}/dadata/company/tax-system?inn=${inn}`
     );
   }
 }

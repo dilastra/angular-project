@@ -3,7 +3,6 @@ import {
   Component,
   Inject,
   Injector,
-  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -13,10 +12,15 @@ import {
   PolymorpheusComponent,
   POLYMORPHEUS_CONTEXT,
 } from '@tinkoff/ng-polymorpheus';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { ClientCompanyType, ProductsOnRus, TaxSystems } from '../../enums';
-import { ClientsCompanyService, DadataService } from '../../services';
+import { ClientCompanyType, ProductsOnRus } from '../../enums';
+import { TaxSystemsEng, TaxSystemsRus } from '../../enums/tax-systems.enum';
+import {
+  ClientsCompanyService,
+  DadataService,
+  LoaderService,
+} from '../../services';
 import { ResultDialogComponent } from '../result-dialog';
 
 @Component({
@@ -26,10 +30,12 @@ import { ResultDialogComponent } from '../result-dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [TuiDestroyService],
 })
-export class AddClientDialogComponent implements OnInit, OnDestroy {
+export class AddClientDialogComponent implements OnInit {
   public companies$ = new BehaviorSubject<any>([]);
 
-  public taxSystems = TaxSystems;
+  public taxSystemsRus = TaxSystemsRus;
+
+  public taxSystemsEng = TaxSystemsEng;
 
   public productsOnRus = ProductsOnRus;
 
@@ -43,76 +49,87 @@ export class AddClientDialogComponent implements OnInit, OnDestroy {
 
   public nameOfBankProduct = '';
 
-  public subscription = new Subscription();
-
   constructor(
     @Inject(Injector) private readonly injector: Injector,
     @Inject(POLYMORPHEUS_CONTEXT)
     private readonly context: TuiDialogContext<any>,
     private build: FormBuilder,
     private clientsCompanyService: ClientsCompanyService,
+    private loaderService: LoaderService,
     public dadataService: DadataService,
     private dialogService: TuiDialogService,
     private destroy$: TuiDestroyService
   ) {
     this.formAddClient = this.build.group({
-      innClient: [null, Validators.required],
+      innClient: null,
       taxSystem: [null, Validators.required],
       product: [null, Validators.required],
     });
   }
 
   public ngOnInit() {
-    this.subscription.add(
-      this.formAddClient.controls.innClient.valueChanges
-        .pipe(debounceTime(300), takeUntil(this.destroy$))
-        .subscribe((inn: string) => {
-          if (inn) {
-            this.dadataService
-              .getInnCompanies(inn, 10)
-              .subscribe(({ suggestions: companies }: any) => {
-                const filteredCompanies = companies.filter((company: any) => {
-                  return (
-                    company?.data?.name?.short_with_opf.slice(0, 3) === 'ООО'
-                  );
-                });
-                this.companies$.next(filteredCompanies);
+    this.formAddClient.controls.innClient.valueChanges
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe((inn: string) => {
+        if (inn) {
+          this.dadataService
+            .getInnCompanies(inn, 10)
+            .subscribe(({ suggestions: companies }: any) => {
+              const filteredCompanies = companies.filter((company: any) => {
+                return (
+                  company?.data?.name?.short_with_opf.slice(0, 3) === 'ООО'
+                );
               });
-            return;
-          }
-          this.selectedCompany = undefined;
+              this.companies$.next(filteredCompanies);
+            });
+          return;
+        }
+        this.selectedCompany = undefined;
 
-          return this.companies$.next([]);
-        })
-    );
+        return this.companies$.next([]);
+      });
 
-    this.subscription.add(
-      this.formAddClient.controls.taxSystem.valueChanges
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((taxSystem: number) => {
-          this.nameOfTaxSystem = this.taxSystems[taxSystem];
-        })
-    );
+    this.formAddClient.controls.taxSystem.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((taxSystem: number) => {
+        this.nameOfTaxSystem = this.taxSystemsRus[taxSystem];
+      });
 
-    this.subscription.add(
-      this.formAddClient.controls.product.valueChanges
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((product) => {
-          this.nameOfBankProduct = this.productsOnRus[product];
-        })
-    );
-  }
-
-  public ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.formAddClient.controls.product.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((product) => {
+        this.nameOfBankProduct = this.productsOnRus[product];
+      });
   }
 
   public selectCompany(company: any) {
-    this.selectedCompany = company?.data;
+    this.loaderService.show();
+    this.dadataService
+      .getTaxSystemCompany(company?.data?.inn)
+      .subscribe(({ tax_system }) => {
+        if (tax_system) {
+          this.formAddClient.patchValue(
+            {
+              taxSystem: this.taxSystemsEng[tax_system],
+            },
+            { emitEvent: false }
+          );
+
+          this.formAddClient.controls['taxSystem'].disable();
+        }
+        this.selectedCompany = company?.data;
+
+        this.loaderService.hide();
+      });
   }
 
   public onCancel() {
     this.context.completeWith(false);
+  }
+
+  public clearSelectedCompany() {
+    this.formAddClient.controls.innClient.setValue(null);
+    this.selectedCompany = undefined;
   }
 
   public onAddNewClient() {
@@ -127,28 +144,26 @@ export class AddClientDialogComponent implements OnInit, OnDestroy {
       tax_system: this.formAddClient.controls.taxSystem.value,
       type: this.clientCompanyType[this.selectedCompany?.type],
     };
-    this.subscription.add(
-      this.clientsCompanyService.addNewCompanyClient(body).subscribe(
-        () => {
-          const dataForDialog = {
-            title: 'Операция проведена успешно',
-            desc: 'Компания клиента была успешно добавлена',
-          };
-          this.subscription.add(
-            this.onResult(dataForDialog).subscribe(() => {
-              this.context.completeWith(true);
-            })
-          );
-        },
-        (error) => {
-          console.log(error);
-          const dataForDialog = {
-            title: 'Операция не была проведена',
-            desc: 'Компания клиента не была добавлена. Попробуйте позже.',
-          };
-          this.subscription.add(this.onResult(dataForDialog).subscribe());
-        }
-      )
+    this.clientsCompanyService.addNewCompanyClient(body).subscribe(
+      () => {
+        const dataForDialog = {
+          title: 'Операция проведена успешно',
+          desc: 'Компания клиента была успешно добавлена',
+        };
+        this.onResult(dataForDialog)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(() => {
+            this.context.completeWith(true);
+          });
+      },
+      (error) => {
+        console.log(error);
+        const dataForDialog = {
+          title: 'Операция не была проведена',
+          desc: 'Компания клиента не была добавлена. Попробуйте позже.',
+        };
+        this.onResult(dataForDialog).pipe(takeUntil(this.destroy$)).subscribe();
+      }
     );
   }
 
