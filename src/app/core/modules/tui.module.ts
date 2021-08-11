@@ -3,7 +3,7 @@ import {
   TuiTableModule,
   TuiTablePaginationModule,
 } from '@taiga-ui/addon-table';
-import { TuiLetModule } from '@taiga-ui/cdk';
+import { TuiAutoFocusModule, TuiLetModule } from '@taiga-ui/cdk';
 import {
   TuiButtonModule,
   TuiDataListModule,
@@ -49,6 +49,7 @@ import {
     TuiInputPhoneModule,
     TuiLetModule,
     TuiLinkModule,
+    TuiAutoFocusModule,
     TuiLoaderModule,
     TuiMarkerIconModule,
     TuiScrollbarModule,

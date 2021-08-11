@@ -8,6 +8,19 @@
     </div>
   </div>
   <div class="clients__table-container">
+    <div class="clients__filters-container">
+      <div class="clients__filter-container">
+        <tui-input
+          tuiTextfieldSize="m"
+          [tuiTextfieldCleaner]="true"
+          tuiAutoFocus
+          [formControl]="search"
+          tuiTextfieldExampleText="Например, ООО 'Пример'"
+        >
+          Поиск по наименованию клиента
+        </tui-input>
+      </div>
+    </div>
     <tui-scrollbar>
       <table tuiTable class="clients__table" [columns]="columns">
         <thead>
@@ -43,9 +56,14 @@
               </ng-container>
             </tr>
           </ng-container>
-          <ng-container *ngIf="!clientCompanies?.length">
+          <ng-container *ngIf="!clientCompanies?.length && !isSearch">
             <td [colSpan]="columns?.length" tuiTd [style.textAlign]="'center'">
               Данные о компаниях клиентов не найдены
+            </td>
+          </ng-container>
+          <ng-container *ngIf="isSearch">
+            <td [colSpan]="columns?.length" tuiTd [style.textAlign]="'center'">
+              <tui-loader></tui-loader>
             </td>
           </ng-container>
         </tbody>

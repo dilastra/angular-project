@@ -9,8 +9,12 @@ import { environment } from 'src/environments/environment';
 export class ClientsCompanyService {
   constructor(private http: HttpClient) {}
 
-  public fetchClientsCompany(): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.endPoint}/client-company/list`);
+  public fetchClientsCompany(search = ''): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.endPoint}/client-company/list`, {
+      params: {
+        search,
+      },
+    });
   }
 
   public addNewCompanyClient(body: any) {
