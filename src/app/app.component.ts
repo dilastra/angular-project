@@ -21,7 +21,7 @@ export class AppComponent {
         this.theme = currentTheme;
       }, 0);
     });
-    this.loaderService.isShowLoader.subscribe((isShowLoader) => {
+    this.loaderService.isShowLoader.subscribe((isShowLoader: boolean) => {
       this.isShowLoader = isShowLoader;
     });
   }
