@@ -3,6 +3,18 @@
     <h1 class="dossier-clients__title tui-text_h2">Досье клиентов</h1>
   </div>
   <div class="dossier-clients__table-container">
+    <div class="dossier-clients__filters-container">
+      <div class="dossier-clients__filter-container">
+        <tui-input
+          tuiTextfieldSize="m"
+          [tuiTextfieldCleaner]="true"
+          [formControl]="search"
+          tuiTextfieldExampleText="Например, ООО 'Пример'"
+        >
+          Поиск по наименованию клиента
+        </tui-input>
+      </div>
+    </div>
     <tui-scrollbar>
       <table tuiTable class="dossier-clients__table" [columns]="columns">
         <thead>
@@ -41,9 +53,14 @@
               </td>
             </tr>
           </ng-container>
-          <ng-container *ngIf="!clientCompanies.length">
-            <td [colSpan]="columns.length" tuiTd [style.textAlign]="'center'">
+          <ng-container *ngIf="!clientCompanies?.length && !isSearch">
+            <td [colSpan]="columns?.length" tuiTd [style.textAlign]="'center'">
               Данные о компаниях клиентов не найдены
+            </td>
+          </ng-container>
+          <ng-container *ngIf="isSearch">
+            <td [colSpan]="columns?.length" tuiTd [style.textAlign]="'center'">
+              <tui-loader></tui-loader>
             </td>
           </ng-container>
         </tbody>
