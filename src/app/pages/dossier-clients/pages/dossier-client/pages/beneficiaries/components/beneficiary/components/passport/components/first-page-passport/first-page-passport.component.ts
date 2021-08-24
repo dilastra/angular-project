@@ -20,7 +20,7 @@ export class FirstPagePassportComponent implements OnInit {
   public seriesMask = { mask: [/\d/, /\d/, '-', /\d/, /\d/], guide: true };
 
   public numberMask = {
-    mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
+    mask: [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
     guide: true,
   };
 
@@ -38,13 +38,13 @@ export class FirstPagePassportComponent implements OnInit {
 
   public onSave() {
     this.loader.show();
-    const { file, date_from, ...otherValue } = this.passportForm.value;
-
-    console.log(date_from);
+    const { file, date_from, date_born, ...otherValue } =
+      this.passportForm.value;
 
     const model = {
       file_id: file.id,
       date_from: typeof date_from === 'string' ? date_from : date_from.toJSON(),
+      date_born: typeof date_born === 'string' ? date_born : date_born.toJSON(),
       ...otherValue,
     };
     this.beneficiaryService

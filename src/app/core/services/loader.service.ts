@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class LoaderService {
-  public isShowLoader = new BehaviorSubject(true);
+  public isShowLoader = new BehaviorSubject(false);
 
   public show() {
     setTimeout(() => {

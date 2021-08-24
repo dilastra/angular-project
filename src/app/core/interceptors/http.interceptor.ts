@@ -19,7 +19,7 @@ export class HttpInterceptor implements HttpInterceptor {
   public intercept(req: HttpRequest<any>, next: HttpHandler) {
     if (
       req.url.indexOf('api/bank/list') !== -1 ||
-      req.url.indexOf('dadata') !== -1
+      req.url.indexOf('suggest') !== -1
     ) {
       return next.handle(req);
     }

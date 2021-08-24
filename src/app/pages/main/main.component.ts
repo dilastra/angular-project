@@ -1,62 +1,45 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
-import { LoaderService, ThemeService, User, UserService } from '../../core';
+import { TuiDestroyService } from '@taiga-ui/cdk';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { ThemeService, User, UserService } from '../../core';
 
 @Component({
   selector: 'credex-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
+  providers: [TuiDestroyService],
 })
-export class MainComponent implements OnInit, OnDestroy {
+export class MainComponent implements OnInit {
   public themeSwitcherControl: FormControl;
-
-  public subscriptions = new Subscription();
-
-  public isShowLoader = false;
 
   public isOpenedSidenav = false;
 
   constructor(
-    private loaderService: LoaderService,
     private userService: UserService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private destroy$: TuiDestroyService
   ) {
     this.themeSwitcherControl = new FormControl(false);
-
-    this.subscriptions.add(
-      this.loaderService.isShowLoader.subscribe((isShowLoader) => {
-        this.isShowLoader = isShowLoader;
-      })
-    );
   }
 
   public ngOnInit(): void {
-    this.subscriptions.add(
-      this.userService.fetchUser().subscribe((user: User) => {
-        this.userService.setUser(user);
-      })
-    );
+    this.userService.fetchUser().subscribe((user: User) => {
+      this.userService.setUser(user);
+    });
 
-    this.subscriptions.add(
-      this.themeSwitcherControl.valueChanges
-        .pipe(distinctUntilChanged())
-        .subscribe((isDarkTheme) => {
-          const currentTheme = isDarkTheme ? 'onDark' : '';
-          return this.themeService.onChangeCurrentTheme(currentTheme);
-        })
-    );
+    this.themeSwitcherControl.valueChanges
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((isDarkTheme) => {
+        const currentTheme = isDarkTheme ? 'onDark' : '';
+        return this.themeService.onChangeCurrentTheme(currentTheme);
+      });
 
-    this.subscriptions.add(
-      this.themeService.theme$.subscribe((currentTheme) => {
+    this.themeService.theme$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((currentTheme) => {
         this.themeSwitcherControl.setValue(currentTheme === 'onDark');
-      })
-    );
-  }
-
-  public ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+      });
   }
 
   public onOpenSidenavEvent(isOpenedSidenav: boolean) {

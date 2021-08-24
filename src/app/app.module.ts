@@ -5,6 +5,7 @@ import {
   TuiThemeNightModule,
   TuiModeModule,
   TuiDialogModule,
+  TuiLoaderModule,
 } from '@taiga-ui/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
@@ -27,6 +28,7 @@ import { TextMaskModule } from 'angular2-text-mask';
     TuiDialogModule,
     TuiModeModule,
     TuiThemeNightModule,
+    TuiLoaderModule,
     TextMaskModule,
   ],
   providers: [

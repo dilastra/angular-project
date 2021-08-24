@@ -1,4 +1,12 @@
-<tui-theme-night *ngIf="theme === 'onDark'"></tui-theme-night>
-<tui-root [tuiMode]="theme">
-  <router-outlet></router-outlet>
-</tui-root>
+<tui-loader
+  [showLoader]="isShowLoader"
+  [overlay]="true"
+  [inheritColor]="true"
+  size="xl"
+  textContent="Загрузка..."
+>
+  <tui-theme-night *ngIf="theme === 'onDark'"></tui-theme-night>
+  <tui-root [tuiMode]="theme">
+    <router-outlet></router-outlet>
+  </tui-root>
+</tui-loader>
