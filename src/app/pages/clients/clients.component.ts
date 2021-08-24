@@ -4,10 +4,11 @@ import { TuiDestroyService } from '@taiga-ui/cdk';
 import { TuiDialogService } from '@taiga-ui/core';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { Subscription } from 'rxjs';
+import { Subscription, zip } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import {
   AddClientDialogComponent,
+  BankService,
   ClientsCompanyService,
   LoaderService,
   ProductsOnRus,
@@ -28,13 +29,7 @@ import {
   ],
 })
 export class ClientsComponent implements OnInit {
-  readonly columns: string[] = [
-    'innClient',
-    'name',
-    'address',
-    'product',
-    'bank',
-  ];
+  public columns: string[] = ['innClient', 'name', 'address', 'product'];
 
   public loading = true;
 
@@ -43,6 +38,8 @@ export class ClientsComponent implements OnInit {
   public subscription = new Subscription();
 
   public clientCompanies: any[] = [];
+
+  public banks: any[] = [];
 
   public search: FormControl = new FormControl();
 
@@ -53,15 +50,25 @@ export class ClientsComponent implements OnInit {
     @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
     private loaderService: LoaderService,
     private clientsCompanyService: ClientsCompanyService,
-    private destroy$: TuiDestroyService
+    private destroy$: TuiDestroyService,
+    private bankService: BankService
   ) {}
 
   public ngOnInit() {
     this.loaderService.show();
-    this.getClientsCompany().subscribe((clientCompanies: any[]) => {
-      this.clientCompanies = clientCompanies;
-      this.loaderService.hide();
-    });
+    zip(this.getClientsCompany(), this.bankService.getBankList()).subscribe(
+      ([clientCompanies, banks]: any[]) => {
+        this.banks = banks;
+        this.banks.forEach(({ id }) => {
+          this.columns.push(`bank_${id}`);
+        });
+        this.clientCompanies = clientCompanies;
+        this.loaderService.hide();
+      },
+      () => {
+        this.loaderService.hide();
+      }
+    );
 
     this.search.valueChanges
       .pipe(debounceTime(500), takeUntil(this.destroy$))
@@ -98,5 +105,17 @@ export class ClientsComponent implements OnInit {
           }
         })
     );
+  }
+
+  public getAttachedStatus(bankId: string, client: any) {
+    return client.client_company_banks.find(
+      ({ bank_id }: { bank_id: string }) => bank_id === bankId
+    )?.is_client_attached
+      ? 'Занят'
+      : 'Свободен';
+  }
+
+  public getTuiCellName(bankId: string) {
+    return `bank_${bankId}`;
   }
 }
