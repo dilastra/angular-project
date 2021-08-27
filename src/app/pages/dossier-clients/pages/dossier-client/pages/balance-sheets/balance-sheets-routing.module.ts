@@ -6,6 +6,19 @@ const routes: Routes = [
   {
     path: '',
     component: BalanceSheetsComponent,
+    children: [
+      { path: '', redirectTo: 'current', pathMatch: 'full' },
+      {
+        path: 'current',
+        loadChildren: () =>
+          import('./pages').then((m) => m.CurrentBalanceSheetsModule),
+      },
+      {
+        path: 'archive',
+        loadChildren: () =>
+          import('./pages').then((m) => m.ArchiveBalanceSheetsModule),
+      },
+    ],
   },
 ];
 

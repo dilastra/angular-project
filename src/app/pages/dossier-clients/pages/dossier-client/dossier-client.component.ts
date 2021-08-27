@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ClientsCompanyService, DossierService } from 'src/app/core';
+import { ClientsCompanyService } from 'src/app/core';
 
 @Component({
   selector: 'credex-dossier-client',
@@ -17,7 +17,6 @@ export class DossierClientComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private dossierService: DossierService,
     private clientsCompanyService: ClientsCompanyService
   ) {}
 

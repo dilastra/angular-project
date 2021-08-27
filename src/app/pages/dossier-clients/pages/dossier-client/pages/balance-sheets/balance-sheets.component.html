@@ -1,1 +1,9 @@
-<p>balance-sheets works!</p>
+<div class="balance-sheets__container">
+  <tui-tabs>
+    <button tuiTab routerLink="./current" routerLinkActive>Текущие</button>
+    <button tuiTab routerLink="./archive" routerLinkActive>Архив</button>
+  </tui-tabs>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
