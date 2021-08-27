@@ -29,6 +29,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/questionnaire').then((m) => m.QuestionnaireModule),
       },
+      {
+        path: 'balance-sheets',
+        loadChildren: () =>
+          import('./pages/balance-sheets').then((m) => m.BalanceSheetsModule),
+      },
     ],
   },
 ];
