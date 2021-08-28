@@ -60,7 +60,7 @@ export class QuestionnaireComponent implements OnInit {
 
   public ngOnInit(): void {
     this.loader.show();
-    this.companyClientId = this.route.parent?.parent?.snapshot.params?.id;
+    this.companyClientId = this.route.snapshot.params.id;
 
     this.questionnaireService
       .getQuestionnaireClientCompany(this.companyClientId)

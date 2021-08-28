@@ -10,3 +10,4 @@ export { LoaderService } from './loader.service';
 export { QuestionnaireService } from './questionnaire.service';
 export { ThemeService } from './theme.service';
 export { UserService } from './user.service';
+export { BalanceSheetsService } from './balance-sheets.service';

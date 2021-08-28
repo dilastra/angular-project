@@ -37,7 +37,7 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.loader.show();
-    this.companyClientId = this.route.parent?.parent?.snapshot.params?.id;
+    this.companyClientId = this.route.snapshot.params.id;
     this.subscriptions.add(
       this.beneficiaryService
         .getBeneficiariesClientCompany(this.companyClientId)

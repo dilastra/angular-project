@@ -1,0 +1,22 @@
+<tui-accordion class="balance-sheets-forms-accordion__container">
+  <tui-accordion-item>
+    <h2 class="balance-sheet-form-accordion__title">
+      Бухгалтерский баланс (Форма №1)
+    </h2>
+    <ng-template tuiAccordionItemContent>
+      <credex-balance-sheets-form-one
+        [balanceSheetsFormOne]="balanceSheetsFormOne"
+      ></credex-balance-sheets-form-one>
+    </ng-template>
+  </tui-accordion-item>
+  <tui-accordion-item>
+    <h2 class="balance-sheet-form-accordion__title">
+      Отчет о финансовых результатах (Форма 2)
+    </h2>
+    <ng-template tuiAccordionItemContent>
+      <credex-balance-sheets-form-two
+        [balanceSheetsFormTwo]="balanceSheetsFormTwo"
+      ></credex-balance-sheets-form-two>
+    </ng-template>
+  </tui-accordion-item>
+</tui-accordion>
