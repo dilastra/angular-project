@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { zip } from 'rxjs';
 import { BalanceSheetsService } from 'src/app/core';
 
 @Component({
@@ -22,12 +21,42 @@ export class CurrentBalanceSheetsComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    zip(
-      this.balanceSheetsService.getFormBalanceSheet(this.clientCompanyId, 1),
-      this.balanceSheetsService.getFormBalanceSheet(this.clientCompanyId, 2)
-    ).subscribe(([balanceSheetsFormOne, balanceSheetsFormTwo]) => {
+    this.getBalanceSheetsFormOne().subscribe((balanceSheetsFormOne) => {
       this.balanceSheetsFormOne = balanceSheetsFormOne;
+    });
+
+    this.getBalanceSheetsFormTwo().subscribe((balanceSheetsFormTwo) => {
       this.balanceSheetsFormTwo = balanceSheetsFormTwo;
     });
+  }
+
+  public updateForm(typeForm: number) {
+    if (typeForm === 1) {
+      this.getBalanceSheetsFormOne().subscribe((balanceSheetsFormOne) => {
+        this.balanceSheetsFormOne = balanceSheetsFormOne;
+        return;
+      });
+    }
+
+    if (typeForm === 2) {
+      this.getBalanceSheetsFormTwo().subscribe((balanceSheetsFormTwo) => {
+        this.balanceSheetsFormTwo = balanceSheetsFormTwo;
+        return;
+      });
+    }
+  }
+
+  public getBalanceSheetsFormOne() {
+    return this.balanceSheetsService.getFormBalanceSheet(
+      this.clientCompanyId,
+      1
+    );
+  }
+
+  public getBalanceSheetsFormTwo() {
+    return this.balanceSheetsService.getFormBalanceSheet(
+      this.clientCompanyId,
+      2
+    );
   }
 }

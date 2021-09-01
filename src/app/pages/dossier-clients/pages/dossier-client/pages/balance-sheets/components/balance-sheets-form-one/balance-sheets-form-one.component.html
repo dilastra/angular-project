@@ -20,278 +20,308 @@
       Скачать файл
     </button>
   </div>
-  <div class="balance-sheets-form-one__table-container">
-    <table tuiTable class="balance-sheets-form-one__table" [columns]="columns">
-      <thead>
-        <tr tuiThGroup>
-          <th tuiTh rowspan="2" *tuiHead="'Indicator names'">
-            Наименования показателя
-          </th>
-          <th tuiTh rowspan="2" *tuiHead="'code'">Код</th>
-          <th tuiTh colspan="2" *tuiHead="'dateQuarter'">Значения в рублях</th>
+  <ng-template [ngIf]="fileControl.value">
+    <div class="balance-sheets-form-one__table-container">
+      <table
+        tuiTable
+        class="balance-sheets-form-one__table"
+        [columns]="columns"
+      >
+        <thead>
+          <tr tuiThGroup>
+            <th tuiTh rowspan="2" *tuiHead="'Indicator names'">
+              Наименования показателя
+            </th>
+            <th tuiTh rowspan="2" *tuiHead="'code'">Код</th>
+            <th tuiTh colspan="2" *tuiHead="'dateQuarter'">
+              Значения в рублях
+            </th>
+          </tr>
+          <tr tuiThGroup>
+            <th
+              tuiTh
+              class="balance-sheets-form-one__table-head_border-left-none"
+              *tuiHead="'dateQuarter'"
+            >
+              {{ dateQuarter | date: "dd.MM.YYYY" }}
+            </th>
+            <th tuiTh *tuiHead="'dateYear'">
+              {{ dateYear | date: "dd.MM.YYYY" }}
+            </th>
+          </tr>
+        </thead>
+        <tr class="balance-sheets-form-one__table-row">
+          <td class="balance-sheets-form-one__table-data-cell" colspan="100%">
+            Актив
+          </td>
         </tr>
-        <tr tuiThGroup>
-          <th
-            tuiTh
-            class="balance-sheets-form-one__table-head_border-left-none"
-            *tuiHead="'dateQuarter'"
+        <tbody
+          tuiTbody
+          [heading]="nonCurrentAssets"
+          [data]="balanceSheets.active.nonCurrentAssets"
+          [open]="false"
+        >
+          <tr
+            *tuiRow="
+              let nonCurrentAsset of balanceSheets.active.nonCurrentAssets
+            "
+            tuiTr
           >
-            {{ dateQuarter | date: "dd.MM.YYYY" }}
-          </th>
-          <th tuiTh *tuiHead="'dateYear'">
-            {{ dateYear | date: "dd.MM.YYYY" }}
-          </th>
-        </tr>
-      </thead>
-      <tr class="balance-sheets-form-one__table-row">
-        <td class="balance-sheets-form-one__table-data-cell" colspan="100%">
-          Актив
-        </td>
-      </tr>
-      <tbody
-        tuiTbody
-        [heading]="nonCurrentAssets"
-        [data]="balanceSheets.active.nonCurrentAssets"
-        [open]="false"
-      >
-        <tr
-          *tuiRow="let nonCurrentAsset of balanceSheets.active.nonCurrentAssets"
-          tuiTr
+            <td tuiTd *tuiCell="'Indicator names'">
+              {{ nonCurrentAsset.template.title }}
+            </td>
+            <td tuiTd *tuiCell="'code'">
+              {{ nonCurrentAsset.template.code }}
+            </td>
+            <td tuiTd *tuiCell="'dateQuarter'">
+              <tui-input-number
+                [ngModel]="nonCurrentAsset.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    nonCurrentAsset.template.code,
+                    0,
+                    nonCurrentAsset.value,
+                    ['active', 'nonCurrentAssets']
+                  )
+                "
+              ></tui-input-number>
+            </td>
+            <td tuiTd *tuiCell="'dateYear'">
+              <tui-input-number
+                [ngModel]="nonCurrentAsset.value[1]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    nonCurrentAsset.template.code,
+                    1,
+                    nonCurrentAsset.value,
+                    ['active', 'nonCurrentAssets']
+                  )
+                "
+              ></tui-input-number>
+            </td>
+          </tr>
+        </tbody>
+        <tbody
+          tuiTbody
+          [heading]="currentAssets"
+          [data]="balanceSheets.active.currentAssets"
+          [open]="false"
         >
-          <td tuiTd *tuiCell="'Indicator names'">
-            {{ nonCurrentAsset.template.title }}
-          </td>
-          <td tuiTd *tuiCell="'code'">
-            {{ nonCurrentAsset.template.code }}
-          </td>
-          <td tuiTd *tuiCell="'dateQuarter'">
-            <tui-input-number
-              [ngModel]="nonCurrentAsset.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  nonCurrentAsset.template.code,
-                  0,
-                  nonCurrentAsset.value,
-                  balanceSheets
-                )
-              "
-            ></tui-input-number>
-          </td>
-          <td tuiTd *tuiCell="'dateYear'">
-            <tui-input-number
-              [ngModel]="nonCurrentAsset.value[1]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  nonCurrentAsset.template.code,
-                  1,
-                  nonCurrentAsset.value
-                )
-              "
-            ></tui-input-number>
+          <tr
+            *tuiRow="let currentAsset of balanceSheets.active.currentAssets"
+            tuiTr
+          >
+            <td tuiTd *tuiCell="'Indicator names'">
+              {{ currentAsset.template.title }}
+            </td>
+            <td tuiTd *tuiCell="'code'">
+              {{ currentAsset.template.code }}
+            </td>
+            <td tuiTd *tuiCell="'dateQuarter'">
+              <tui-input-number
+                [ngModel]="currentAsset.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    currentAsset.template.code,
+                    0,
+                    currentAsset.value,
+                    ['active', 'currentAssets']
+                  )
+                "
+              ></tui-input-number>
+            </td>
+            <td tuiTd *tuiCell="'dateYear'">
+              <tui-input-number
+                [ngModel]="currentAsset.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    currentAsset.template.code,
+                    1,
+                    currentAsset.value,
+                    ['active', 'currentAssets']
+                  )
+                "
+              ></tui-input-number>
+            </td>
+          </tr>
+        </tbody>
+        <tr class="balance-sheets-form-one__table-row">
+          <td class="balance-sheets-form-one__table-data-cell" colspan="100%">
+            Пассив
           </td>
         </tr>
-      </tbody>
-      <tbody
-        tuiTbody
-        [heading]="currentAssets"
-        [data]="balanceSheets.active.currentAssets"
-        [open]="false"
-      >
-        <tr
-          *tuiRow="let currentAsset of balanceSheets.active.currentAssets"
-          tuiTr
+        <tbody
+          tuiTbody
+          [heading]="capitalAndReserves"
+          [data]="balanceSheets.passive.capitalAndReserves"
+          [open]="false"
         >
-          <td tuiTd *tuiCell="'Indicator names'">
-            {{ currentAsset.template.title }}
-          </td>
-          <td tuiTd *tuiCell="'code'">
-            {{ currentAsset.template.code }}
-          </td>
-          <td tuiTd *tuiCell="'dateQuarter'">
-            <tui-input-number
-              [ngModel]="currentAsset.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  currentAsset.template.code,
-                  0,
-                  currentAsset.value
-                )
-              "
-            ></tui-input-number>
-          </td>
-          <td tuiTd *tuiCell="'dateYear'">
-            <tui-input-number
-              [ngModel]="currentAsset.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  currentAsset.template.code,
-                  1,
-                  currentAsset.value
-                )
-              "
-            ></tui-input-number>
-          </td>
-        </tr>
-      </tbody>
-      <tr class="balance-sheets-form-one__table-row">
-        <td class="balance-sheets-form-one__table-data-cell" colspan="100%">
-          Пассив
-        </td>
-      </tr>
-      <tbody
-        tuiTbody
-        [heading]="capitalAndReserves"
-        [data]="balanceSheets.passive.capitalAndReserves"
-        [open]="false"
-      >
-        <tr
-          *tuiRow="
-            let capitalAndReserve of balanceSheets.passive.capitalAndReserves
-          "
-          tuiTr
+          <tr
+            *tuiRow="
+              let capitalAndReserve of balanceSheets.passive.capitalAndReserves
+            "
+            tuiTr
+          >
+            <td tuiTd *tuiCell="'Indicator names'">
+              {{ capitalAndReserve.template.title }}
+            </td>
+            <td tuiTd *tuiCell="'code'">
+              {{ capitalAndReserve.template.code }}
+            </td>
+            <td tuiTd *tuiCell="'dateQuarter'">
+              <tui-input-number
+                [ngModel]="capitalAndReserve.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    capitalAndReserve.template.code,
+                    0,
+                    capitalAndReserve.value,
+                    ['passive', 'capitalAndReserves']
+                  )
+                "
+              ></tui-input-number>
+            </td>
+            <td tuiTd *tuiCell="'dateYear'">
+              <tui-input-number
+                [ngModel]="capitalAndReserve.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    capitalAndReserve.template.code,
+                    1,
+                    capitalAndReserve.value,
+                    ['passive', 'capitalAndReserves']
+                  )
+                "
+              ></tui-input-number>
+            </td>
+          </tr>
+        </tbody>
+        <tbody
+          tuiTbody
+          [heading]="longTermLiabilities"
+          [data]="balanceSheets.passive.longTermLiabilities"
+          [open]="false"
         >
-          <td tuiTd *tuiCell="'Indicator names'">
-            {{ capitalAndReserve.template.title }}
-          </td>
-          <td tuiTd *tuiCell="'code'">
-            {{ capitalAndReserve.template.code }}
-          </td>
-          <td tuiTd *tuiCell="'dateQuarter'">
-            <tui-input-number
-              [ngModel]="capitalAndReserve.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  capitalAndReserve.template.code,
-                  0,
-                  capitalAndReserve.value
-                )
-              "
-            ></tui-input-number>
-          </td>
-          <td tuiTd *tuiCell="'dateYear'">
-            <tui-input-number
-              [ngModel]="capitalAndReserve.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  capitalAndReserve.template.code,
-                  1,
-                  capitalAndReserve.value
-                )
-              "
-            ></tui-input-number>
-          </td>
-        </tr>
-      </tbody>
-      <tbody
-        tuiTbody
-        [heading]="longTermLiabilities"
-        [data]="balanceSheets.passive.longTermLiabilities"
-        [open]="false"
-      >
-        <tr
-          *tuiRow="
-            let longTermLiabilitie of balanceSheets.passive.longTermLiabilities
-          "
-          tuiTr
+          <tr
+            *tuiRow="
+              let longTermLiabilitie of balanceSheets.passive
+                .longTermLiabilities
+            "
+            tuiTr
+          >
+            <td tuiTd *tuiCell="'Indicator names'">
+              {{ longTermLiabilitie.template.title }}
+            </td>
+            <td tuiTd *tuiCell="'code'">
+              {{ longTermLiabilitie.template.code }}
+            </td>
+            <td tuiTd *tuiCell="'dateQuarter'">
+              <tui-input-number
+                [ngModel]="longTermLiabilitie.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    longTermLiabilitie.template.code,
+                    0,
+                    longTermLiabilitie.value,
+                    ['passive', 'longTermLiabilities']
+                  )
+                "
+              ></tui-input-number>
+            </td>
+            <td tuiTd *tuiCell="'dateYear'">
+              <tui-input-number
+                [ngModel]="longTermLiabilitie.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    longTermLiabilitie.template.code,
+                    1,
+                    longTermLiabilitie.value,
+                    ['passive', 'longTermLiabilities']
+                  )
+                "
+              ></tui-input-number>
+            </td>
+          </tr>
+        </tbody>
+        <tbody
+          tuiTbody
+          [heading]="currentLiabilities"
+          [data]="balanceSheets.passive.currentLiabilities"
+          [open]="false"
         >
-          <td tuiTd *tuiCell="'Indicator names'">
-            {{ longTermLiabilitie.template.title }}
-          </td>
-          <td tuiTd *tuiCell="'code'">
-            {{ longTermLiabilitie.template.code }}
-          </td>
-          <td tuiTd *tuiCell="'dateQuarter'">
-            <tui-input-number
-              [ngModel]="longTermLiabilitie.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  longTermLiabilitie.template.code,
-                  0,
-                  longTermLiabilitie.value
-                )
-              "
-            ></tui-input-number>
-          </td>
-          <td tuiTd *tuiCell="'dateYear'">
-            <tui-input-number
-              [ngModel]="longTermLiabilitie.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  longTermLiabilitie.template.code,
-                  1,
-                  longTermLiabilitie.value
-                )
-              "
-            ></tui-input-number>
-          </td>
-        </tr>
-      </tbody>
-      <tbody
-        tuiTbody
-        [heading]="currentLiabilities"
-        [data]="balanceSheets.passive.currentLiabilities"
-        [open]="false"
-      >
-        <tr
-          *tuiRow="
-            let currentLiabilitie of balanceSheets.passive.currentLiabilities
-          "
-          tuiTr
-        >
-          <td tuiTd *tuiCell="'Indicator names'">
-            {{ currentLiabilitie.template.title }}
-          </td>
-          <td tuiTd *tuiCell="'code'">
-            {{ currentLiabilitie.template.code }}
-          </td>
-          <td tuiTd *tuiCell="'dateQuarter'">
-            <tui-input-number
-              [ngModel]="currentLiabilitie.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  currentLiabilitie.template.code,
-                  0,
-                  currentLiabilitie.value
-                )
-              "
-            ></tui-input-number>
-          </td>
-          <td tuiTd *tuiCell="'dateYear'">
-            <tui-input-number
-              [ngModel]="currentLiabilitie.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  currentLiabilitie.template.code,
-                  1,
-                  currentLiabilitie.value
-                )
-              "
-            ></tui-input-number>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          <tr
+            *tuiRow="
+              let currentLiabilitie of balanceSheets.passive.currentLiabilities
+            "
+            tuiTr
+          >
+            <td tuiTd *tuiCell="'Indicator names'">
+              {{ currentLiabilitie.template.title }}
+            </td>
+            <td tuiTd *tuiCell="'code'">
+              {{ currentLiabilitie.template.code }}
+            </td>
+            <td tuiTd *tuiCell="'dateQuarter'">
+              <tui-input-number
+                [ngModel]="currentLiabilitie.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    currentLiabilitie.template.code,
+                    0,
+                    currentLiabilitie.value,
+                    ['passive', 'currentLiabilities']
+                  )
+                "
+              ></tui-input-number>
+            </td>
+            <td tuiTd *tuiCell="'dateYear'">
+              <tui-input-number
+                [ngModel]="currentLiabilitie.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    currentLiabilitie.template.code,
+                    1,
+                    currentLiabilitie.value,
+                    ['passive', 'currentLiabilities']
+                  )
+                "
+              ></tui-input-number>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-template>
 </div>
 
 <ng-template #nonCurrentAssets>

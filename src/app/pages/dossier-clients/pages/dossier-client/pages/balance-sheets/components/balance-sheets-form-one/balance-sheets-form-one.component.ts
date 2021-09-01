@@ -28,7 +28,7 @@ export class BalanceSheetsFormOneComponent implements OnInit {
   public clientCompanyId: any;
 
   @Output()
-  public onChangeValue = new EventEmitter();
+  public onUpdateForm = new EventEmitter();
 
   public columns = ['Indicator names', 'code', 'dateQuarter', 'dateYear'];
 
@@ -79,9 +79,17 @@ export class BalanceSheetsFormOneComponent implements OnInit {
                 .changeFileFormBalanceSheet(this.clientCompanyId, 1, {
                   file_id: id,
                 })
-                .subscribe(console.log);
+                .subscribe(() => {
+                  this.onUpdateForm.emit(1);
+                });
               this.loader.hide();
             });
+        } else {
+          this.balanceSheetsService
+            .changeFileFormBalanceSheet(this.clientCompanyId, 1, {
+              file_id: null,
+            })
+            .subscribe();
         }
       });
   }
@@ -103,17 +111,22 @@ export class BalanceSheetsFormOneComponent implements OnInit {
     code: number,
     indexValue: number,
     values: number[],
-    balanceSheets = []
+    paths: string[]
   ) {
-    const copyValue = [...values];
+    const [pathOne, pathTwo] = paths;
+    const index = this.balanceSheets[`${pathOne}`][`${pathTwo}`].findIndex(
+      ({ template }: any) => template.code === code
+    );
 
-    copyValue[indexValue] = newValue;
+    values[indexValue] = newValue ?? 0;
+
+    this.balanceSheets[`${pathOne}`][`${pathTwo}`][index].value = values;
 
     this.balanceSheetsService
       .changeValueFormBalanceSheet(this.clientCompanyId, 1, {
         code,
-        value: copyValue,
+        value: values,
       })
-      .subscribe(() => {});
+      .subscribe();
   }
 }

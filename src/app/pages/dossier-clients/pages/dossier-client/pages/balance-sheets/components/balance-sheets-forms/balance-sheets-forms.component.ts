@@ -1,12 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { BalanceSheetsService } from 'src/app/core';
+import { EventEmitter } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'credex-balance-sheets-forms',
   templateUrl: './balance-sheets-forms.component.html',
   styleUrls: ['./balance-sheets-forms.component.scss'],
 })
-export class BalanceSheetsFormsComponent implements OnInit {
+export class BalanceSheetsFormsComponent {
   @Input()
   public balanceSheetsFormOne: any;
 
@@ -16,7 +16,10 @@ export class BalanceSheetsFormsComponent implements OnInit {
   @Input()
   public clientCompanyId: any;
 
-  constructor(private balanceSheetsService: BalanceSheetsService) {}
+  @Output()
+  public onUpdateForm = new EventEmitter();
 
-  ngOnInit(): void {}
+  public updateForm(typeForm: number) {
+    this.onUpdateForm.emit(typeForm);
+  }
 }
