@@ -31,6 +31,7 @@ import {
   TuiTextAreaModule,
   TuiToggleModule,
 } from '@taiga-ui/kit';
+import { TuiCurrencyPipeModule } from '@taiga-ui/addon-commerce';
 
 @NgModule({
   exports: [
@@ -61,6 +62,7 @@ import {
     TuiTextAreaModule,
     TuiTextfieldControllerModule,
     TuiToggleModule,
+    TuiCurrencyPipeModule,
   ],
 })
 export class TuiModule {}

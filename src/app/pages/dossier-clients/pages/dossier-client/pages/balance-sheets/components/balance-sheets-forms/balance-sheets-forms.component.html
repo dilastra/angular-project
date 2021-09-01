@@ -5,13 +5,14 @@
     </h2>
     <ng-template tuiAccordionItemContent>
       <credex-balance-sheets-form-one
+        [clientCompanyId]="clientCompanyId"
         [balanceSheetsFormOne]="balanceSheetsFormOne"
       ></credex-balance-sheets-form-one>
     </ng-template>
   </tui-accordion-item>
   <tui-accordion-item>
     <h2 class="balance-sheet-form-accordion__title">
-      Отчет о финансовых результатах (Форма 2)
+      Отчет о финансовых результатах (Форма №2)
     </h2>
     <ng-template tuiAccordionItemContent>
       <credex-balance-sheets-form-two

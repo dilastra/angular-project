@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { zip } from 'rxjs';
 import { BalanceSheetsService } from 'src/app/core';
 
 @Component({
@@ -10,13 +11,8 @@ import { BalanceSheetsService } from 'src/app/core';
 export class CurrentBalanceSheetsComponent implements OnInit {
   public clientCompanyId: string;
 
-  public objectForm: any = {
-    nonCurrentAssets: [],
-    currentAssets: [],
-    capitalAndReserves: [],
-    longTermLiabilities: [],
-    currentLiabilities: [],
-  };
+  public balanceSheetsFormOne: any;
+  public balanceSheetsFormTwo: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,39 +22,12 @@ export class CurrentBalanceSheetsComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.balanceSheetsService
-      .getFormBalanceSheet(this.clientCompanyId, 1)
-      .subscribe((formBalanceSheet: any) => {
-        formBalanceSheet.form.forEach((balanceSheet: any) => {
-          const {
-            template: { code },
-          } = balanceSheet;
-
-          if (`${code}`.includes('11')) {
-            this.objectForm.nonCurrentAssets.push(balanceSheet);
-            return;
-          }
-
-          if (`${code}`.includes('12') || `${code}`.includes('1600')) {
-            this.objectForm.currentAssets.push(balanceSheet);
-            return;
-          }
-
-          if (`${code}`.includes('13')) {
-            this.objectForm.capitalAndReserves.push(balanceSheet);
-            return;
-          }
-
-          if (`${code}`.includes('14')) {
-            this.objectForm.longTermLiabilities.push(balanceSheet);
-            return;
-          }
-
-          if (`${code}`.includes('15') || `${code}`.includes('1700')) {
-            this.objectForm.currentLiabilities.push(balanceSheet);
-            return;
-          }
-        });
-      });
+    zip(
+      this.balanceSheetsService.getFormBalanceSheet(this.clientCompanyId, 1),
+      this.balanceSheetsService.getFormBalanceSheet(this.clientCompanyId, 2)
+    ).subscribe(([balanceSheetsFormOne, balanceSheetsFormTwo]) => {
+      this.balanceSheetsFormOne = balanceSheetsFormOne;
+      this.balanceSheetsFormTwo = balanceSheetsFormTwo;
+    });
   }
 }

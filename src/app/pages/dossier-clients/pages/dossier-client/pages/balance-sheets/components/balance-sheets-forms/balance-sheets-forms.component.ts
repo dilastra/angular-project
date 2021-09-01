@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { BalanceSheetsService } from 'src/app/core';
 
 @Component({
   selector: 'credex-balance-sheets-forms',
@@ -12,7 +13,10 @@ export class BalanceSheetsFormsComponent implements OnInit {
   @Input()
   public balanceSheetsFormTwo: any;
 
-  constructor() {}
+  @Input()
+  public clientCompanyId: any;
+
+  constructor(private balanceSheetsService: BalanceSheetsService) {}
 
   ngOnInit(): void {}
 }
