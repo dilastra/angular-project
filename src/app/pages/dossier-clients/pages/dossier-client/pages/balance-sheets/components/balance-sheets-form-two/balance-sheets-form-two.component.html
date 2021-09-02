@@ -53,34 +53,44 @@
             {{ balanceSheet.template.code }}
           </td>
           <td tuiTd *tuiCell="'dateQuarter'">
-            <tui-input-number
-              [ngModel]="balanceSheet.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              [min]="0"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  balanceSheet.template.code,
-                  0,
-                  balanceSheet.value
-                )
-              "
-            ></tui-input-number>
+            <ng-template [ngIf]="!isArchive">
+              <tui-input-number
+                [ngModel]="balanceSheet.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    balanceSheet.template.code,
+                    0,
+                    balanceSheet.value
+                  )
+                "
+              ></tui-input-number>
+            </ng-template>
+            <ng-template [ngIf]="isArchive">{{
+              balanceSheet.value[0]
+            }}</ng-template>
           </td>
           <td tuiTd *tuiCell="'dateYear'">
-            <tui-input-number
-              [ngModel]="balanceSheet.value[1]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              [min]="0"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  balanceSheet.template.code,
-                  1,
-                  balanceSheet.value
-                )
-              "
-            ></tui-input-number>
+            <ng-template [ngIf]="!isArchive">
+              <tui-input-number
+                [ngModel]="balanceSheet.value[1]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    balanceSheet.template.code,
+                    1,
+                    balanceSheet.value
+                  )
+                "
+              ></tui-input-number>
+            </ng-template>
+            <ng-template [ngIf]="isArchive">{{
+              balanceSheet.value[1]
+            }}</ng-template>
           </td>
         </tr>
       </tbody>
