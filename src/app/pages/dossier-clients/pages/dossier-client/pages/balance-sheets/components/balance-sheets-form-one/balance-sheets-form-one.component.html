@@ -24,22 +24,31 @@
     <table tuiTable class="balance-sheets-form-one__table" [columns]="columns">
       <thead>
         <tr tuiThGroup>
-          <th tuiTh rowspan="2" *tuiHead="'Indicator names'">
+          <th tuiTh rowspan="2" *tuiHead="'Indicator names'" [sorter]="null">
             Наименования показателя
           </th>
-          <th tuiTh rowspan="2" *tuiHead="'code'">Код</th>
-          <th tuiTh colspan="2" *tuiHead="'dateQuarter'">Значения в рублях</th>
+          <th tuiTh rowspan="2" *tuiHead="'code'" [sorter]="null">Код</th>
+          <th tuiTh colspan="2" *tuiHead="'dateQuarter'" [sorter]="null">
+            Значения в рублях
+          </th>
         </tr>
         <tr tuiThGroup>
           <th
             tuiTh
             class="balance-sheets-form-one__table-head_border-left-none"
             *tuiHead="'dateQuarter'"
+            [sorter]="null"
           >
-            {{ dateQuarter | date: "dd.MM.YYYY" }}
+            {{
+              (isArchive ? "2021-12-31T23:59:59" : dateQuarter)
+                | date: "dd.MM.YYYY"
+            }}
           </th>
-          <th tuiTh *tuiHead="'dateYear'">
-            {{ dateYear | date: "dd.MM.YYYY" }}
+          <th tuiTh *tuiHead="'dateYear'" [sorter]="null">
+            {{
+              (isArchive ? "2021-08-31T23:59:59" : dateQuarter)
+                | date: "dd.MM.YYYY"
+            }}
           </th>
         </tr>
       </thead>
@@ -65,36 +74,46 @@
             {{ nonCurrentAsset.template.code }}
           </td>
           <td tuiTd *tuiCell="'dateQuarter'">
-            <tui-input-number
-              [ngModel]="nonCurrentAsset.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              [min]="0"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  nonCurrentAsset.template.code,
-                  0,
-                  nonCurrentAsset.value,
-                  ['active', 'nonCurrentAssets']
-                )
-              "
-            ></tui-input-number>
+            <ng-template [ngIf]="!isArchive">
+              <tui-input-number
+                [ngModel]="nonCurrentAsset.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    nonCurrentAsset.template.code,
+                    0,
+                    nonCurrentAsset.value,
+                    ['active', 'nonCurrentAssets']
+                  )
+                "
+              ></tui-input-number>
+            </ng-template>
+            <ng-template [ngIf]="isArchive">
+              {{ nonCurrentAsset.value[0] }}
+            </ng-template>
           </td>
           <td tuiTd *tuiCell="'dateYear'">
-            <tui-input-number
-              [ngModel]="nonCurrentAsset.value[1]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              [min]="0"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  nonCurrentAsset.template.code,
-                  1,
-                  nonCurrentAsset.value,
-                  ['active', 'nonCurrentAssets']
-                )
-              "
-            ></tui-input-number>
+            <ng-template [ngIf]="!isArchive">
+              <tui-input-number
+                [ngModel]="nonCurrentAsset.value[1]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    nonCurrentAsset.template.code,
+                    1,
+                    nonCurrentAsset.value,
+                    ['active', 'nonCurrentAssets']
+                  )
+                "
+              ></tui-input-number>
+            </ng-template>
+            <ng-template [ngIf]="isArchive">
+              {{ nonCurrentAsset.value[1] }}
+            </ng-template>
           </td>
         </tr>
       </tbody>
@@ -115,36 +134,46 @@
             {{ currentAsset.template.code }}
           </td>
           <td tuiTd *tuiCell="'dateQuarter'">
-            <tui-input-number
-              [ngModel]="currentAsset.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              [min]="0"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  currentAsset.template.code,
-                  0,
-                  currentAsset.value,
-                  ['active', 'currentAssets']
-                )
-              "
-            ></tui-input-number>
+            <ng-template [ngIf]="!isArchive">
+              <tui-input-number
+                [ngModel]="currentAsset.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    currentAsset.template.code,
+                    0,
+                    currentAsset.value,
+                    ['active', 'currentAssets']
+                  )
+                "
+              ></tui-input-number>
+            </ng-template>
+            <ng-template [ngIf]="isArchive">
+              {{ currentAsset.value[0] }}
+            </ng-template>
           </td>
           <td tuiTd *tuiCell="'dateYear'">
-            <tui-input-number
-              [ngModel]="currentAsset.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              [min]="0"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  currentAsset.template.code,
-                  1,
-                  currentAsset.value,
-                  ['active', 'currentAssets']
-                )
-              "
-            ></tui-input-number>
+            <ng-template [ngIf]="!isArchive">
+              <tui-input-number
+                [ngModel]="currentAsset.value[1]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    currentAsset.template.code,
+                    1,
+                    currentAsset.value,
+                    ['active', 'currentAssets']
+                  )
+                "
+              ></tui-input-number>
+            </ng-template>
+            <ng-template [ngIf]="isArchive">
+              {{ currentAsset.value[1] }}
+            </ng-template>
           </td>
         </tr>
       </tbody>
@@ -172,36 +201,46 @@
             {{ capitalAndReserve.template.code }}
           </td>
           <td tuiTd *tuiCell="'dateQuarter'">
-            <tui-input-number
-              [ngModel]="capitalAndReserve.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              [min]="0"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  capitalAndReserve.template.code,
-                  0,
-                  capitalAndReserve.value,
-                  ['passive', 'capitalAndReserves']
-                )
-              "
-            ></tui-input-number>
+            <ng-template [ngIf]="!isArchive">
+              <tui-input-number
+                [ngModel]="capitalAndReserve.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    capitalAndReserve.template.code,
+                    0,
+                    capitalAndReserve.value,
+                    ['passive', 'capitalAndReserves']
+                  )
+                "
+              ></tui-input-number>
+            </ng-template>
+            <ng-template [ngIf]="isArchive">
+              {{ capitalAndReserve.value[0] }}
+            </ng-template>
           </td>
           <td tuiTd *tuiCell="'dateYear'">
-            <tui-input-number
-              [ngModel]="capitalAndReserve.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              [min]="0"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  capitalAndReserve.template.code,
-                  1,
-                  capitalAndReserve.value,
-                  ['passive', 'capitalAndReserves']
-                )
-              "
-            ></tui-input-number>
+            <ng-template [ngIf]="!isArchive">
+              <tui-input-number
+                [ngModel]="capitalAndReserve.value[1]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    capitalAndReserve.template.code,
+                    1,
+                    capitalAndReserve.value,
+                    ['passive', 'capitalAndReserves']
+                  )
+                "
+              ></tui-input-number>
+            </ng-template>
+            <ng-template [ngIf]="isArchive">
+              {{ capitalAndReserve.value[1] }}
+            </ng-template>
           </td>
         </tr>
       </tbody>
@@ -224,36 +263,46 @@
             {{ longTermLiabilitie.template.code }}
           </td>
           <td tuiTd *tuiCell="'dateQuarter'">
-            <tui-input-number
-              [ngModel]="longTermLiabilitie.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              [min]="0"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  longTermLiabilitie.template.code,
-                  0,
-                  longTermLiabilitie.value,
-                  ['passive', 'longTermLiabilities']
-                )
-              "
-            ></tui-input-number>
+            <ng-template [ngIf]="!isArchive">
+              <tui-input-number
+                [ngModel]="longTermLiabilitie.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    longTermLiabilitie.template.code,
+                    0,
+                    longTermLiabilitie.value,
+                    ['passive', 'longTermLiabilities']
+                  )
+                "
+              ></tui-input-number>
+            </ng-template>
+            <ng-template [ngIf]="isArchive">
+              {{ longTermLiabilitie.value[0] }}
+            </ng-template>
           </td>
           <td tuiTd *tuiCell="'dateYear'">
-            <tui-input-number
-              [ngModel]="longTermLiabilitie.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              [min]="0"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  longTermLiabilitie.template.code,
-                  1,
-                  longTermLiabilitie.value,
-                  ['passive', 'longTermLiabilities']
-                )
-              "
-            ></tui-input-number>
+            <ng-template [ngIf]="!isArchive">
+              <tui-input-number
+                [ngModel]="longTermLiabilitie.value[1]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    longTermLiabilitie.template.code,
+                    0,
+                    longTermLiabilitie.value,
+                    ['passive', 'longTermLiabilities']
+                  )
+                "
+              ></tui-input-number>
+            </ng-template>
+            <ng-template [ngIf]="isArchive">
+              {{ longTermLiabilitie.value[1] }}
+            </ng-template>
           </td>
         </tr>
       </tbody>
@@ -276,36 +325,46 @@
             {{ currentLiabilitie.template.code }}
           </td>
           <td tuiTd *tuiCell="'dateQuarter'">
-            <tui-input-number
-              [ngModel]="currentLiabilitie.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              [min]="0"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  currentLiabilitie.template.code,
-                  0,
-                  currentLiabilitie.value,
-                  ['passive', 'currentLiabilities']
-                )
-              "
-            ></tui-input-number>
+            <ng-template [ngIf]="!isArchive">
+              <tui-input-number
+                [ngModel]="currentLiabilitie.value[0]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    currentLiabilitie.template.code,
+                    0,
+                    currentLiabilitie.value,
+                    ['passive', 'currentLiabilities']
+                  )
+                "
+              ></tui-input-number>
+            </ng-template>
+            <ng-template [ngIf]="isArchive">
+              {{ currentLiabilitie.value[0] }}
+            </ng-template>
           </td>
           <td tuiTd *tuiCell="'dateYear'">
-            <tui-input-number
-              [ngModel]="currentLiabilitie.value[0]"
-              [ngModelOptions]="{ updateOn: 'blur' }"
-              [min]="0"
-              (ngModelChange)="
-                onValueChange(
-                  $event,
-                  currentLiabilitie.template.code,
-                  1,
-                  currentLiabilitie.value,
-                  ['passive', 'currentLiabilities']
-                )
-              "
-            ></tui-input-number>
+            <ng-template [ngIf]="!isArchive">
+              <tui-input-number
+                [ngModel]="currentLiabilitie.value[1]"
+                [ngModelOptions]="{ updateOn: 'blur' }"
+                [min]="0"
+                (ngModelChange)="
+                  onValueChange(
+                    $event,
+                    currentLiabilitie.template.code,
+                    0,
+                    currentLiabilitie.value,
+                    ['passive', 'currentLiabilities']
+                  )
+                "
+              ></tui-input-number>
+            </ng-template>
+            <ng-template [ngIf]="isArchive">
+              {{ currentLiabilitie.value[1] }}
+            </ng-template>
           </td>
         </tr>
       </tbody>

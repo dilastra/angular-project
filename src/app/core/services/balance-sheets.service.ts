@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class BalanceSheetsService {
   constructor(private http: HttpClient) {}
 
-  public getFormBalanceSheet(clientCompanyId: string, typeForm: number) {
+  public getForm(clientCompanyId: string, typeForm: number) {
     return this.http
       .get(
         `${environment.endPoint}/dossier/${clientCompanyId}/balance-sheet?type=${typeForm}`
@@ -25,11 +25,39 @@ export class BalanceSheetsService {
       );
   }
 
-  public changeFileFormBalanceSheet(
-    clientCompanyId: string,
-    typeForm: number,
-    body: any
-  ) {
+  public getFormFromArchive(clientCompanyId: string, typeForm: number) {
+    return this.http
+      .get(
+        `${environment.endPoint}/dossier/${clientCompanyId}/balance-sheet/archive?type=${typeForm}`
+      )
+      .pipe(
+        map((balanceSheets: any) => {
+          const { form, ...otherValues } = balanceSheets;
+          return {
+            form: typeForm === 1 ? this.rebuildFormOne(form) : form,
+            ...otherValues,
+          };
+        })
+      );
+  }
+
+  public getArchiveForm(clientCompanyId: string, typeForm: number) {
+    return this.http
+      .get(
+        `${environment.endPoint}/dossier/${clientCompanyId}/balance-sheet?type=${typeForm}`
+      )
+      .pipe(
+        map((balanceSheets: any) => {
+          const { form, ...otherValues } = balanceSheets;
+          return {
+            form: typeForm === 1 ? this.rebuildFormOne(form) : form,
+            ...otherValues,
+          };
+        })
+      );
+  }
+
+  public changeFileForm(clientCompanyId: string, typeForm: number, body: any) {
     return this.http
       .put(
         `${environment.endPoint}/dossier/${clientCompanyId}/balance-sheet?type=${typeForm}`,
@@ -46,11 +74,7 @@ export class BalanceSheetsService {
       );
   }
 
-  public changeValueFormBalanceSheet(
-    clientCompanyId: string,
-    typeForm: number,
-    body: any
-  ) {
+  public changeValueForm(clientCompanyId: string, typeForm: number, body: any) {
     return this.http.patch(
       `${environment.endPoint}/dossier/${clientCompanyId}/balance-sheet?type=${typeForm}`,
       body

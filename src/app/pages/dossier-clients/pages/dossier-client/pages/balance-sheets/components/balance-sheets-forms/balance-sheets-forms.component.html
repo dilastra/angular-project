@@ -8,6 +8,7 @@
         [clientCompanyId]="clientCompanyId"
         [balanceSheetsFormOne]="balanceSheetsFormOne"
         (onUpdateForm)="updateForm($event)"
+        [isArchive]="isArchive"
       ></credex-balance-sheets-form-one>
     </ng-template>
   </tui-accordion-item>
@@ -20,6 +21,7 @@
         [balanceSheetsFormTwo]="balanceSheetsFormTwo"
         [clientCompanyId]="clientCompanyId"
         (onUpdateForm)="updateForm($event)"
+        [isArchive]="isArchive"
       ></credex-balance-sheets-form-two>
     </ng-template>
   </tui-accordion-item>

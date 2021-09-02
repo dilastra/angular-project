@@ -1,1 +1,25 @@
-<p>archive-balance-sheets works!</p>
+<div class="archive-balance-sheets__container">
+  <tui-select
+    [formControl]="periodControl"
+    [class.archive-balance-sheets__select-control_mb16]="periodControl.value"
+    [tuiTextfieldCleaner]="true"
+    [tuiTextfieldExampleText]="'31.12.2010-31.08.2010'"
+  >
+    Выберите период
+    <tui-data-list *tuiDataList>
+      <button *ngFor="let period of periods" tuiOption [value]="period">
+        {{ period }}
+      </button>
+    </tui-data-list>
+  </tui-select>
+  <ng-template [ngIf]="periodControl.value">
+    <div class="archive-balance-sheets__form-container">
+      <credex-balance-sheets-forms
+        [isArchive]="true"
+        [clientCompanyId]="clientCompanyId"
+        [balanceSheetsFormOne]="balanceSheetsFormOne"
+        [balanceSheetsFormTwo]="balanceSheetsFormTwo"
+      ></credex-balance-sheets-forms>
+    </div>
+  </ng-template>
+</div>

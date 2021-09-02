@@ -11,6 +11,9 @@ export class BalanceSheetsFormsComponent {
   public balanceSheetsFormOne: any;
 
   @Input()
+  public isArchive = false;
+
+  @Input()
   public balanceSheetsFormTwo: any;
 
   @Input()

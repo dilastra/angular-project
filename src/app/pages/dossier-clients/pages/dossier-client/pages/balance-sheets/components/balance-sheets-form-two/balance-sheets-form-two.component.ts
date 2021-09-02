@@ -19,6 +19,9 @@ export class BalanceSheetsFormTwoComponent implements OnInit {
   @Input()
   public clientCompanyId: any;
 
+  @Input()
+  public isArchive = false;
+
   @Output()
   public onUpdateForm = new EventEmitter();
 
@@ -70,7 +73,7 @@ export class BalanceSheetsFormTwoComponent implements OnInit {
                 { emitEvent: false }
               );
               this.balanceSheetsService
-                .changeFileFormBalanceSheet(this.clientCompanyId, 2, {
+                .changeFileForm(this.clientCompanyId, 2, {
                   file_id: id,
                 })
                 .subscribe(() => {
@@ -80,7 +83,7 @@ export class BalanceSheetsFormTwoComponent implements OnInit {
             });
         } else {
           this.balanceSheetsService
-            .changeFileFormBalanceSheet(this.clientCompanyId, 2, {
+            .changeFileForm(this.clientCompanyId, 2, {
               file_id: null,
             })
             .subscribe();
@@ -108,7 +111,7 @@ export class BalanceSheetsFormTwoComponent implements OnInit {
     this.balanceSheets[index].value = values;
 
     this.balanceSheetsService
-      .changeValueFormBalanceSheet(this.clientCompanyId, 2, {
+      .changeValueForm(this.clientCompanyId, 2, {
         code,
         value: values,
       })

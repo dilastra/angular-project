@@ -54,16 +54,10 @@ export class CurrentBalanceSheetsComponent implements OnInit {
   }
 
   public getBalanceSheetsFormOne() {
-    return this.balanceSheetsService.getFormBalanceSheet(
-      this.clientCompanyId,
-      1
-    );
+    return this.balanceSheetsService.getForm(this.clientCompanyId, 1);
   }
 
   public getBalanceSheetsFormTwo() {
-    return this.balanceSheetsService.getFormBalanceSheet(
-      this.clientCompanyId,
-      2
-    );
+    return this.balanceSheetsService.getForm(this.clientCompanyId, 2);
   }
 }
