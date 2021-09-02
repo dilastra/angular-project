@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BalanceSheetsService } from 'src/app/core';
+import { zip } from 'rxjs';
+import { BalanceSheetsService, LoaderService } from 'src/app/core';
 
 @Component({
   selector: 'credex-current-balance-sheets',
@@ -15,25 +16,30 @@ export class CurrentBalanceSheetsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private balanceSheetsService: BalanceSheetsService
+    private balanceSheetsService: BalanceSheetsService,
+    private loader: LoaderService
   ) {
     this.clientCompanyId = this.route.snapshot.params.id;
   }
 
   public ngOnInit(): void {
-    this.getBalanceSheetsFormOne().subscribe((balanceSheetsFormOne) => {
+    this.loader.show();
+    zip(
+      this.getBalanceSheetsFormOne(),
+      this.getBalanceSheetsFormTwo()
+    ).subscribe(([balanceSheetsFormOne, balanceSheetsFormTwo]) => {
       this.balanceSheetsFormOne = balanceSheetsFormOne;
-    });
-
-    this.getBalanceSheetsFormTwo().subscribe((balanceSheetsFormTwo) => {
       this.balanceSheetsFormTwo = balanceSheetsFormTwo;
+      this.loader.hide();
     });
   }
 
   public updateForm(typeForm: number) {
+    this.loader.show();
     if (typeForm === 1) {
       this.getBalanceSheetsFormOne().subscribe((balanceSheetsFormOne) => {
         this.balanceSheetsFormOne = balanceSheetsFormOne;
+        this.loader.hide();
         return;
       });
     }
@@ -41,6 +47,7 @@ export class CurrentBalanceSheetsComponent implements OnInit {
     if (typeForm === 2) {
       this.getBalanceSheetsFormTwo().subscribe((balanceSheetsFormTwo) => {
         this.balanceSheetsFormTwo = balanceSheetsFormTwo;
+        this.loader.hide();
         return;
       });
     }

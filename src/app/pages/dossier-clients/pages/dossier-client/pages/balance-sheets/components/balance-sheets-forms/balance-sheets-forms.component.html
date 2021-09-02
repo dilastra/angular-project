@@ -18,6 +18,8 @@
     <ng-template tuiAccordionItemContent>
       <credex-balance-sheets-form-two
         [balanceSheetsFormTwo]="balanceSheetsFormTwo"
+        [clientCompanyId]="clientCompanyId"
+        (onUpdateForm)="updateForm($event)"
       ></credex-balance-sheets-form-two>
     </ng-template>
   </tui-accordion-item>

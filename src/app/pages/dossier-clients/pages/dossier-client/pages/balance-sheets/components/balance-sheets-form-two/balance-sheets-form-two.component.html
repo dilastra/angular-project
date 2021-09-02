@@ -1,1 +1,89 @@
-<p>balance-sheets-form-two works!</p>
+<div class="balance-sheets-form-two__container">
+  <div class="balance-sheets-form-two__file-input-control-container">
+    <tui-input-file
+      class="balance-sheets-form-two__file-input-control"
+      [formControl]="fileControl"
+      link="Выберите"
+      label="или перетащите сюда файл скана первой страницы паспорта"
+      [loadingFiles]="loadingFiles"
+    ></tui-input-file>
+    <button
+      tuiButton
+      type="button"
+      class="balance-sheets-form-two__file-button-download"
+      size="m"
+      [showLoader]="isDownloadFile"
+      [disabled]="isDownloadFile"
+      (click)="downloadFile(fileControl)"
+      *ngIf="fileControl?.value"
+    >
+      Скачать файл
+    </button>
+  </div>
+  <div class="balance-sheets-form-two__table-container">
+    <table tuiTable class="balance-sheets-form-two__table" [columns]="columns">
+      <thead>
+        <tr tuiThGroup>
+          <th tuiTh rowspan="2" *tuiHead="'Indicator names'">
+            Наименования показателя
+          </th>
+          <th tuiTh rowspan="2" *tuiHead="'code'">Код</th>
+          <th tuiTh colspan="2" *tuiHead="'dateQuarter'">Значения в рублях</th>
+        </tr>
+        <tr tuiThGroup>
+          <th
+            tuiTh
+            class="balance-sheets-form-two__table-head_border-left-none"
+            *tuiHead="'dateQuarter'"
+          >
+            {{ dateQuarter | date: "dd.MM.YYYY" }}
+          </th>
+          <th tuiTh *tuiHead="'dateYear'">
+            {{ dateYear | date: "dd.MM.YYYY" }}
+          </th>
+        </tr>
+      </thead>
+
+      <tbody tuiTbody [data]="balanceSheets">
+        <tr *tuiRow="let balanceSheet of balanceSheets" tuiTr>
+          <td tuiTd *tuiCell="'Indicator names'">
+            {{ balanceSheet.template.title }}
+          </td>
+          <td tuiTd *tuiCell="'code'">
+            {{ balanceSheet.template.code }}
+          </td>
+          <td tuiTd *tuiCell="'dateQuarter'">
+            <tui-input-number
+              [ngModel]="balanceSheet.value[0]"
+              [ngModelOptions]="{ updateOn: 'blur' }"
+              [min]="0"
+              (ngModelChange)="
+                onValueChange(
+                  $event,
+                  balanceSheet.template.code,
+                  0,
+                  balanceSheet.value
+                )
+              "
+            ></tui-input-number>
+          </td>
+          <td tuiTd *tuiCell="'dateYear'">
+            <tui-input-number
+              [ngModel]="balanceSheet.value[1]"
+              [ngModelOptions]="{ updateOn: 'blur' }"
+              [min]="0"
+              (ngModelChange)="
+                onValueChange(
+                  $event,
+                  balanceSheet.template.code,
+                  1,
+                  balanceSheet.value
+                )
+              "
+            ></tui-input-number>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
