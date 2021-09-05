@@ -4,6 +4,7 @@ export interface LeaseContract {
   date_to: null | string;
   doc_number: null | string;
   file: null | File;
+  file_id?: string;
   id: string;
   ownership_type: number;
 }

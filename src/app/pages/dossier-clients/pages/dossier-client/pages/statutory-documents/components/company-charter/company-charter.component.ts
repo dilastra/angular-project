@@ -1,8 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { DossierService, FilesService, LoaderService } from 'src/app/core';
-
+import {
+  DossierService,
+  FilesService,
+  LoaderService,
+  File,
+} from 'src/app/core';
 @Component({
   selector: 'credex-company-charter',
   templateUrl: './company-charter.component.html',
@@ -12,7 +16,7 @@ export class CompanyСharterComponent implements OnInit, OnDestroy {
   @Input()
   public companyClientId: string = '';
 
-  @Input() set companyCharter(companyCharter: any) {
+  @Input() set companyCharter(companyCharter: File | null) {
     if (companyCharter?.id)
       this.staturyDocumentsForm.patchValue(
         { file: companyCharter },

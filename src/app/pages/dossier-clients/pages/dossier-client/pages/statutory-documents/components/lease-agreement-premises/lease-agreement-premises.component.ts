@@ -2,15 +2,17 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
+  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 import { TuiDay } from '@taiga-ui/cdk';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import {
   DossierService,
   FilesService,
+  LeaseContract,
   LoaderService,
   OwnershipType,
 } from 'src/app/core';
@@ -24,7 +26,9 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
   @Input()
   public companyClientId: string = '';
 
-  @Input() set leaseAgreementPremises(leaseAgreementPremises: any) {
+  @Input() set leaseAgreementPremises(
+    leaseAgreementPremises: LeaseContract | null
+  ) {
     if (leaseAgreementPremises?.file) {
       const {
         date_from,
@@ -188,7 +192,7 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
     );
   }
 
-  public isSelectLeaseHold() {
+  public isSelectLeaseHold(): boolean {
     return this.getFormControl('ownershipType').value === 0;
   }
 
@@ -204,8 +208,8 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  public getFormControl(nameControl: string) {
-    return this.leaseAgreementPremisesForm.controls[nameControl];
+  public getFormControl(nameControl: string): FormControl {
+    return this.leaseAgreementPremisesForm.controls[nameControl] as FormControl;
   }
 
   public getNameOwnershipType(): string {
@@ -213,14 +217,17 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
     return selectedValue !== null ? this.ownershipTypes[selectedValue] : '';
   }
 
-  public sendFileId(companyClientId: string, file: any | object = {}) {
+  public sendFileId(
+    companyClientId: string,
+    file: any | object = {}
+  ): Observable<LeaseContract> {
     return this.dossierService.updateLeaseAgreementPremises(
       companyClientId,
       file
     );
   }
 
-  public downloadFile(formControl: AbstractControl) {
+  public downloadFile(formControl: AbstractControl): void {
     this.isDownloadFile = true;
     this.filesService.downloadFile(formControl).subscribe(
       ({ isDownloaded }) => {
@@ -232,7 +239,7 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onSave() {
+  public onSave(): void {
     this.loader.show();
     const { file, docNumber, dateSigning, dateFrom, dateTo, ownershipType } =
       this.leaseAgreementPremisesForm.value;

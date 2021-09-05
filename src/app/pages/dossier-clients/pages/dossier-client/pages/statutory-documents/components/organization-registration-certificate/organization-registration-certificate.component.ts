@@ -8,7 +8,12 @@ import {
 import { TuiDay } from '@taiga-ui/cdk';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { DossierService, FilesService, LoaderService } from 'src/app/core';
+import {
+  DossierService,
+  FilesService,
+  LoaderService,
+  OrganizationRegistrationCertficate,
+} from 'src/app/core';
 
 @Component({
   selector: 'credex-organization-registration-certificate',
@@ -22,7 +27,7 @@ export class OrganizationRegistrationCertificateComponent
   public companyClientId: string = '';
 
   @Input() set organizationRegistrationCertficate(
-    organizationRegistrationCertficate: any
+    organizationRegistrationCertficate: OrganizationRegistrationCertficate | null
   ) {
     if (organizationRegistrationCertficate?.file) {
       const { file, doc_number, date } = organizationRegistrationCertficate;

@@ -2,13 +2,19 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
+  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 import { TuiDay } from '@taiga-ui/cdk';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { DossierService, FilesService, LoaderService } from 'src/app/core';
+import {
+  Command,
+  DossierService,
+  FilesService,
+  LoaderService,
+} from 'src/app/core';
 
 @Component({
   selector: 'credex-appointment-sole-executive-body',
@@ -21,7 +27,9 @@ export class AppointmentSoleExecutiveBodyComponent
   @Input()
   public companyClientId: string = '';
 
-  @Input() set appointmentSoleExecutiveBody(appointmentSoleExecutiveBody: any) {
+  @Input() set appointmentSoleExecutiveBody(
+    appointmentSoleExecutiveBody: Command | null
+  ) {
     if (appointmentSoleExecutiveBody?.file) {
       const { date_from, date_to, doc_number, file } =
         appointmentSoleExecutiveBody;
@@ -30,7 +38,7 @@ export class AppointmentSoleExecutiveBodyComponent
           numberOfAppointmentSoleExecutiveBody: doc_number,
           fileAppointmentSoleExecutiveBody: file,
           dateFrom: date_from ? this.getTuiDayDate(date_from) : null,
-          dateTo: date_from ? this.getTuiDayDate(date_to) : null,
+          dateTo: date_to ? this.getTuiDayDate(date_to) : null,
         },
         { emitEvent: false }
       );
@@ -43,7 +51,7 @@ export class AppointmentSoleExecutiveBodyComponent
 
   public maxDate = new TuiDay(9999, 11, 31);
 
-  public loadingFiles: any = [];
+  public loadingFiles: any[] = [];
 
   public appointmentSoleExecutiveBodyForm: FormGroup;
 
@@ -116,11 +124,15 @@ export class AppointmentSoleExecutiveBodyComponent
     this.subscriptions.unsubscribe();
   }
 
-  public getControlAppointmentSoleExecutiveBodyForm(nameControl: string) {
-    return this.appointmentSoleExecutiveBodyForm.controls[nameControl];
+  public getControlAppointmentSoleExecutiveBodyForm(
+    nameControl: string
+  ): FormControl {
+    return this.appointmentSoleExecutiveBodyForm.controls[
+      nameControl
+    ] as FormControl;
   }
 
-  public downloadFile(formControl: AbstractControl) {
+  public downloadFile(formControl: FormControl) {
     this.isDownloadFile = true;
     this.filesService.downloadFile(formControl).subscribe(
       ({ isDownloaded }) => {
