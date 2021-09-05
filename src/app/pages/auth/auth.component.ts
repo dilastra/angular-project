@@ -61,11 +61,11 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   public getNameBank(): string {
-    const bankId = this.loginForm.controls.bankId.value;
+    const bankId: string = this.loginForm.controls.bankId.value;
     return this.banks.find((bank) => bank.id === bankId)?.name ?? 'Нет имени';
   }
 
-  public login() {
+  public login(): void {
     this.showLoader = true;
     const { login, password, bankId: bank_id } = this.loginForm.value;
 
