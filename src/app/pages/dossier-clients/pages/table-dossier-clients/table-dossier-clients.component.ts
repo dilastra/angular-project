@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TuiDestroyService } from '@taiga-ui/cdk';
+import { Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import {
+  ClientCompany,
   ClientsCompanyService,
   LoaderService,
   ProductsOnRus,
@@ -20,9 +22,9 @@ export class TableDossierClientsComponent implements OnInit {
 
   public productsOnRus = ProductsOnRus;
 
-  public clientCompanies: any[] = [];
+  public clientCompanies: ClientCompany[] = [];
 
-  public search: FormControl = new FormControl();
+  public search: FormControl = new FormControl('');
 
   public isSearch = false;
 
@@ -34,7 +36,7 @@ export class TableDossierClientsComponent implements OnInit {
 
   public ngOnInit(): void {
     this.loaderService.show();
-    this.getClientsCompany().subscribe((clientCompanies: any[]) => {
+    this.getClientsCompany().subscribe((clientCompanies: ClientCompany[]) => {
       this.clientCompanies = clientCompanies;
       this.loaderService.hide();
     });
@@ -45,7 +47,7 @@ export class TableDossierClientsComponent implements OnInit {
         this.clientCompanies = [];
         this.isSearch = true;
         this.getClientsCompany(searchCompany).subscribe(
-          (clientCompanies: any[]) => {
+          (clientCompanies: ClientCompany[]) => {
             this.clientCompanies = clientCompanies;
             this.isSearch = false;
           }
@@ -53,7 +55,7 @@ export class TableDossierClientsComponent implements OnInit {
       });
   }
 
-  public getClientsCompany(search = '') {
+  public getClientsCompany(search = ''): Observable<ClientCompany[]> {
     return this.clientsCompanyService.fetchClientsCompany(search);
   }
 }
