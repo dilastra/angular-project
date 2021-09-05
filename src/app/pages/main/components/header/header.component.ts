@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
   @Output()
   public openSidenavEvent = new EventEmitter<boolean>();
 
-  public darkTheme: string = '';
+  public darkTheme = '';
 
   constructor(
     @Inject(Injector) private readonly injector: Injector,
@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit {
     private themeService: ThemeService
   ) {}
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.themeService.theme$.subscribe((currentTheme) => {
       setTimeout(() => {
         this.darkTheme = currentTheme;
@@ -50,12 +50,12 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  public openSidenav() {
+  public openSidenav(): void {
     this.isOpenedSidenav = !this.isOpenedSidenav;
     this.openSidenavEvent.emit(this.isOpenedSidenav);
   }
 
-  public onLogout() {
+  public onLogout(): void {
     this.dialogService
       .open<boolean>(
         new PolymorpheusComponent(ConfirmDialogComponent, this.injector),
