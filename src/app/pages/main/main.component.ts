@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TuiDestroyService } from '@taiga-ui/cdk';
+import { TuiBrightness } from '@taiga-ui/core';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { ThemeService, User, UserService } from '../../core';
 
@@ -11,7 +12,7 @@ import { ThemeService, User, UserService } from '../../core';
   providers: [TuiDestroyService],
 })
 export class MainComponent implements OnInit {
-  public themeSwitcherControl: FormControl;
+  public themeSwitcherControl: FormControl = new FormControl(false);
 
   public isOpenedSidenav = false;
 
@@ -19,9 +20,7 @@ export class MainComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private destroy$: TuiDestroyService
-  ) {
-    this.themeSwitcherControl = new FormControl(false);
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.userService.fetchUser().subscribe((user: User) => {
@@ -30,23 +29,23 @@ export class MainComponent implements OnInit {
 
     this.themeSwitcherControl.valueChanges
       .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe((isDarkTheme) => {
+      .subscribe((isDarkTheme: boolean) => {
         const currentTheme = isDarkTheme ? 'onDark' : '';
         return this.themeService.onChangeCurrentTheme(currentTheme);
       });
 
     this.themeService.theme$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((currentTheme) => {
+      .subscribe((currentTheme: TuiBrightness | '') => {
         this.themeSwitcherControl.setValue(currentTheme === 'onDark');
       });
   }
 
-  public onOpenSidenavEvent(isOpenedSidenav: boolean) {
+  public onOpenSidenavEvent(isOpenedSidenav: boolean): void {
     this.isOpenedSidenav = isOpenedSidenav;
   }
 
-  public onCloseSidenavEvent(isClosedSidenav: boolean) {
+  public onCloseSidenavEvent(isClosedSidenav: boolean): void {
     this.isOpenedSidenav = isClosedSidenav;
   }
 }
