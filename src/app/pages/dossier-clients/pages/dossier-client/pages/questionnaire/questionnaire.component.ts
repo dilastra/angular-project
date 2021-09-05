@@ -11,6 +11,7 @@ import {
   BeneficiaryService,
   LoaderService,
   ManagerStructure,
+  Questionnaire,
   QuestionnaireService,
 } from 'src/app/core';
 
@@ -65,7 +66,7 @@ export class QuestionnaireComponent implements OnInit {
     this.questionnaireService
       .getQuestionnaireClientCompany(this.companyClientId)
       .subscribe(
-        (questionnaire) => {
+        (questionnaire: Questionnaire) => {
           this.questionnaireForm.patchValue({
             ...questionnaire,
           });

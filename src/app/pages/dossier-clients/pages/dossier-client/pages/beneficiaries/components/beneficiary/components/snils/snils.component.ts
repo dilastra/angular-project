@@ -106,7 +106,7 @@ export class SnilsComponent implements OnInit {
     );
   }
 
-  public downloadFile(formControl: AbstractControl) {
+  public downloadFile(formControl: FormControl) {
     this.isDownloadFile = true;
     this.filesService.downloadFile(formControl).subscribe(
       ({ isDownloaded }) => {
@@ -118,7 +118,7 @@ export class SnilsComponent implements OnInit {
     );
   }
 
-  public getControl(nameControl: string) {
+  public getControl(nameControl: string): FormControl {
     return this.snilsForm.get(nameControl) as FormControl;
   }
 

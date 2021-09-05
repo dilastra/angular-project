@@ -1,15 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'credex-balance-sheets',
   templateUrl: './balance-sheets.component.html',
-  styleUrls: ['./balance-sheets.component.scss']
+  styleUrls: ['./balance-sheets.component.scss'],
 })
-export class BalanceSheetsComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class BalanceSheetsComponent {}

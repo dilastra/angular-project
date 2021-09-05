@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TuiDay } from '@taiga-ui/cdk';
 import { Subscription } from 'rxjs';
-import { BeneficiaryService, LoaderService } from 'src/app/core';
+import { Beneficiary, BeneficiaryService, LoaderService } from 'src/app/core';
 
 @Component({
   selector: 'credex-beneficiaries',
@@ -31,7 +31,7 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
     });
   }
 
-  public getControlsBeneficiaresFormArray() {
+  public getControlsBeneficiaresFormArray(): FormGroup[] {
     return this.beneficiaresFormArray.controls as FormGroup[];
   }
 
@@ -41,7 +41,7 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.beneficiaryService
         .getBeneficiariesClientCompany(this.companyClientId)
-        .subscribe((beneficiares: any) => {
+        .subscribe((beneficiares: Beneficiary[]) => {
           beneficiares.forEach((beneficiary: any) => {
             this.beneficiaresFormArray.push(
               this.createBeneficiaryForm(beneficiary) as FormGroup,
@@ -57,14 +57,14 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  public createBeneficiaryForm(beneficiary: any = {}) {
+  public createBeneficiaryForm(beneficiary: Beneficiary | null) {
     const {
       id = null,
       passport = null,
       place_residence = null,
       share = null,
       snils = null,
-    } = beneficiary;
+    } = beneficiary ?? {};
     return this.builder.group({
       id,
       passport: this.builder.group({
@@ -109,7 +109,7 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.beneficiaryService
         .addNewBeneficiar(this.companyClientId)
-        .subscribe((beneficiary) => {
+        .subscribe((beneficiary: Beneficiary) => {
           this.beneficiaresFormArray.push(
             this.createBeneficiaryForm(beneficiary) as FormGroup,
             { emitEvent: false }
@@ -119,7 +119,7 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
     );
   }
 
-  public getTuiDate(date: string) {
+  public getTuiDate(date: string | null | undefined) {
     if (!date) {
       return null;
     }
@@ -131,7 +131,7 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
     return new TuiDay(year, month, day);
   }
 
-  public onRemovebeneficiary(i: number) {
+  public onRemovebeneficiary(i: number): void {
     this.loader.show();
     const { id } = this.beneficiaresFormArray.at(i).value;
     this.subscriptions.add(

@@ -144,7 +144,7 @@ export class PlaceResidenceComponent implements OnInit {
       });
   }
 
-  public getControl(nameControl: string) {
+  public getControl(nameControl: string): FormControl {
     return this.placeResidenceForm.get(nameControl) as FormControl;
   }
 

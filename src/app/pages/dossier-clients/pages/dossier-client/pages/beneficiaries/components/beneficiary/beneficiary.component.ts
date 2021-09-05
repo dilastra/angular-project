@@ -1,7 +1,7 @@
 import { formatPercent } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { BeneficiaryService, LoaderService } from 'src/app/core';
+import { Beneficiary, BeneficiaryService, LoaderService } from 'src/app/core';
 
 @Component({
   selector: 'credex-beneficiary',
@@ -16,11 +16,11 @@ export class BeneficiaryComponent implements OnInit {
   public companyClientId!: string;
 
   @Output()
-  public remove = new EventEmitter();
+  public remove = new EventEmitter<void>();
 
-  public fullName: string = '';
+  public fullName = '';
 
-  public share: string = '';
+  public share = '';
 
   public beneficiaryId = '';
 
@@ -42,25 +42,27 @@ export class BeneficiaryComponent implements OnInit {
 
     this.beneficiaryId = this.getFormControl('id').value as string;
 
-    this.beneficiaryFormGroup.valueChanges.subscribe(({ passport, share }) => {
-      const { first_name = '', last_name = '', middle_name = '' } = passport;
+    this.beneficiaryFormGroup.valueChanges.subscribe(
+      ({ passport, share }: Beneficiary) => {
+        const { first_name = '', last_name = '', middle_name = '' } = passport;
 
-      this.fullName = `${last_name ?? ''} ${first_name ?? ''} ${
-        middle_name ?? ''
-      }`;
-      this.share = share ? ` | Доля: ${(+share).toFixed(2)} %` : '';
-    });
+        this.fullName = `${last_name ?? ''} ${first_name ?? ''} ${
+          middle_name ?? ''
+        }`;
+        this.share = share ? ` | Доля: ${(+share).toFixed(2)} %` : '';
+      }
+    );
   }
 
   public getFormControl(nameControl: string): FormGroup {
     return this.beneficiaryFormGroup.get(nameControl) as FormGroup;
   }
 
-  public onRemove() {
+  public onRemove(): void {
     this.remove.emit();
   }
 
-  public onSaveShare() {
+  public onSaveShare(): void {
     this.loader.show();
     const { share } = this.beneficiaryFormGroup.value;
     this.beneficiaryService

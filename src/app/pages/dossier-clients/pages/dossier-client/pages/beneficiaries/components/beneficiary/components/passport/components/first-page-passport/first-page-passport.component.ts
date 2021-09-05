@@ -25,7 +25,7 @@ export class FirstPagePassportComponent implements OnInit {
   };
 
   public issuerIdMask = {
-    mask: [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
+    mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/],
     guide: true,
   };
 

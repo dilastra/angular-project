@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Beneficiary } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -8,14 +10,16 @@ import { environment } from 'src/environments/environment';
 export class BeneficiaryService {
   constructor(private http: HttpClient) {}
 
-  public getBeneficiariesClientCompany(clientCompanyId: string) {
-    return this.http.get(
+  public getBeneficiariesClientCompany(
+    clientCompanyId: string
+  ): Observable<Beneficiary[]> {
+    return this.http.get<Beneficiary[]>(
       `${environment.endPoint}/dossier/${clientCompanyId}/owner/list`
     );
   }
 
-  public addNewBeneficiar(clientCompanyId: string) {
-    return this.http.post(
+  public addNewBeneficiar(clientCompanyId: string): Observable<Beneficiary> {
+    return this.http.post<Beneficiary>(
       `${environment.endPoint}/dossier/${clientCompanyId}/owner`,
       {}
     );

@@ -4,6 +4,7 @@ import { TuiDay } from '@taiga-ui/cdk';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { BeneficiaryService, FilesService, LoaderService } from 'src/app/core';
+import { Passport } from 'src/app/core/interfaces/passport.interface';
 
 @Component({
   selector: 'credex-passport',
@@ -108,11 +109,11 @@ export class PassportComponent implements OnInit {
       });
   }
 
-  public getControl(nameControl: string): AbstractControl {
-    return this.passportForm.get(nameControl) as AbstractControl;
+  public getControl(nameControl: string): FormControl {
+    return this.passportForm.get(nameControl) as FormControl;
   }
 
-  public downloadFile(formControl: AbstractControl) {
+  public downloadFile(formControl: FormControl) {
     this.isDownloadFile = true;
     this.filesService.downloadFile(formControl).subscribe(
       ({ isDownloaded }) => {
