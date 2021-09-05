@@ -33,7 +33,7 @@ export class AuthService {
       : '';
   }
 
-  public isAuthenticated() {
+  public isAuthenticated(): boolean {
     if (this.getExpiresInOfTokenFromLocalStorage()) {
       const dateExpiresIn = new Date(
         +this.getExpiresInOfTokenFromLocalStorage() * 1000
@@ -43,7 +43,7 @@ export class AuthService {
     return false;
   }
 
-  public logout() {
+  public logout(): void {
     localStorage.removeItem('token');
   }
 }
