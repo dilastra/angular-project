@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
 import {
   Command,
   DossierService,
@@ -8,17 +7,15 @@ import {
   LoaderService,
   OrganizationRegistrationCertficate,
 } from 'src/app/core';
-import { File } from 'src/app/core/interfaces/file.interface';
+import { File } from 'src/app/core';
 
 @Component({
   selector: 'credex-statutory-documents',
   templateUrl: './statutory-documents.component.html',
   styleUrls: ['./statutory-documents.component.scss'],
 })
-export class StatutoryDocumentsComponent implements OnInit, OnDestroy {
+export class StatutoryDocumentsComponent implements OnInit {
   public companyClientId: string = '';
-
-  public subscriptions: Subscription = new Subscription();
 
   public companyCharter: File | null = null;
 
@@ -48,9 +45,5 @@ export class StatutoryDocumentsComponent implements OnInit, OnDestroy {
         this.organizationRegistrationCertficate = { ...org_reg_certificate };
         this.loader.hide();
       });
-  }
-
-  public ngOnDestroy() {
-    this.subscriptions.unsubscribe();
   }
 }

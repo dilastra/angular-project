@@ -1,6 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
+
 import {
   DossierService,
   FilesService,
@@ -12,7 +12,7 @@ import {
   templateUrl: './company-charter.component.html',
   styleUrls: ['./company-charter.component.scss'],
 })
-export class CompanyСharterComponent implements OnInit, OnDestroy {
+export class CompanyСharterComponent implements OnInit {
   @Input()
   public companyClientId: string = '';
 
@@ -30,8 +30,6 @@ export class CompanyСharterComponent implements OnInit, OnDestroy {
 
   public staturyDocumentsForm: FormGroup;
 
-  public subscriptions: Subscription = new Subscription();
-
   constructor(
     private builder: FormBuilder,
     private dossierService: DossierService,
@@ -44,50 +42,41 @@ export class CompanyСharterComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.subscriptions.add(
-      this.getControlStaturyDocumentsForm('file').valueChanges.subscribe(
-        (file) => {
-          if (file && !file?.id) {
-            this.loader.show();
-            this.subscriptions.add(
-              this.filesService
-                .uploadFile(file)
-                .subscribe(({ id, name, size, type }: any) => {
-                  this.getControlStaturyDocumentsForm('file').patchValue({
-                    id,
-                    name,
-                    size,
-                    type,
-                  });
-                  this.subscriptions.add(
-                    this.sendFileId(this.companyClientId, id).subscribe(() => {
-                      this.loadingFiles = [];
-                      this.loader.hide();
-                    })
-                  );
-                })
-            );
-          } else if (!file) {
-            this.loader.show();
-            this.subscriptions.add(
-              this.sendFileId(this.companyClientId).subscribe(
-                () => {
-                  this.loadingFiles = [];
-                  this.loader.hide();
-                },
-                () => {
-                  this.loader.hide();
-                }
-              )
-            );
-          }
-        }
-      )
-    );
-  }
+    this.getControlStaturyDocumentsForm('file').valueChanges.subscribe(
+      (file) => {
+        if (file && !file?.id) {
+          this.loader.show();
 
-  public ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+          this.filesService
+            .uploadFile(file)
+            .subscribe(({ id, name, size, type }: any) => {
+              this.getControlStaturyDocumentsForm('file').patchValue({
+                id,
+                name,
+                size,
+                type,
+              });
+
+              this.sendFileId(this.companyClientId, id).subscribe(() => {
+                this.loadingFiles = [];
+                this.loader.hide();
+              });
+            });
+        } else if (!file) {
+          this.loader.show();
+
+          this.sendFileId(this.companyClientId).subscribe(
+            () => {
+              this.loadingFiles = [];
+              this.loader.hide();
+            },
+            () => {
+              this.loader.hide();
+            }
+          );
+        }
+      }
+    );
   }
 
   public downloadFile(formControl: AbstractControl) {

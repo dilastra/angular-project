@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TuiValidationError } from '@taiga-ui/cdk';
+import { TuiDestroyService, TuiValidationError } from '@taiga-ui/cdk';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
-import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AuthToken, Bank, BankService } from '../../core';
 import { AuthService } from '../../core/services/auth.service';
 
@@ -18,16 +18,15 @@ import { AuthService } from '../../core/services/auth.service';
         required: 'Поле обязательно к заполнению',
       },
     },
+    TuiDestroyService,
   ],
 })
-export class AuthComponent implements OnInit, OnDestroy {
+export class AuthComponent implements OnInit {
   public loginForm: FormGroup;
 
   public darkTheme = localStorage.getItem('darkTheme');
 
   public banks: Bank[] = [];
-
-  public subscriptions = new Subscription();
 
   public error: TuiValidationError<{}> | null = null;
 
@@ -37,7 +36,8 @@ export class AuthComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private bankService: BankService,
     private builder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private destroy$: TuiDestroyService
   ) {
     this.loginForm = this.builder.group({
       login: ['', [Validators.required]],
@@ -47,17 +47,13 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.subscriptions.add(
-      this.bankService.getBankList().subscribe((banks) => {
-        this.banks = banks;
-      })
-    );
+    this.bankService.getBankList().subscribe((banks) => {
+      this.banks = banks;
+    });
 
-    this.subscriptions.add(
-      this.loginForm.valueChanges.subscribe(() => {
-        this.error = null;
-      })
-    );
+    this.loginForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.error = null;
+    });
   }
 
   public getNameBank(): string {
@@ -68,25 +64,18 @@ export class AuthComponent implements OnInit, OnDestroy {
   public login(): void {
     this.showLoader = true;
     const { login, password, bankId: bank_id } = this.loginForm.value;
-
-    this.subscriptions.add(
-      this.authService.fetchLogin({ login, password, bank_id }).subscribe(
-        (token: AuthToken) => {
-          this.authService.setTokenToLocalStorage(token);
-          this.router.navigate(['/']);
-          this.showLoader = false;
-        },
-        ({ error }) => {
-          this.showLoader = false;
-          this.error = new TuiValidationError(
-            error?.message ?? 'Неизвестная ошибка. Попробуйте позже'
-          );
-        }
-      )
+    this.authService.fetchLogin({ login, password, bank_id }).subscribe(
+      (token: AuthToken) => {
+        this.authService.setTokenToLocalStorage(token);
+        this.router.navigate(['/']);
+        this.showLoader = false;
+      },
+      ({ error }) => {
+        this.showLoader = false;
+        this.error = new TuiValidationError(
+          error?.message ?? 'Неизвестная ошибка. Попробуйте позже'
+        );
+      }
     );
-  }
-
-  public ngOnDestroy() {
-    this.subscriptions.unsubscribe();
   }
 }

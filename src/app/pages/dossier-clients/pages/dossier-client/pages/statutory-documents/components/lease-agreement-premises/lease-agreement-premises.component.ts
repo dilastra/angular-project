@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { TuiDay } from '@taiga-ui/cdk';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import {
   DossierService,
@@ -22,7 +22,7 @@ import {
   templateUrl: './lease-agreement-premises.component.html',
   styleUrls: ['./lease-agreement-premises.component.scss'],
 })
-export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
+export class LeaseAgreementPremisesComponent implements OnInit {
   @Input()
   public companyClientId: string = '';
 
@@ -51,8 +51,6 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
       );
     }
   }
-
-  public subscriptions: Subscription = new Subscription();
 
   public leaseAgreementPremisesForm: FormGroup;
 
@@ -85,111 +83,102 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.subscriptions.add(
-      this.getFormControl('file')
-        .valueChanges.pipe(distinctUntilChanged())
-        .subscribe((file) => {
-          if (file && !file?.id) {
-            this.loader.show();
-            this.loadingFiles = [file];
-            this.subscriptions.add(
-              this.filesService
-                .uploadFile(file)
-                .subscribe(({ id, name, size, type }: any) => {
-                  this.getFormControl('file').patchValue({
-                    id,
-                    name,
-                    size,
-                    type,
-                  });
-                  const model: any = {
-                    file_id: id,
-                    doc_number: null,
-                    ownership_type: this.getFormControl('ownershipType').value,
-                    date_from: null,
-                    dateSigning: null,
-                    dateTo: null,
-                  };
+    this.getFormControl('file')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((file) => {
+        if (file && !file?.id) {
+          this.loader.show();
+          this.loadingFiles = [file];
 
-                  this.subscriptions.add(
-                    this.sendFileId(this.companyClientId, model).subscribe(
-                      () => {
-                        this.loadingFiles = [];
-                        this.loader.hide();
-                      },
-                      () => {
-                        this.loader.hide();
-                      }
-                    )
-                  );
-                })
-            );
-          } else if (!file) {
-            this.loader.show();
-            this.subscriptions.add(
-              this.sendFileId(this.companyClientId).subscribe(
+          this.filesService
+            .uploadFile(file)
+            .subscribe(({ id, name, size, type }: any) => {
+              this.getFormControl('file').patchValue({
+                id,
+                name,
+                size,
+                type,
+              });
+              const model: any = {
+                file_id: id,
+                doc_number: null,
+                ownership_type: this.getFormControl('ownershipType').value,
+                date_from: null,
+                dateSigning: null,
+                dateTo: null,
+              };
+
+              this.sendFileId(this.companyClientId, model).subscribe(
                 () => {
+                  this.loadingFiles = [];
                   this.loader.hide();
                 },
                 () => {
                   this.loader.hide();
                 }
-              )
-            );
-          }
-        })
-    );
+              );
+            });
+        } else if (!file) {
+          this.loader.show();
+          this.sendFileId(this.companyClientId).subscribe(
+            () => {
+              this.loader.hide();
+            },
+            () => {
+              this.loader.hide();
+            }
+          );
+        }
+      });
 
-    this.subscriptions.add(
-      this.getFormControl('ownershipType')
-        .valueChanges.pipe(distinctUntilChanged())
-        .subscribe((selectedValue) => {
-          const fileControl = this.getFormControl('file');
-          switch (selectedValue) {
-            case 0:
-              if (fileControl.value) {
-                this.leaseAgreementPremisesForm.reset({ ownershipType: 0 });
-              }
-              this.leaseAgreementPremisesForm.controls[
-                'dateSigning'
-              ].setValidators(Validators.required);
-              this.leaseAgreementPremisesForm.controls['dateTo'].setValidators(
-                Validators.required
-              );
-              this.leaseAgreementPremisesForm.controls['dateSigning'].setErrors(
-                null
-              );
-              this.leaseAgreementPremisesForm.controls[
-                'dateTo'
-              ].updateValueAndValidity();
-              break;
-            case 1:
-              if (fileControl.value) {
-                this.leaseAgreementPremisesForm.reset({ ownershipType: 1 });
-              }
-              this.leaseAgreementPremisesForm.controls[
-                'dateSigning'
-              ].clearValidators();
-              this.leaseAgreementPremisesForm.controls[
-                'dateSigning'
-              ].updateValueAndValidity();
-              this.leaseAgreementPremisesForm.controls[
-                'dateTo'
-              ].clearValidators();
-              this.leaseAgreementPremisesForm.controls[
-                'dateTo'
-              ].updateValueAndValidity();
-              break;
-            default:
-              if (fileControl.value) {
-                this.leaseAgreementPremisesForm.reset();
-                this.leaseAgreementPremisesForm.clearValidators();
-                this.leaseAgreementPremisesForm.updateValueAndValidity();
-              }
-              break;
-          }
-        })
-    );
+    this.getFormControl('ownershipType')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((selectedValue) => {
+        const fileControl = this.getFormControl('file');
+        switch (selectedValue) {
+          case 0:
+            if (fileControl.value) {
+              this.leaseAgreementPremisesForm.reset({ ownershipType: 0 });
+            }
+            this.leaseAgreementPremisesForm.controls[
+              'dateSigning'
+            ].setValidators(Validators.required);
+            this.leaseAgreementPremisesForm.controls['dateTo'].setValidators(
+              Validators.required
+            );
+            this.leaseAgreementPremisesForm.controls['dateSigning'].setErrors(
+              null
+            );
+            this.leaseAgreementPremisesForm.controls[
+              'dateTo'
+            ].updateValueAndValidity();
+            break;
+          case 1:
+            if (fileControl.value) {
+              this.leaseAgreementPremisesForm.reset({ ownershipType: 1 });
+            }
+            this.leaseAgreementPremisesForm.controls[
+              'dateSigning'
+            ].clearValidators();
+            this.leaseAgreementPremisesForm.controls[
+              'dateSigning'
+            ].updateValueAndValidity();
+            this.leaseAgreementPremisesForm.controls[
+              'dateTo'
+            ].clearValidators();
+            this.leaseAgreementPremisesForm.controls[
+              'dateTo'
+            ].updateValueAndValidity();
+            break;
+          default:
+            if (fileControl.value) {
+              this.leaseAgreementPremisesForm.reset();
+              this.leaseAgreementPremisesForm.clearValidators();
+              this.leaseAgreementPremisesForm.updateValueAndValidity();
+            }
+            break;
+        }
+      });
   }
 
   public isSelectLeaseHold(): boolean {
@@ -202,10 +191,6 @@ export class LeaseAgreementPremisesComponent implements OnInit, OnDestroy {
     const day = new Date(date).getDate();
 
     return new TuiDay(year, month, day);
-  }
-
-  public ngOnDestroy() {
-    this.subscriptions.unsubscribe();
   }
 
   public getFormControl(nameControl: string): FormControl {

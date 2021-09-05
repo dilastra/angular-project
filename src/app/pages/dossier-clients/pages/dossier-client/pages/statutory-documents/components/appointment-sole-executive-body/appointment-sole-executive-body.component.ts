@@ -1,13 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 import { TuiDay } from '@taiga-ui/cdk';
-import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import {
   Command,
@@ -21,9 +19,7 @@ import {
   templateUrl: './appointment-sole-executive-body.component.html',
   styleUrls: ['./appointment-sole-executive-body.component.scss'],
 })
-export class AppointmentSoleExecutiveBodyComponent
-  implements OnInit, OnDestroy
-{
+export class AppointmentSoleExecutiveBodyComponent implements OnInit {
   @Input()
   public companyClientId: string = '';
 
@@ -55,8 +51,6 @@ export class AppointmentSoleExecutiveBodyComponent
 
   public appointmentSoleExecutiveBodyForm: FormGroup;
 
-  public subscriptions: Subscription = new Subscription();
-
   constructor(
     private builder: FormBuilder,
     private dossierService: DossierService,
@@ -72,56 +66,46 @@ export class AppointmentSoleExecutiveBodyComponent
   }
 
   public ngOnInit(): void {
-    this.subscriptions.add(
-      this.getControlAppointmentSoleExecutiveBodyForm(
-        'fileAppointmentSoleExecutiveBody'
-      )
-        .valueChanges.pipe(distinctUntilChanged())
-        .subscribe((file) => {
-          if (file && !file?.id) {
-            this.loader.show();
-            this.loadingFiles = [file];
-            this.subscriptions.add(
-              this.filesService
-                .uploadFile(file)
-                .subscribe(({ id, name, size, type }: any) => {
-                  this.getControlAppointmentSoleExecutiveBodyForm(
-                    'fileAppointmentSoleExecutiveBody'
-                  ).patchValue({
-                    id,
-                    name,
-                    size,
-                    type,
-                  });
+    this.getControlAppointmentSoleExecutiveBodyForm(
+      'fileAppointmentSoleExecutiveBody'
+    )
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((file) => {
+        if (file && !file?.id) {
+          this.loader.show();
+          this.loadingFiles = [file];
+          this.filesService
+            .uploadFile(file)
+            .subscribe(({ id, name, size, type }: any) => {
+              this.getControlAppointmentSoleExecutiveBodyForm(
+                'fileAppointmentSoleExecutiveBody'
+              ).patchValue({
+                id,
+                name,
+                size,
+                type,
+              });
 
-                  this.sendFileId(this.companyClientId, {
-                    file_id: id,
-                  }).subscribe(() => {
-                    this.loader.hide();
-                    this.loadingFiles = [];
-                  });
-                })
-            );
-          } else if (!file) {
-            this.loader.show();
-            this.subscriptions.add(
-              this.sendFileId(this.companyClientId).subscribe(
-                () => {
-                  this.appointmentSoleExecutiveBodyForm.reset();
-                  this.loader.hide();
-                },
-                (error) => {
-                  this.loader.hide();
-                }
-              )
-            );
-          }
-        })
-    );
-  }
-
-  public ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+              this.sendFileId(this.companyClientId, {
+                file_id: id,
+              }).subscribe(() => {
+                this.loader.hide();
+                this.loadingFiles = [];
+              });
+            });
+        } else if (!file) {
+          this.loader.show();
+          this.sendFileId(this.companyClientId).subscribe(
+            () => {
+              this.appointmentSoleExecutiveBodyForm.reset();
+              this.loader.hide();
+            },
+            (error) => {
+              this.loader.hide();
+            }
+          );
+        }
+      });
   }
 
   public getControlAppointmentSoleExecutiveBodyForm(

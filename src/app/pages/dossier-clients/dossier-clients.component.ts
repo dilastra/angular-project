@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
 import {
   ClientCompany,
   ClientsCompanyService,
@@ -19,8 +18,6 @@ export class DossierClientsComponent implements OnInit {
 
   public productsOnRus = ProductsOnRus;
 
-  public subscription = new Subscription();
-
   public clientCompanies: ClientCompany[] = [];
 
   constructor(
@@ -29,10 +26,6 @@ export class DossierClientsComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.subscription.add(this.getClientsCompany());
-  }
-
-  public getClientsCompany(): void {
     this.loaderService.show();
     this.clientsCompanyService.fetchClientsCompany().subscribe(
       (clientCompanies: ClientCompany[]) => {
@@ -43,9 +36,5 @@ export class DossierClientsComponent implements OnInit {
         this.loaderService.hide();
       }
     );
-  }
-
-  public ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }

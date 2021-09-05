@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -6,7 +6,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { TuiDay } from '@taiga-ui/cdk';
-import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import {
   DossierService,
@@ -20,9 +19,7 @@ import {
   templateUrl: './organization-registration-certificate.component.html',
   styleUrls: ['./organization-registration-certificate.component.scss'],
 })
-export class OrganizationRegistrationCertificateComponent
-  implements OnInit, OnDestroy
-{
+export class OrganizationRegistrationCertificateComponent implements OnInit {
   @Input()
   public companyClientId: string = '';
 
@@ -48,8 +45,6 @@ export class OrganizationRegistrationCertificateComponent
 
   public loadingFiles: any = [];
 
-  public subscriptions: Subscription = new Subscription();
-
   constructor(
     private builder: FormBuilder,
     private dossierService: DossierService,
@@ -64,45 +59,39 @@ export class OrganizationRegistrationCertificateComponent
   }
 
   public ngOnInit(): void {
-    this.subscriptions.add(
-      this.getControlOrganizationRegistrationCertificateForm('file')
-        .valueChanges.pipe(distinctUntilChanged())
-        .subscribe((file) => {
-          if (file && !file?.id) {
-            this.loader.show();
-            this.loadingFiles = [file];
-            this.subscriptions.add(
-              this.filesService
-                .uploadFile(file)
-                .subscribe(({ id, name, size, type }: any) => {
-                  this.getControlOrganizationRegistrationCertificateForm(
-                    'file'
-                  ).patchValue({
-                    id,
-                    name,
-                    size,
-                    type,
-                  });
-                  this.loader.hide();
-                  this.loadingFiles = [];
-                })
-            );
-          } else if (!file) {
-            this.loader.show();
-            this.subscriptions.add(
-              this.sendFileId(this.companyClientId).subscribe(
-                () => {
-                  this.loader.hide();
-                  this.organizationRegistrationCertificateForm.reset();
-                },
-                () => {
-                  this.loader.hide();
-                }
-              )
-            );
-          }
-        })
-    );
+    this.getControlOrganizationRegistrationCertificateForm('file')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((file) => {
+        if (file && !file?.id) {
+          this.loader.show();
+          this.loadingFiles = [file];
+          this.filesService
+            .uploadFile(file)
+            .subscribe(({ id, name, size, type }: any) => {
+              this.getControlOrganizationRegistrationCertificateForm(
+                'file'
+              ).patchValue({
+                id,
+                name,
+                size,
+                type,
+              });
+              this.loader.hide();
+              this.loadingFiles = [];
+            });
+        } else if (!file) {
+          this.loader.show();
+          this.sendFileId(this.companyClientId).subscribe(
+            () => {
+              this.loader.hide();
+              this.organizationRegistrationCertificateForm.reset();
+            },
+            () => {
+              this.loader.hide();
+            }
+          );
+        }
+      });
   }
 
   public getTuiDayDate(date: string): TuiDay {
@@ -111,10 +100,6 @@ export class OrganizationRegistrationCertificateComponent
     const day = new Date(date).getDate();
 
     return new TuiDay(year, month, day);
-  }
-
-  public ngOnDestroy() {
-    this.subscriptions.unsubscribe();
   }
 
   public getControlOrganizationRegistrationCertificateForm(

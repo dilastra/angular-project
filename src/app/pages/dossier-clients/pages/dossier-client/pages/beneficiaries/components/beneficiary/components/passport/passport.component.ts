@@ -1,10 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { TuiDay } from '@taiga-ui/cdk';
-import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { BeneficiaryService, FilesService, LoaderService } from 'src/app/core';
-import { Passport } from 'src/app/core/interfaces/passport.interface';
 
 @Component({
   selector: 'credex-passport',
@@ -26,8 +23,6 @@ export class PassportComponent implements OnInit {
 
   public loadingFiles: any[] = [];
 
-  public subscriptions: Subscription = new Subscription();
-
   public isDownloadFile = false;
 
   constructor(
@@ -43,43 +38,35 @@ export class PassportComponent implements OnInit {
         if (file && !file?.id) {
           this.loader.show();
           this.loadingFiles = [file];
-          this.subscriptions.add(
-            this.filesService
-              .uploadFile(file)
-              .subscribe(({ id, name, size, type }: any) => {
-                this.getControl('file').patchValue(
-                  {
-                    id,
-                    name,
-                    size,
-                    type,
-                  },
-                  { emitEvent: false }
-                );
-                const model: any = {
-                  file_id: id,
-                  ...this.passportForm.value,
-                };
+          this.filesService
+            .uploadFile(file)
+            .subscribe(({ id, name, size, type }: any) => {
+              this.getControl('file').patchValue(
+                {
+                  id,
+                  name,
+                  size,
+                  type,
+                },
+                { emitEvent: false }
+              );
+              const model: any = {
+                file_id: id,
+                ...this.passportForm.value,
+              };
 
-                this.subscriptions.add(
-                  this.beneficiaryService
-                    .updatePassport(
-                      this.companyClientId,
-                      this.beneficiaryId,
-                      model
-                    )
-                    .subscribe(
-                      () => {
-                        this.loadingFiles = [];
-                        this.loader.hide();
-                      },
-                      () => {
-                        this.loader.hide();
-                      }
-                    )
+              this.beneficiaryService
+                .updatePassport(this.companyClientId, this.beneficiaryId, model)
+                .subscribe(
+                  () => {
+                    this.loadingFiles = [];
+                    this.loader.hide();
+                  },
+                  () => {
+                    this.loader.hide();
+                  }
                 );
-              })
-          );
+            });
         } else if (!file) {
           this.loader.show();
           const model: any = {
@@ -93,18 +80,16 @@ export class PassportComponent implements OnInit {
             issuer: null,
             issuer_code: null,
           };
-          this.subscriptions.add(
-            this.beneficiaryService
-              .updatePassport(this.companyClientId, this.beneficiaryId, model)
-              .subscribe(
-                () => {
-                  this.loader.hide();
-                },
-                () => {
-                  this.loader.hide();
-                }
-              )
-          );
+          this.beneficiaryService
+            .updatePassport(this.companyClientId, this.beneficiaryId, model)
+            .subscribe(
+              () => {
+                this.loader.hide();
+              },
+              () => {
+                this.loader.hide();
+              }
+            );
         }
       });
   }

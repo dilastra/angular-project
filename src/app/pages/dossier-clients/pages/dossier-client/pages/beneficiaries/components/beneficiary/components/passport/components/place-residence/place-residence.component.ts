@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TuiDestroyService } from '@taiga-ui/cdk';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { BeneficiaryService, DadataService, LoaderService } from 'src/app/core';
 
@@ -24,8 +24,6 @@ export class PlaceResidenceComponent implements OnInit {
   public loadingFiles: any[] = [];
 
   public isDownloadFile = false;
-
-  public subscriptions: Subscription = new Subscription();
 
   public searchAddresses$ = new BehaviorSubject<any[]>([]);
 
@@ -151,14 +149,12 @@ export class PlaceResidenceComponent implements OnInit {
   public onSave() {
     this.loader.show();
     const model = this.placeResidenceForm.value;
-    this.subscriptions.add(
-      this.beneficiaryService
-        .updatePlaceResidence(this.companyClientId, this.beneficiaryId, model)
-        .subscribe(() => {
-          this.placeResidenceForm.markAsUntouched();
-          this.loader.hide();
-        })
-    );
+    this.beneficiaryService
+      .updatePlaceResidence(this.companyClientId, this.beneficiaryId, model)
+      .subscribe(() => {
+        this.placeResidenceForm.markAsUntouched();
+        this.loader.hide();
+      });
   }
 
   public findInDadata(model: any) {

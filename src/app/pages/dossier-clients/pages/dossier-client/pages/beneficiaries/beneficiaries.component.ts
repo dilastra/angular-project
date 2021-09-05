@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TuiDay } from '@taiga-ui/cdk';
-import { Subscription } from 'rxjs';
 import { Beneficiary, BeneficiaryService, LoaderService } from 'src/app/core';
 
 @Component({
@@ -10,14 +9,12 @@ import { Beneficiary, BeneficiaryService, LoaderService } from 'src/app/core';
   templateUrl: './beneficiaries.component.html',
   styleUrls: ['./beneficiaries.component.scss'],
 })
-export class BeneficiariesComponent implements OnInit, OnDestroy {
+export class BeneficiariesComponent implements OnInit {
   public companyClientId: string = '';
 
   public beneficiaresFormArray: FormArray;
 
   public beneficiaresForm: FormGroup;
-
-  public subscriptions: Subscription = new Subscription();
 
   constructor(
     private beneficiaryService: BeneficiaryService,
@@ -38,23 +35,17 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.loader.show();
     this.companyClientId = this.route.snapshot.params.id;
-    this.subscriptions.add(
-      this.beneficiaryService
-        .getBeneficiariesClientCompany(this.companyClientId)
-        .subscribe((beneficiares: Beneficiary[]) => {
-          beneficiares.forEach((beneficiary: any) => {
-            this.beneficiaresFormArray.push(
-              this.createBeneficiaryForm(beneficiary) as FormGroup,
-              { emitEvent: false }
-            );
-          });
-          this.loader.hide();
-        })
-    );
-  }
-
-  public ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    this.beneficiaryService
+      .getBeneficiariesClientCompany(this.companyClientId)
+      .subscribe((beneficiares: Beneficiary[]) => {
+        beneficiares.forEach((beneficiary: any) => {
+          this.beneficiaresFormArray.push(
+            this.createBeneficiaryForm(beneficiary) as FormGroup,
+            { emitEvent: false }
+          );
+        });
+        this.loader.hide();
+      });
   }
 
   public createBeneficiaryForm(beneficiary: Beneficiary | null) {
@@ -106,17 +97,15 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
 
   public addNewBeneficiary() {
     this.loader.show();
-    this.subscriptions.add(
-      this.beneficiaryService
-        .addNewBeneficiar(this.companyClientId)
-        .subscribe((beneficiary: Beneficiary) => {
-          this.beneficiaresFormArray.push(
-            this.createBeneficiaryForm(beneficiary) as FormGroup,
-            { emitEvent: false }
-          );
-          this.loader.hide();
-        })
-    );
+    this.beneficiaryService
+      .addNewBeneficiar(this.companyClientId)
+      .subscribe((beneficiary: Beneficiary) => {
+        this.beneficiaresFormArray.push(
+          this.createBeneficiaryForm(beneficiary) as FormGroup,
+          { emitEvent: false }
+        );
+        this.loader.hide();
+      });
   }
 
   public getTuiDate(date: string | null | undefined) {
@@ -134,18 +123,17 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
   public onRemovebeneficiary(i: number): void {
     this.loader.show();
     const { id } = this.beneficiaresFormArray.at(i).value;
-    this.subscriptions.add(
-      this.beneficiaryService
-        .removeBeneficiar(this.companyClientId, id)
-        .subscribe(
-          () => {
-            this.beneficiaresFormArray.removeAt(i);
-            this.loader.hide();
-          },
-          () => {
-            this.loader.hide();
-          }
-        )
-    );
+
+    this.beneficiaryService
+      .removeBeneficiar(this.companyClientId, id)
+      .subscribe(
+        () => {
+          this.beneficiaresFormArray.removeAt(i);
+          this.loader.hide();
+        },
+        () => {
+          this.loader.hide();
+        }
+      );
   }
 }
