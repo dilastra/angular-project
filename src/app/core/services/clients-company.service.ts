@@ -25,7 +25,9 @@ export class ClientsCompanyService {
     return this.http.post(`${environment.endPoint}/client-company`, body);
   }
 
-  public getClientCompany(id: string) {
-    return this.http.get(`${environment.endPoint}/client-company/${id}`);
+  public getClientCompany(id: string): Observable<ClientCompany> {
+    return this.http.get<ClientCompany>(
+      `${environment.endPoint}/client-company/${id}`
+    );
   }
 }
