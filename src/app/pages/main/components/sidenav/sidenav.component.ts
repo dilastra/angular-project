@@ -1,22 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'credex-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
 })
-export class SidenavComponent implements OnInit {
+export class SidenavComponent {
   @Input()
   public isOpenedSidenav = false;
 
   @Output()
-  public onCloseSidenav = new EventEmitter();
+  public onCloseSidenav = new EventEmitter<boolean>();
 
-  constructor() {}
-
-  ngOnInit(): void {}
-
-  public closeSidenav() {
+  public closeSidenav(): void {
     this.isOpenedSidenav = false;
     this.onCloseSidenav.emit(false);
   }
