@@ -1,7 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DossierService, LoaderService } from 'src/app/core';
+import {
+  Command,
+  DossierService,
+  LeaseContract,
+  LoaderService,
+  OrganizationRegistrationCertficate,
+} from 'src/app/core';
+import { File } from 'src/app/core/interfaces/file.interface';
 
 @Component({
   selector: 'credex-statutory-documents',
@@ -13,13 +20,14 @@ export class StatutoryDocumentsComponent implements OnInit, OnDestroy {
 
   public subscriptions: Subscription = new Subscription();
 
-  public companyCharter: any = undefined;
+  public companyCharter: File | null = null;
 
-  public leaseAgreementPremises: any = undefined;
+  public leaseAgreementPremises: LeaseContract | null = null;
 
-  public appointmentSoleExecutiveBody: any = undefined;
+  public appointmentSoleExecutiveBody: Command | null = null;
 
-  public organizationRegistrationCertficate: any = undefined;
+  public organizationRegistrationCertficate: OrganizationRegistrationCertficate | null =
+    null;
 
   constructor(
     private route: ActivatedRoute,

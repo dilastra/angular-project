@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { ConstituentDocumentsClientCompany } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +10,10 @@ import { environment } from 'src/environments/environment';
 export class DossierService {
   constructor(private http: HttpClient) {}
 
-  public getDossierCompanyClient(companyClientId: string): Observable<any> {
-    return this.http.get<any>(
+  public getDossierCompanyClient(
+    companyClientId: string
+  ): Observable<ConstituentDocumentsClientCompany> {
+    return this.http.get<ConstituentDocumentsClientCompany>(
       `${environment.endPoint}/dossier/${companyClientId}/constituent-documents`
     );
   }
