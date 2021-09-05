@@ -50,7 +50,7 @@
                 {{ productsOnRus[client.product] }}
               </td>
               <ng-container *ngFor="let bank of banks">
-                <td *tuiCell="getTuiCellName(bank.id)" tuiTd>
+                <td *tuiCell="getCellName(bank.id)" tuiTd>
                   {{ getAttachedStatus(bank.id, client) }}
                 </td>
               </ng-container>

@@ -1,5 +1,3 @@
-import { BaseEntity } from './base-entity.interface';
-
 export enum Role {
   SuperAdmin,
   Admin,
@@ -8,10 +6,9 @@ export enum Role {
   Client,
 }
 
-export interface User extends BaseEntity {
+export interface User {
   first_name?: string;
-
+  id: string;
   last_name?: string;
-
   role: Role;
 }

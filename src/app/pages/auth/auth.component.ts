@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TuiValidationError } from '@taiga-ui/cdk';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
 import { Subscription } from 'rxjs';
-import { AuthToken, BankService } from '../../core';
+import { AuthToken, Bank, BankService } from '../../core';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -25,7 +25,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   public darkTheme = localStorage.getItem('darkTheme');
 
-  public banks: { id: number; name: string }[] = [];
+  public banks: Bank[] = [];
 
   public subscriptions = new Subscription();
 

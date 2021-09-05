@@ -123,16 +123,16 @@ export class AddClientDialogComponent implements OnInit {
       });
   }
 
-  public onCancel() {
+  public onCancel(): void {
     this.context.completeWith(false);
   }
 
-  public clearSelectedCompany() {
+  public clearSelectedCompany(): void {
     this.formAddClient.controls.innClient.setValue(null);
     this.selectedCompany = undefined;
   }
 
-  public onAddNewClient() {
+  public onAddNewClient(): void {
     const body = {
       address: this.selectedCompany?.address?.value,
       inn: this.selectedCompany?.inn,
@@ -144,7 +144,7 @@ export class AddClientDialogComponent implements OnInit {
       tax_system: this.formAddClient.controls.taxSystem.value,
       type: this.clientCompanyType[this.selectedCompany?.type],
     };
-    this.clientsCompanyService.addNewCompanyClient(body).subscribe(
+    this.clientsCompanyService.addCompanyClient(body).subscribe(
       () => {
         const dataForDialog = {
           title: 'Операция проведена успешно',
