@@ -25,10 +25,20 @@ export class BalanceSheetsService {
       );
   }
 
-  public getFormFromArchive(clientCompanyId: string, typeForm: number) {
+  public getFormsFromArchive(clientCompanyId: string, typeForm: number) {
+    return this.http.get<any[]>(
+      `${environment.endPoint}/dossier/${clientCompanyId}/balance-sheet/archive?type=${typeForm}`
+    );
+  }
+
+  public getFormFromArchive(
+    clientCompanyId: string,
+    balance_sheet_id: number,
+    typeForm: number
+  ) {
     return this.http
-      .get(
-        `${environment.endPoint}/dossier/${clientCompanyId}/balance-sheet/archive?type=${typeForm}`
+      .get<any[]>(
+        `${environment.endPoint}/dossier/${clientCompanyId}/balance-sheet/${balance_sheet_id}`
       )
       .pipe(
         map((balanceSheets: any) => {

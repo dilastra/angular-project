@@ -39,16 +39,10 @@
             *tuiHead="'dateQuarter'"
             [sorter]="null"
           >
-            {{
-              (isArchive ? "2021-12-31T23:59:59" : dateQuarter)
-                | date: "dd.MM.YYYY"
-            }}
+            {{ dateQuarter | date: "dd.MM.YYYY" }}
           </th>
           <th tuiTh *tuiHead="'dateYear'" [sorter]="null">
-            {{
-              (isArchive ? "2021-08-31T23:59:59" : dateQuarter)
-                | date: "dd.MM.YYYY"
-            }}
+            {{ dateYear | date: "dd.MM.YYYY" }}
           </th>
         </tr>
       </thead>

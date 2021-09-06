@@ -4,11 +4,14 @@
     [class.archive-balance-sheets__select-control_mb16]="periodControl.value"
     [tuiTextfieldCleaner]="true"
     [tuiTextfieldExampleText]="'31.12.2010-31.08.2010'"
+    [valueContent]="selectPeriod"
   >
     Выберите период
     <tui-data-list *tuiDataList>
       <button *ngFor="let period of periods" tuiOption [value]="period">
-        {{ period }}
+        {{ period?.date_quarter | date: "dd.MM.YYYY" }}-{{
+          period?.date_year | date: "dd.MM.YYYY"
+        }}
       </button>
     </tui-data-list>
   </tui-select>
@@ -23,3 +26,9 @@
     </div>
   </ng-template>
 </div>
+
+<ng-template #selectPeriod let-period>
+  {{ period?.date_quarter | date: "dd.MM.YYYY" }}-{{
+    period?.date_year | date: "dd.MM.YYYY"
+  }}
+</ng-template>

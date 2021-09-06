@@ -49,8 +49,6 @@ export class BalanceSheetsFormTwoComponent implements OnInit {
     const { file, date_year, date_quarter, form } = this.balanceSheetsFormTwo;
     this.balanceSheets = form;
 
-    console.log(this.balanceSheets);
-
     this.dateQuarter = new Date(date_quarter.slice(0, -5));
     this.dateYear = new Date(date_year.slice(0, -5));
     this.fileControl.setValue(file, { emitEvent: false });
